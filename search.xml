@@ -4,6 +4,16 @@
   
     
     <entry>
+      <title><![CDATA[Guide、Manual和Tutorials的区别]]></title>
+      <url>http://shengdeng.github.io/2016/05/06/Guide%E3%80%81Manual%E5%92%8CTutorial%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      <content type="html"><![CDATA[<h2 id="Tutorials"><a href="#Tutorials" class="headerlink" title="Tutorials"></a>Tutorials</h2><p>先说Tutorial n. 个别指导 也就是一个知识点的教程，如果你在<a href="https://class.coursera.org/progfun-005/wiki/ScalaStyleGuide" title="scala公开课" target="_blank" rel="external">scala公开课</a>的wiki（实现团队协作编辑网页和文档共享的网站）中看到eclipse tutorial，那么这个教程将会教你如何用eclipse上开发scala项目，仅此而已，不会介绍更多的eclipse使用知识点。</p>
+<p>Tutorials就是许多小的知识点教程Tutorial的集合，看<a href="http://docs.scala-lang.org/tutorials/?_ga=1.81127127.178612781.1460424230" target="_blank" rel="external">Scala Tutorials</a>的目录，罗列了许多scala的关键知识点，而且都是一个层级的，不像guide分章节。</p>
+<h2 id="guide"><a href="#guide" class="headerlink" title="guide"></a>guide</h2><p>有指导作用的文档，可以理解为国内常用的“从入门道精通”，所以好的guide内容逐步深入，适合学习、查阅<br>另外，有趣的用词还可以像“scala tour”，翻译成 salca之旅 或者 scala指南，很明显也是“从入门道精通”的教程。官网的Guide是很重要的学习资料，英语不好的同学可以google Guide的中文翻译，比如，Spark Programming Guide 你就可以搜 “Spark” “编程指南”，但是一定要注意翻译指南对应的软件版本是否和你的软件版本一致哦！</p>
+<h2 id="manual"><a href="#manual" class="headerlink" title="manual"></a>manual</h2><p>手册，用于查阅各种命令、语法、规范，并没有帮助你理解的语言，适合查阅</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[自品牌也应该有的信念：如果不能成为第一，一开始就不要碰]]></title>
       <url>http://shengdeng.github.io/2016/05/04/%E8%87%AA%E5%93%81%E7%89%8C%E4%B9%9F%E5%BA%94%E8%AF%A5%E6%9C%89%E7%9A%84%E4%BF%A1%E5%BF%B5%EF%BC%9A%E5%A6%82%E6%9E%9C%E4%B8%8D%E8%83%BD%E6%88%90%E4%B8%BA%E7%AC%AC%E4%B8%80%EF%BC%8C%E4%B8%80%E5%BC%80%E5%A7%8B%E5%B0%B1%E4%B8%8D%E8%A6%81%E7%A2%B0/</url>
       <content type="html"><![CDATA[<p><strong>读书笔记：《记事本圆梦计划》PART 7</strong></p>
