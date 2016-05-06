@@ -7,7 +7,7 @@
 
     
 
-    <title>单词 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>Kafka官方文档中文版：第1章 Getting Started | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Kafka官方文档中文版：第1章 Getting Started"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -273,30 +273,117 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
-        <span class="breadcrumb">当前位置（标签）</span>
+        <span class="breadcrumb">当前位置（分类目录）</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Kafka/">Kafka</a><a class="breadcrumb" href="/categories/我的技术栈/Kafka/官网翻译/">官网翻译</a>
+
 
         
-            <a class="breadcrumb" href="/tags/单词/">单词</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Kafka官方文档中文版：第1章 Getting Started</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-06T12:55:36.000Z"><a href="/2016/05/06/Kafka官方文档中文版：第1章GettingStarted/">2016-05-06</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/05/06/Guide、Manual和Tutorial的区别/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T07:57:53.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Guide、Manual和Tutorials的区别
-            </a>
+            <a href="/tags/翻译/" class="chip teal darken-1">翻译</a>
+        
+            <a href="/tags/Kafka/" class="chip teal darken-1">Kafka</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-1-引言-Introduction"><span class="section table-of-contents-text">1.1 引言(Introduction)</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Topics-and-Logs"><span class="section table-of-contents-text">Topics and Logs</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Distribution"><span class="section table-of-contents-text">Distribution</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Producers"><span class="section table-of-contents-text">Producers</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Guarantees"><span class="section table-of-contents-text">Guarantees</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p><a href="http://kafka.apache.org/documentation.html" target="_blank" rel="external">Kafka版本：0.9.0</a></p>
+<p>正在持续更新中…</p>
+<a id="more"></a>
+<h1 id="1-1-引言-Introduction"><a href="#1-1-引言-Introduction" class="headerlink" title="1.1 引言(Introduction)"></a>1.1 引言(Introduction)</h1><p>Kafka is a distributed, partitioned, replicated commit log service. It provides the functionality of a messaging system, but with a unique design.<br>What does all that mean?</p>
+<p>First let’s review some basic messaging terminology:</p>
+<ul>
+<li>Kafka maintains feeds of messages in categories called topics.</li>
+<li>We’ll call processes that publish messages to a Kafka topic producers.</li>
+<li>We’ll call processes that subscribe to topics and process the feed of published messages consumers..</li>
+<li>Kafka is run as a cluster comprised of one or more servers each of which is called a broker.</li>
+</ul>
+<p>So, at a high level, producers send messages over the network to the Kafka cluster which in turn serves them up to consumers like this:</p>
+<h2 id="Topics-and-Logs"><a href="#Topics-and-Logs" class="headerlink" title="Topics and Logs"></a>Topics and Logs</h2><p>Let’s first dive into the high-level abstraction Kafka provides—the topic.<br>A topic is a category or feed name to which messages are published. For each topic, the Kafka cluster maintains a partitioned log that looks like this:</p>
+<p>Each partition is an ordered, immutable sequence of messages that is continually appended to—a commit log. The messages in the partitions are each assigned a sequential id number called the offset that uniquely identifies each message within the partition.<br>The Kafka cluster retains all published messages—whether or not they have been consumed—for a configurable period of time. For example if the log retention is set to two days, then for the two days after a message is published it is available for consumption, after which it will be discarded to free up space. Kafka’s performance is effectively constant with respect to data size so retaining lots of data is not a problem.</p>
+<p>In fact the only metadata retained on a per-consumer basis is the position of the consumer in the log, called the “offset”. This offset is controlled by the consumer: normally a consumer will advance its offset linearly as it reads messages, but in fact the position is controlled by the consumer and it can consume messages in any order it likes. For example a consumer can reset to an older offset to reprocess.</p>
+<p>This combination of features means that Kafka consumers are very cheap—they can come and go without much impact on the cluster or on other consumers. For example, you can use our command line tools to “tail” the contents of any topic without changing what is consumed by any existing consumers.</p>
+<p>The partitions in the log serve several purposes. First, they allow the log to scale beyond a size that will fit on a single server. Each individual partition must fit on the servers that host it, but a topic may have many partitions so it can handle an arbitrary amount of data. Second they act as the unit of parallelism—more on that in a bit.</p>
+<h2 id="Distribution"><a href="#Distribution" class="headerlink" title="Distribution"></a>Distribution</h2><p>The partitions of the log are distributed over the servers in the Kafka cluster with each server handling data and requests for a share of the partitions. Each partition is replicated across a configurable number of servers for fault tolerance.<br>Each partition has one server which acts as the “leader” and zero or more servers which act as “followers”. The leader handles all read and write requests for the partition while the followers passively replicate the leader. If the leader fails, one of the followers will automatically become the new leader. Each server acts as a leader for some of its partitions and a follower for others so load is well balanced within the cluster.</p>
+<h2 id="Producers"><a href="#Producers" class="headerlink" title="Producers"></a>Producers</h2><p>Producers publish data to the topics of their choice. The producer is responsible for choosing which message to assign to which partition within the topic. This can be done in a round-robin fashion simply to balance load or it can be done according to some semantic partition function (say based on some key in the message). More on the use of partitioning in a second.<br>Consumers</p>
+<p>Messaging traditionally has two models: queuing and publish-subscribe. In a queue, a pool of consumers may read from a server and each message goes to one of them; in publish-subscribe the message is broadcast to all consumers. Kafka offers a single consumer abstraction that generalizes both of these—the consumer group.<br>Consumers label themselves with a consumer group name, and each message published to a topic is delivered to one consumer instance within each subscribing consumer group. Consumer instances can be in separate processes or on separate machines.</p>
+<p>If all the consumer instances have the same consumer group, then this works just like a traditional queue balancing load over the consumers.</p>
+<p>If all the consumer instances have different consumer groups, then this works like publish-subscribe and all messages are broadcast to all consumers.</p>
+<p>More commonly, however, we have found that topics have a small number of consumer groups, one for each “logical subscriber”. Each group is composed of many consumer instances for scalability and fault tolerance. This is nothing more than publish-subscribe semantics where the subscriber is cluster of consumers instead of a single process.</p>
+<p>A two server Kafka cluster hosting four partitions (P0-P3) with two consumer groups. Consumer group A has two consumer instances and group B has four.<br>Kafka has stronger ordering guarantees than a traditional messaging system, too.</p>
+<p>A traditional queue retains messages in-order on the server, and if multiple consumers consume from the queue then the server hands out messages in the order they are stored. However, although the server hands out messages in order, the messages are delivered asynchronously to consumers, so they may arrive out of order on different consumers. This effectively means the ordering of the messages is lost in the presence of parallel consumption. Messaging systems often work around this by having a notion of “exclusive consumer” that allows only one process to consume from a queue, but of course this means that there is no parallelism in processing.</p>
+<p>Kafka does it better. By having a notion of parallelism—the partition—within the topics, Kafka is able to provide both ordering guarantees and load balancing over a pool of consumer processes. This is achieved by assigning the partitions in the topic to the consumers in the consumer group so that each partition is consumed by exactly one consumer in the group. By doing this we ensure that the consumer is the only reader of that partition and consumes the data in order. Since there are many partitions this still balances the load over many consumer instances. Note however that there cannot be more consumer instances in a consumer group than partitions.</p>
+<p>Kafka only provides a total order over messages within a partition, not between different partitions in a topic. Per-partition ordering combined with the ability to partition data by key is sufficient for most applications. However, if you require a total order over messages this can be achieved with a topic that has only one partition, though this will mean only one consumer process per consumer group.</p>
+<h2 id="Guarantees"><a href="#Guarantees" class="headerlink" title="Guarantees"></a>Guarantees</h2><p>At a high-level Kafka gives the following guarantees:<br>Messages sent by a producer to a particular topic partition will be appended in the order they are sent. That is, if a message M1 is sent by the same producer as a message M2, and M1 is sent first, then M1 will have a lower offset than M2 and appear earlier in the log.<br>A consumer instance sees messages in the order they are stored in the log.<br>For a topic with replication factor N, we will tolerate up to N-1 server failures without losing any messages committed to the log.<br>More details on these guarantees are given in the design section of the documentation</p>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/06/Kafka官方文档中文版：第1章GettingStarted/" data-title="Kafka官方文档中文版：第1章 Getting Started" data-url="http://shengdeng.github.io/2016/05/06/Kafka官方文档中文版：第1章GettingStarted/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
