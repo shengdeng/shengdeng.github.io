@@ -7,7 +7,7 @@
 
     
 
-    <title>Archives | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>Spark编程指南中文版 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Spark编程指南中文版"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -257,52 +257,103 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
-        <span class="breadcrumb">Current page(Archives)</span>
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Spark/">Spark</a><a class="breadcrumb" href="/categories/我的技术栈/Spark/官网翻译/">官网翻译</a>
+
+
         
 
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Spark编程指南中文版</h1>
+    
 
 
-    <ul class="collapsible mt-0" data-collapsible="accordion">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-06T12:24:58.000Z"><a href="/2016/05/06/Spark编程指南中文版/">2016-05-06</a></time>
+
+            
+    <div class="tags-row">
         
+            <a href="/tags/翻译/" class="chip teal darken-1">翻译</a>
         
-            <li>
-                <div class="collapsible-header active">
-                    <i class="fa fa-archive"></i>2016
-                </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        
-                            <a href="/2016/05/06/Spark编程指南中文版/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-06T12:24:58.000Z">2016-05-06</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Spark编程指南中文版
-                            </a>
-                        
-                            <a href="/2016/05/06/Guide、Manual和Tutorial的区别/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-06T07:57:53.000Z">2016-05-06</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Guide、Manual和Tutorials的区别
-                            </a>
-                        
-                            <a href="/2016/05/04/自品牌也应该有的信念：如果不能成为第一，一开始就不要碰/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-04T11:43:29.000Z">2016-05-04</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                自品牌也应该有的信念：如果不能成为第一，一开始就不要碰
-                            </a>
-                        
-                    </div>
-                </div>
-            </li>
+            <a href="/tags/Spark/" class="chip teal darken-1">Spark</a>
         
-    </ul>
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-概述-Overview"><span class="section table-of-contents-text">1 概述(Overview)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-引入Spark（Linking-with-Spark"><span class="section table-of-contents-text">2 引入Spark（Linking with Spark)</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p><a href="http://spark.apache.org/docs/latest/programming-guide.html" target="_blank" rel="external">spark版本：1.6.1</a></p>
+<p>正在持续更新中…</p>
+<a id="more"></a>
+<h1 id="1-概述-Overview"><a href="#1-概述-Overview" class="headerlink" title="1 概述(Overview)"></a>1 概述(Overview)</h1><p>总体来讲，每一个Spark驱动程序应用都由一个驱动程序组成，该驱动程序包含一个由用户编写的main方法，该方法会在集群上并行执行一些列并行计算操作。Spark最重要的一个概念是弹性分布式数据集，简称RDD（resilient distributed dataset ）。RDD是一个数据容器，它将分布在集群上各个节点上的数据抽象为一个数据集，并且RDD能够进行一系列的并行计算操作。可以将RDD理解为一个分布式的List，该List的数据为分布在各个节点上的数据。RDD通过读取Hadoop文件系统中的一个文件进行创建，也可以由一个RDD经过转换得到。用户也可以将RDD缓存至内存，从而高效的处理RDD，提高计算效率。另外，RDD有良好的容错机制。</p>
+<p>Spark另外一个重要的概念是共享变量（shared variables）。在并行计算时，可以方便的使用共享变量。在默认情况下，执行Spark任务时会在多个节点上并行执行多个task，Spark将每个变量的副本分发给各个task。在一些场景下，需要一个能够在各个task间共享的变量。Spark支持两种类型的共享变量：</p>
+<ul>
+<li><p>广播变量（broadcast variables）：将一个只读变量缓存到集群的每个节点上。例如，将一份数据的只读缓存分发到每个节点。</p>
+</li>
+<li><p>累加变量（accumulators）：只允许add操作，用于计数、求和。</p>
+</li>
+</ul>
+<h1 id="2-引入Spark（Linking-with-Spark"><a href="#2-引入Spark（Linking-with-Spark" class="headerlink" title="2 引入Spark（Linking with Spark)"></a>2 引入Spark（Linking with Spark)</h1><p>在Spark 1.6.0上编写应用程序，支持使用Scala 2.10.X、Java 7+、Python 2.6+、R 3.1+。如果使用Java 8，支持lambda表达式（lambda expressions）。</p>
+<p>在编写Spark应用时，需要在Maven依赖中添加Spark，Spark的Maven Central为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">groupId = org.apache.spark</span><br><span class="line">artifactId = spark-core_2.10</span><br><span class="line">version = 1.6.1</span><br></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/06/Spark编程指南中文版/" data-title="Spark编程指南中文版" data-url="http://shengdeng.github.io/2016/05/06/Spark编程指南中文版/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
