@@ -4,6 +4,51 @@
   
     
     <entry>
+      <title><![CDATA[Spark四大特性]]></title>
+      <url>http://shengdeng.github.io/2016/05/10/Spark%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7/</url>
+      <content type="html"><![CDATA[<p><a href="http://spark.apache.org/" target="_blank" rel="external">Apache Spark™</a> is a fast and general engine for large-scale data processing.<br>Apache Spark™是一个<strong>快速的</strong>、<strong>通用的</strong>，针对于<strong>大数据集的**</strong>数据处理分析**的计算引擎（框架）。】</p>
+<ul>
+<li>Hadoop:数据存储（HDFS）与分析(MR)</li>
+<li>Spark：数据分析</li>
+</ul>
+<p>在数据处理上Spark与MR比较，主要有如下四点特性</p>
+<a id="more"></a>
+<h1 id="快速-Speed"><a href="#快速-Speed" class="headerlink" title="快速(Speed)"></a>快速(Speed)</h1><p>与Hadoop MapReduce比较，内存中运行快100倍以上，磁盘中运行快10倍以上。</p>
+<p>主要原因：</p>
+<ol>
+<li>Spark使用有向无环图DAG（任务划为一个一个流程图）</li>
+<li>Spark在内存中运行（MR map输出结果仿真磁盘，reduce读数据从磁盘读，磁盘读写速度依赖网络IO、磁盘速度）</li>
+</ol>
+<h1 id="易使用-Ease-of-Use"><a href="#易使用-Ease-of-Use" class="headerlink" title="易使用(Ease of Use)"></a>易使用(Ease of Use)</h1><p>spark编程简单，支持scala、java、python，尤其scala和python代码很简洁，代码量少：</p>
+<ul>
+<li>spark提供了<strong>80个以上的操作</strong>（除了map\reduce还有很多操作）使得编程简单。</li>
+<li>提供了可交互的 <strong>scala shell</strong> 和 python shell</li>
+</ul>
+<p>MR编程则十分麻烦，虽然有模板可以套用，但代码总体庞大；MR只有map和reduce两个操作，一个业务总要想办法拆成（多个）map和reduce，甚至多个job，</p>
+<h1 id="通用性-Generality"><a href="#通用性-Generality" class="headerlink" title="通用性(Generality)"></a>通用性(Generality)</h1><p>Spark框架可以视为core，建立在spark运算框架上，还有其他专用框架（像MR上建立的框架：MapReduce难写有了Hive框架、机器学习Mahont框架、Pig、图形计算Giraph），Spark上的框架相当于一些Jar包库，不需要像Hive、Mahont要另外部署配置。</p>
+<p>Spark powers（为…提供动力） a stack of libraries including SQL and DataFrames, MLlib for machine learning, GraphX, and Spark Streaming. You can combine these libraries seamlessly in the same application.<br>Spark内核框架驱动一堆高级工具库包括SQL，DataFrames, 机器学习库MLlib, GraphX, and Spark Streaming。 你只要部署好了spark，这些类库就直接可以用，即<strong>一站式的大数据处理解决方案(One stack to rule all!)</strong>。因此不需要为了各种业务而搭建平台。（Hadoop平台上要为了各种业务搭建一堆东西，比如Hive、Pig等等）</p>
+<p>总之，基于Spark core上的大一统软件栈的优点：</p>
+<ul>
+<li>spark下层core的改进优化时，上层程序库也自动获得性能提升；</li>
+<li>运行整个软件栈的代价小（包括部署、维护、测试、支持），不需要运行多套独立的软件系统；</li>
+<li>能够无缝整合不同处理模型的应用（如机器学习的应用和SQL实时查询结果数据的应用在Spark上同时进行）</li>
+</ul>
+<h1 id="运行在各个地方-Runs-Everywhere"><a href="#运行在各个地方-Runs-Everywhere" class="headerlink" title="运行在各个地方(Runs Everywhere)"></a>运行在各个地方(Runs Everywhere)</h1><p>多种运行方式</p>
+<ul>
+<li>单独部署：standalone</li>
+<li>Yarn</li>
+<li>类似于yarn的资源管理框架Mesos</li>
+<li>云端：EMC、EC2</li>
+</ul>
+<p>运行数据来源</p>
+<ul>
+<li>MR的数据来自于HDFS、Hive、Hbase。</li>
+<li>Access data in HDFS, Cassandra, HBase, Hive, Tachyon, and any Hadoop data source.spark数据来源于任意类型的Hadoop数据源。</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Kafka官方文档中文版：第1章 Getting Started]]></title>
       <url>http://shengdeng.github.io/2016/05/06/Kafka%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B8%AD%E6%96%87%E7%89%88%EF%BC%9A%E7%AC%AC1%E7%AB%A0GettingStarted/</url>
       <content type="html"><![CDATA[<p><a href="http://kafka.apache.org/documentation.html" target="_blank" rel="external">Kafka版本：0.9.0</a></p>
