@@ -4,29 +4,26 @@
   
     
     <entry>
-      <title><![CDATA[博客配置备忘录]]></title>
-      <url>http://shengdeng.github.io/2016/05/12/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98%E5%BD%95/</url>
-      <content type="html"><![CDATA[<h2 id="container宽度"><a href="#container宽度" class="headerlink" title="container宽度"></a>container宽度</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_base目录下lib_customize.styl文件中的container类<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.container</span><br><span class="line">    width 58%</span><br><span class="line">    @media (max-width: 767px)</span><br><span class="line">        width 90%</span><br><span class="line">    .row</span><br><span class="line">        margin-left auto</span><br><span class="line">        margin-right auto</span><br></pre></td></tr></table></figure></p>
-<p>width可以是百分比也可以是分辨率如1000px</p>
-<h2 id="文章目录位置"><a href="#文章目录位置" class="headerlink" title="文章目录位置"></a>文章目录位置</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_partial\tablecontents.styl<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.toc</span><br><span class="line">    position fixed</span><br><span class="line">    top 15%</span><br><span class="line">    left calc(55% + 400px)</span><br></pre></td></tr></table></figure></p>
-<h2 id="首页幻灯片"><a href="#首页幻灯片" class="headerlink" title="首页幻灯片"></a>首页幻灯片</h2><p>在yourblog/source/_data/slider.json数据文件中进行配置。可以配置背景图、标题、副标题、对齐方式。如果不需要幻灯片，直接把slider.json删除即可。</p>
-<h2 id="关于页面"><a href="#关于页面" class="headerlink" title="关于页面"></a>关于页面</h2><p>themes/raytaylorism/_md/about/index.md文件为自我介绍。在source/_data/about.json数据文件中配置关于页面的其他项。</p>
-<ul>
-<li>avatar：String类型，头像图片链接</li>
-<li>name：String类型，自己的姓名</li>
-<li>tag: String类型，描述自己的标签，主要显示在侧滑栏的头部</li>
-<li>desc：String类型，对自己的简短描述</li>
-<li>skills：Object类型，对象技能展示。对象key值为技能名，value值为评分（取值为0-10的整数），取值为-1为分隔线。若不需要则将该字段设为null</li>
-<li>projects：Array类型，作品与项目展示，内含多个Object，每个Object都有name作品名、image封面、description作品描述、link_text链接文字、link链接地址。若不需要则将该字段设为null</li>
-<li>reward：Array类型，打赏二维码图片列表。例子中两个图片分别为微信和支付宝的二维码图片链接。若不需要则将该字段设为null</li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[前沿技术追踪：伯克利数据分析堆栈]]></title>
       <url>http://shengdeng.github.io/2016/05/12/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E4%BC%AF%E5%85%8B%E5%88%A9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88/</url>
-      <content type="html"><![CDATA[<p><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""><br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>伯克利数据分析堆栈(BDAS, the Berkeley Data Analytics Stack)是由AMPLab实验室提供的，以Spark Core计算引擎为核心的，一套完整应对各种大数据处理场的Spark生态系统。伯克利数据分析堆栈也会随着开源软件的发展不断向前演变。 <a href="https://amplab.cs.berkeley.edu/projects" target="_blank" rel="external">AMPLab实验室</a>作为推动Spark生态向前发展的主要力量，其提供的伯克利数据分析堆栈非常值得技术人员持续关注。【草稿版。。。】<br><a id="more"></a></p>
+<h1 id="Spark历史回顾"><a href="#Spark历史回顾" class="headerlink" title="Spark历史回顾"></a>Spark历史回顾</h1><p><strong>2009年</strong>Spark作为一个研究项目在加州大学伯克利分校(UC Berkeley)的RAD实验室(AMPlab的前身)诞生。当时Spark的设计是为了弥补Hadoop MR在迭代计算、交互计算、计算时间方面效率底下的缺陷，因此Spark天生具备以下特性</p>
+<ul>
+<li>可交互式查询</li>
+<li>迭代计算</li>
+<li>内存式存储</li>
+<li>高效容错</li>
+</ul>
+<p><strong>2010年3月</strong>Spark项目开源。</p>
+<p><strong>2011年</strong>，AMPLab开始基于Spark开发更高层的组件，比如Spark Streaming。有AMP开发的这些基于Spark Core组件和其他组件一起被称为<a href="https://amplab.cs.berkeley.edu/software/" target="_blank" rel="external">伯克利数据分析堆栈</a>。分析栈随着技术的发展不断扩张和演变。</p>
+<p><strong>2013年6月</strong>，Spark项目正式交给Apache基金会，目前已成为顶级项目。从此，Spark飞速发张。</p>
+<h1 id="伯克利数据分析堆栈"><a href="#伯克利数据分析堆栈" class="headerlink" title="伯克利数据分析堆栈"></a>伯克利数据分析堆栈</h1><p>BDAS的所有组件如下图(2016年版，如<a href="https://amplab.cs.berkeley.edu/software/" target="_blank" rel="external">官网</a>有更新欢迎留言告诉我)。其中，蓝色和绿色的模块所代表的组件完全开源可用，点击链接可进入对应项目的主页下载或了解更多。<br><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""></p>
+<p><strong>BDAS主要包括三层：存储层、资源管理层和数据处理层</strong>。AMP自己的项目中除了处理层的Spark,还有管理层的Mesos，存储层的Tachyon；考虑到Hadoop生态圈技术在某些情况下数据处理的会更好，作为Spark的互补技术，Spark对Hadoop支持且能够和Hadoop整合在一起。因此，BDAS表示的Spark生态系统还包括Hadoop的技术。下面详谈各个模块的细节。</p>
+<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2><h2 id="资源管理层"><a href="#资源管理层" class="headerlink" title="资源管理层"></a>资源管理层</h2><p>Mesos是资源管理层的，使多框架可以分享同一个集群的资源。这里你只要有一个集群就可以了，而不需要有很多个，能够在多个框架上用。好处是什么？资源节省效率更高，并且更容易共享数据。</p>
+<h2 id="处理层"><a href="#处理层" class="headerlink" title="处理层"></a>处理层</h2><p>Spark core是执行引擎，它有两个特点，它可以容错，内存存储效率也很高。在时效节点上它可以对数据进行重构，并且它有更强大的模型，也更快，比Hadoop MapReduce快上100倍。对于同样一个应用来说它写的代码量要比Hadoop MapReduce少2到5倍，并且它也支持互动计算。也就是说它对内存的利用效率更高，能更快得到响应，并且也可以通过内存共享数据。在Spark Core上面有很多个框架：</p>
+<h3 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h3><p>用Spark的功能做快速的计算。流式计算更适用于实时计算的场景。我们可以用它处理不同节点的计算，所有的这些特性实际上在其他类似Spark Streaming技术上不能实现的。这里我们支持批量流的计算。</p>
+<h3 id="MLlib"><a href="#MLlib" class="headerlink" title="MLlib"></a>MLlib</h3><p>用于机器学习的高质量库</p>
+<h3 id="Graphx"><a href="#Graphx" class="headerlink" title="Graphx"></a>Graphx</h3><p>这个Graphx可以整合数据和图并行计算，就是对数据的平行计算以及表格的平行计算进行整合，提供了非常高的抽象等级。同时，它还借鉴了Apache Spark的纠错功能。</p>
 ]]></content>
     </entry>
     
