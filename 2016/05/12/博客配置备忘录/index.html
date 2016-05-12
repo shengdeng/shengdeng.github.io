@@ -7,7 +7,7 @@
 
     
 
-    <title>Spark | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>博客配置备忘录 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="博客配置备忘录"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -297,42 +297,100 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">Current page(Categories)</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/五味/">五味</a><a class="breadcrumb" href="/categories/五味/Other/">Other</a>
+
 
         
-            <a class="breadcrumb" href="/categories/我的技术栈/Spark/">Spark</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>博客配置备忘录</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-12T03:16:20.000Z"><a href="/2016/05/12/博客配置备忘录/">2016-05-12</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/05/12/前沿技术追踪：伯克利数据分析堆栈/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-12T02:37:56.000Z">2016-05-12</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                前沿技术追踪：伯克利数据分析堆栈
-            </a>
-        
-            <a href="/2016/05/10/Spark四大特性/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-10T03:51:11.000Z">2016-05-10</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark四大特性
-            </a>
-        
-            <a href="/2016/05/06/Spark编程指南中文版/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T12:24:58.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark编程指南中文版
-            </a>
+            <a href="/tags/博客技术/" class="chip teal darken-1">博客技术</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#container宽度"><span class="section table-of-contents-text">container宽度</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#文章目录位置"><span class="section table-of-contents-text">文章目录位置</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#首页幻灯片"><span class="section table-of-contents-text">首页幻灯片</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#关于页面"><span class="section table-of-contents-text">关于页面</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h2 id="container宽度"><a href="#container宽度" class="headerlink" title="container宽度"></a>container宽度</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_base目录下lib_customize.styl文件中的container类<br>.container<br>    width 58%<br>    @media (max-width: 767px)<br>        width 90%<br>    .row<br>        margin-left auto<br>        margin-right auto<br>width可以是百分比也可以是分辨率如1000px</p>
+<h2 id="文章目录位置"><a href="#文章目录位置" class="headerlink" title="文章目录位置"></a>文章目录位置</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_partial\tablecontents.styl<br>.toc<br>    position fixed<br>    top 15%<br>    left calc(55% + 400px)</p>
+<h2 id="首页幻灯片"><a href="#首页幻灯片" class="headerlink" title="首页幻灯片"></a>首页幻灯片</h2><p>在yourblog/source/_data/slider.json数据文件中进行配置。可以配置背景图、标题、副标题、对齐方式。如果不需要幻灯片，直接把slider.json删除即可。</p>
+<h2 id="关于页面"><a href="#关于页面" class="headerlink" title="关于页面"></a>关于页面</h2><p>themes/raytaylorism/_md/about/index.md文件为自我介绍。在source/_data/about.json数据文件中配置关于页面的其他项。</p>
+<ul>
+<li>avatar：String类型，头像图片链接</li>
+<li>name：String类型，自己的姓名</li>
+<li>tag: String类型，描述自己的标签，主要显示在侧滑栏的头部</li>
+<li>desc：String类型，对自己的简短描述</li>
+<li>skills：Object类型，对象技能展示。对象key值为技能名，value值为评分（取值为0-10的整数），取值为-1为分隔线。若不需要则将该字段设为null</li>
+<li>projects：Array类型，作品与项目展示，内含多个Object，每个Object都有name作品名、image封面、description作品描述、link_text链接文字、link链接地址。若不需要则将该字段设为null</li>
+<li>reward：Array类型，打赏二维码图片列表。例子中两个图片分别为微信和支付宝的二维码图片链接。若不需要则将该字段设为null</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/12/博客配置备忘录/" data-title="博客配置备忘录" data-url="http://shengdeng.github.io/2016/05/12/博客配置备忘录/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>

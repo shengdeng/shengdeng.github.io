@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title><![CDATA[博客配置备忘录]]></title>
+      <url>http://shengdeng.github.io/2016/05/12/%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98%E5%BD%95/</url>
+      <content type="html"><![CDATA[<h2 id="container宽度"><a href="#container宽度" class="headerlink" title="container宽度"></a>container宽度</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_base目录下lib_customize.styl文件中的container类<br>.container<br>    width 58%<br>    @media (max-width: 767px)<br>        width 90%<br>    .row<br>        margin-left auto<br>        margin-right auto<br>width可以是百分比也可以是分辨率如1000px</p>
+<h2 id="文章目录位置"><a href="#文章目录位置" class="headerlink" title="文章目录位置"></a>文章目录位置</h2><p>修改myTecBlogs\themes\raytaylorism\source\css_partial\tablecontents.styl<br>.toc<br>    position fixed<br>    top 15%<br>    left calc(55% + 400px)</p>
+<h2 id="首页幻灯片"><a href="#首页幻灯片" class="headerlink" title="首页幻灯片"></a>首页幻灯片</h2><p>在yourblog/source/_data/slider.json数据文件中进行配置。可以配置背景图、标题、副标题、对齐方式。如果不需要幻灯片，直接把slider.json删除即可。</p>
+<h2 id="关于页面"><a href="#关于页面" class="headerlink" title="关于页面"></a>关于页面</h2><p>themes/raytaylorism/_md/about/index.md文件为自我介绍。在source/_data/about.json数据文件中配置关于页面的其他项。</p>
+<ul>
+<li>avatar：String类型，头像图片链接</li>
+<li>name：String类型，自己的姓名</li>
+<li>tag: String类型，描述自己的标签，主要显示在侧滑栏的头部</li>
+<li>desc：String类型，对自己的简短描述</li>
+<li>skills：Object类型，对象技能展示。对象key值为技能名，value值为评分（取值为0-10的整数），取值为-1为分隔线。若不需要则将该字段设为null</li>
+<li>projects：Array类型，作品与项目展示，内含多个Object，每个Object都有name作品名、image封面、description作品描述、link_text链接文字、link链接地址。若不需要则将该字段设为null</li>
+<li>reward：Array类型，打赏二维码图片列表。例子中两个图片分别为微信和支付宝的二维码图片链接。若不需要则将该字段设为null</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[前沿技术追踪：伯克利数据分析堆栈]]></title>
       <url>http://shengdeng.github.io/2016/05/12/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E4%BC%AF%E5%85%8B%E5%88%A9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88/</url>
       <content type="html"><![CDATA[<p><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""><br><a id="more"></a></p>
