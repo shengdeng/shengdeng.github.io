@@ -4,14 +4,21 @@
   
     
     <entry>
+      <title><![CDATA[前沿技术追踪：伯克利数据分析堆栈]]></title>
+      <url>http://shengdeng.github.io/2016/05/12/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E4%BC%AF%E5%85%8B%E5%88%A9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88/</url>
+      <content type="html"><![CDATA[<p><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""><br><a id="more"></a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Spark四大特性]]></title>
       <url>http://shengdeng.github.io/2016/05/10/Spark%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7/</url>
-      <content type="html"><![CDATA[<p><a href="http://spark.apache.org/" target="_blank" rel="external">Apache Spark™</a> is a fast and general engine for large-scale data processing.<br>Apache Spark™是一个<strong>快速的</strong>、<strong>通用的</strong>，针对于<strong>大数据集的**</strong>数据处理分析**的计算引擎（框架）。】</p>
+      <content type="html"><![CDATA[<p><a href="http://spark.apache.org/" target="_blank" rel="external">Apache Spark™</a> is a fast and general engine for large-scale data processing.<br>Apache Spark™是一个<strong>快速的</strong>、<strong>通用的</strong>，针对于<strong>大数据集</strong>的<strong>数据处理分析</strong>的计算引擎（框架）。</p>
 <ul>
 <li>Hadoop:数据存储（HDFS）与分析(MR)</li>
 <li>Spark：数据分析</li>
 </ul>
-<p>在数据处理上Spark与MR比较，主要有如下四点特性</p>
+<p>在数据处理上Spark与MR比较，主要有如下四点优势特性</p>
 <a id="more"></a>
 <h1 id="快速-Speed"><a href="#快速-Speed" class="headerlink" title="快速(Speed)"></a>快速(Speed)</h1><p>与Hadoop MapReduce比较，内存中运行快100倍以上，磁盘中运行快10倍以上。</p>
 <p>主要原因：</p>
@@ -42,8 +49,8 @@
 </ul>
 <p>运行数据来源</p>
 <ul>
-<li>MR的数据来自于HDFS、Hive、Hbase。</li>
-<li>Access data in HDFS, Cassandra, HBase, Hive, Tachyon, and any Hadoop data source.spark数据来源于任意类型的Hadoop数据源。</li>
+<li><strong>Spark可以支持任何实现了Hadoop API的存储系统</strong>(Access data in HDFS, Cassandra, HBase, Hive, Tachyon, and any Hadoop data source.)。Spark可以从存储在Hadoop分布式文件系统（HDFS）中的任何文件，或其他Hadoop API支持的存储系统（如本地文件系统，Amazon S3， Cassandra， Hive，HBase等）创建分布式数据集。</li>
+<li><strong>Hadoop对Spark来说不是必须的</strong>，Spark支持文本文件、序列文件、Avro、Parquet，以及任何其他Hadoop的输入格式。</li>
 </ul>
 ]]></content>
     </entry>
