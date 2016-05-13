@@ -43,7 +43,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[前沿技术追踪：伯克利数据分析堆栈]]></title>
+      <title><![CDATA[前沿追踪：伯克利数据分析堆栈]]></title>
       <url>http://shengdeng.github.io/2016/05/12/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E4%BC%AF%E5%85%8B%E5%88%A9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88/</url>
       <content type="html"><![CDATA[<p>伯克利数据分析堆栈(BDAS, the Berkeley Data Analytics Stack)是由AMPLab实验室提供的，以Spark Core计算引擎为核心的，一套完整应对各种大数据处理场的Spark生态系统。伯克利数据分析堆栈也会随着开源软件的发展不断向前演变。 <a href="https://amplab.cs.berkeley.edu/projects" target="_blank" rel="external">AMPLab实验室</a>作为推动Spark生态向前发展的主要力量，其提供的伯克利数据分析堆栈非常值得技术人员持续关注。【草稿版。。。】<br><a id="more"></a></p>
 <h1 id="Spark历史回顾"><a href="#Spark历史回顾" class="headerlink" title="Spark历史回顾"></a>Spark历史回顾</h1><p><strong>2009年</strong>Spark作为一个研究项目在加州大学伯克利分校(UC Berkeley)的RAD实验室(AMPlab的前身)诞生。当时Spark的设计是为了弥补Hadoop MR在迭代计算、交互计算、计算时间方面效率底下的缺陷，因此Spark天生具备以下特性</p>
