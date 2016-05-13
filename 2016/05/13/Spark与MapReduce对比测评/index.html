@@ -7,7 +7,7 @@
 
     
 
-    <title>Spark | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>Spark与MapReduce对比测评 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Spark与MapReduce对比测评"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -281,42 +281,110 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
-        <span class="breadcrumb">当前位置（标签）</span>
+        <span class="breadcrumb">当前位置（分类目录）</span>
         
+            
 
         
-            <a class="breadcrumb" href="/tags/Spark/">Spark</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Spark与MapReduce对比测评</h1>
+    
 
 
-    <div class="collection mt-0">
-        
-            <a href="/2016/05/12/前沿技术追踪：伯克利数据分析堆栈/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-12T02:37:56.000Z">2016-05-12</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                前沿技术追踪：伯克利数据分析堆栈
-            </a>
-        
-            <a href="/2016/05/10/Spark四大特性/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-10T03:51:11.000Z">2016-05-10</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark四大特性
-            </a>
-        
-            <a href="/2016/05/06/Spark编程指南中文版/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T12:24:58.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark编程指南中文版
-            </a>
-        
+            </div>
+            <time class="pink-link-context" datetime="2016-05-13T01:12:30.000Z"><a href="/2016/05/13/Spark与MapReduce对比测评/">2016-05-13</a></time>
+
+            
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#基本原理方面"><span class="section table-of-contents-text">基本原理方面</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#模型方面"><span class="section table-of-contents-text">模型方面</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#容错性方面"><span class="section table-of-contents-text">容错性方面</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p>MapReduce:</p>
+<ul>
+<li>基于磁盘的大数据批量处理系统</li>
+<li>Map和Reduce阶段都是往磁盘读写</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>基于RDD(弹性分布式数据集)数据处理。RDD可以显示地(即可指定)存储到磁盘和内存中</li>
+</ul>
+<p><strong>总结</strong>：Spark比MR更灵活，更快速</p>
+<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p>MapReduce:</p>
+<ul>
+<li>可以处理超大规模的数据</li>
+<li>适合日志分析挖掘等</li>
+<li>较少的迭代的长任务需求</li>
+<li>结合了数据的分布式计算、存储</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>适合海量数据，但不适合太大(毕竟数据放在内存中)</li>
+<li>适合数据挖掘(迭代中间结果放在内存中，迭代时很快)、机器学习等多轮迭代式计算任务</li>
+<li>在处理上是分布式的，但在存储上数据来源于HDFS等第三方系统</li>
+</ul>
+<p><strong>总结</strong>：Spark在数据挖掘处理方面比MapReduce优越，但在大规模数据处理上，目前MR更适合。</p>
+<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br>MapReduce:</p>
+<ul>
+<li>数据的读和写都是往HDFS上，HDFS有很强的数据容错的措施</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>容错性建立在RDD的Linage上，重新构造RDD</li>
+</ul>
+<p><strong>总结</strong>：Spark在容错性方面并不比MapReduce优越</p>
+
+            </div>
+        </div>
     </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/13/Spark与MapReduce对比测评/" data-title="Spark与MapReduce对比测评" data-url="http://shengdeng.github.io/2016/05/13/Spark与MapReduce对比测评/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>

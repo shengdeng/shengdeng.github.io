@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title><![CDATA[Spark与MapReduce对比测评]]></title>
+      <url>http://shengdeng.github.io/2016/05/13/Spark%E4%B8%8EMapReduce%E5%AF%B9%E6%AF%94%E6%B5%8B%E8%AF%84/</url>
+      <content type="html"><![CDATA[<h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p>MapReduce:</p>
+<ul>
+<li>基于磁盘的大数据批量处理系统</li>
+<li>Map和Reduce阶段都是往磁盘读写</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>基于RDD(弹性分布式数据集)数据处理。RDD可以显示地(即可指定)存储到磁盘和内存中</li>
+</ul>
+<p><strong>总结</strong>：Spark比MR更灵活，更快速</p>
+<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p>MapReduce:</p>
+<ul>
+<li>可以处理超大规模的数据</li>
+<li>适合日志分析挖掘等</li>
+<li>较少的迭代的长任务需求</li>
+<li>结合了数据的分布式计算、存储</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>适合海量数据，但不适合太大(毕竟数据放在内存中)</li>
+<li>适合数据挖掘(迭代中间结果放在内存中，迭代时很快)、机器学习等多轮迭代式计算任务</li>
+<li>在处理上是分布式的，但在存储上数据来源于HDFS等第三方系统</li>
+</ul>
+<p><strong>总结</strong>：Spark在数据挖掘处理方面比MapReduce优越，但在大规模数据处理上，目前MR更适合。</p>
+<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br>MapReduce:</p>
+<ul>
+<li>数据的读和写都是往HDFS上，HDFS有很强的数据容错的措施</li>
+</ul>
+<p>Spark</p>
+<ul>
+<li>容错性建立在RDD的Linage上，重新构造RDD</li>
+</ul>
+<p><strong>总结</strong>：Spark在容错性方面并不比MapReduce优越</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[前沿技术追踪：伯克利数据分析堆栈]]></title>
       <url>http://shengdeng.github.io/2016/05/12/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E4%BC%AF%E5%85%8B%E5%88%A9%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E5%A0%86%E6%A0%88/</url>
       <content type="html"><![CDATA[<p>伯克利数据分析堆栈(BDAS, the Berkeley Data Analytics Stack)是由AMPLab实验室提供的，以Spark Core计算引擎为核心的，一套完整应对各种大数据处理场的Spark生态系统。伯克利数据分析堆栈也会随着开源软件的发展不断向前演变。 <a href="https://amplab.cs.berkeley.edu/projects" target="_blank" rel="external">AMPLab实验室</a>作为推动Spark生态向前发展的主要力量，其提供的伯克利数据分析堆栈非常值得技术人员持续关注。【草稿版。。。】<br><a id="more"></a></p>
@@ -24,6 +63,7 @@
 <h3 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h3><p>用Spark的功能做快速的计算。流式计算更适用于实时计算的场景。我们可以用它处理不同节点的计算，所有的这些特性实际上在其他类似Spark Streaming技术上不能实现的。这里我们支持批量流的计算。</p>
 <h3 id="MLlib"><a href="#MLlib" class="headerlink" title="MLlib"></a>MLlib</h3><p>用于机器学习的高质量库</p>
 <h3 id="Graphx"><a href="#Graphx" class="headerlink" title="Graphx"></a>Graphx</h3><p>这个Graphx可以整合数据和图并行计算，就是对数据的平行计算以及表格的平行计算进行整合，提供了非常高的抽象等级。同时，它还借鉴了Apache Spark的纠错功能。</p>
+<h3 id="BlinkDB"><a href="#BlinkDB" class="headerlink" title="BlinkDB"></a>BlinkDB</h3><p>使用抽样方法在<strong>性能</strong>和<strong>准确性</strong>之间做平衡，服务器响应速度非常快。用Sql查询，BlinkDB可以在一定的响应时间内进行查询，目前仍在开发过程中，将来是Spark的一个非常重要的部分。</p>
 ]]></content>
     </entry>
     
