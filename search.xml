@@ -4,37 +4,101 @@
   
     
     <entry>
+      <title><![CDATA[VMware虚拟机的使用总结]]></title>
+      <url>http://shengdeng.github.io/2016/05/14/VMware%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<h1 id="VMware简介"><a href="#VMware简介" class="headerlink" title="VMware简介"></a>VMware简介</h1><p>VMware主要特点：</p>
+<ol>
+<li>在一台PC上运行多个系统</li>
+<li>本机系统可以与虚拟机系统网络通信</li>
+<li>可以设定并且随时修改虚拟机操作系统的硬件配置</li>
+</ol>
+<p>VMware安装：下一步下一步即可</p>
+<h1 id="新建一个虚拟机的向导步骤"><a href="#新建一个虚拟机的向导步骤" class="headerlink" title="新建一个虚拟机的向导步骤"></a>新建一个虚拟机的向导步骤</h1><ol>
+<li>新建虚拟机</li>
+<li>选择典型安装</li>
+<li>安装来源选择以后安装操作系统<ul>
+<li>光盘安装，系统刻成光盘了，比较麻烦；</li>
+<li>安装镜像文件，linux的镜像文件是从官方网站提前免费下载的，如果选这个下一步之后所有安装linux的过程都不需要你参与了，而且默认装的是最小化系统，；</li>
+<li>创建一个空白硬盘，以后再安装操作系统，可以自己配置硬件。</li>
+</ul>
+</li>
+<li>选择一个将要安装的系统，选linux，选择linux版本，linux版本众多，如果没有选择一个内核版本即可</li>
+<li>给新建的虚拟机起一个名字，与其他虚拟机区分开；给虚拟机选择一个文件保存的位置目录，不要选择C盘就可以，避免占用C盘空间，今后不需要这个虚拟机时，直接删除这个目录就可以。(编辑→首选项 中可以更改默认位置)</li>
+<li>指定磁盘大小。默认是20GB，足够了，虚拟机会根据你的使用情况分配磁盘，不会一次性分配20GB，这里的20GB指，从linux内查看磁盘大小为20GB</li>
+<li>完成</li>
+</ol>
+<h1 id="修改虚拟机硬件设置"><a href="#修改虚拟机硬件设置" class="headerlink" title="修改虚拟机硬件设置"></a>修改虚拟机硬件设置</h1><p><code>选中虚拟机→虚拟机→设置</code>或者点击<code>编辑虚拟机设置</code></p>
+<ul>
+<li>内存：注意虚拟机的内存不能超过真实机的一半。对CentOs以上的系统来讲，要想看到图形界面，内存的最低要求是628M</li>
+<li>处理器：如果真实机有多个处理器，可以选择处理器数量；处理器核数也可以根据真实机的核数选择</li>
+<li>硬盘：可以选择硬盘后点击<code>添加</code>下一步下一步添加多块硬盘</li>
+<li>光驱CD/DVD：右边连接设置选择<code>使用ISO映像文件</code>然后选择 下载的系统ISO镜像目录(如果有两个ISO镜像，选择DVD1保存了主体数据，DVD2保存了一些安装包)，此步相当于把光盘放进光驱；设备状态中的<code>已连接</code>没有打勾，表示光驱没有接电源，即光盘放进光驱里也不会运行，启动虚拟机后，如果发现光驱无法读取，可以检查<code>已连接</code>是否打勾</li>
+<li>软盘：可以删除，省得启动时还会检测拖慢启动速度，像虚拟打印机、声卡都可以删掉</li>
+<li>网络适配器：网络连接如下方式可选<ul>
+<li>桥接模式</li>
+<li>NAT模式</li>
+<li>Host-only模式</li>
+</ul>
+</li>
+</ul>
+<h1 id="VMware使用技巧"><a href="#VMware使用技巧" class="headerlink" title="VMware使用技巧"></a>VMware使用技巧</h1><h2 id="虚拟机快照"><a href="#虚拟机快照" class="headerlink" title="虚拟机快照"></a>虚拟机快照</h2><p>拍摄此虚拟机快照<code>小时钟</code>：把虚拟机当前状态保存下来，以后出现了问题可以恢复到此处，不需要重装系统；或者你不想启动虚拟机花费时间，可以在启动后创建一个快照，以后开机直接让VMware读取快照，就可以很快到开机后的状态；注意快照会占用硬盘资源</p>
+<ul>
+<li>名称：比如<code>初始安装的状态</code></li>
+<li>描述：描述下这个状态</li>
+</ul>
+<p>恢复快照<code>小扳手</code>：选中快照，点击<code>转到</code>就可恢复</p>
+<p>注意：真正的服务器中没有快照，工作时尽量减少误操作</p>
+<h2 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h2><p>说明：克隆出来一个和当前虚拟机一样的虚拟机，建立集群时很方便；好处是，克隆机并不像创建的虚拟机一样占用那么大的空间，而是克隆机实际用了多少空间就会占用多少空间，克隆机不是一个完整的计算机，可能只有几十兆，于是有了多台计算机，又占用的资源少</p>
+<p>注意：克隆机只是真实机的镜像，如果删掉了原始机，克隆机不能使用了；克隆机删除，不影响原始机使用</p>
+<p><code>虚拟机→管理→克隆</code>：设置向导</p>
+<ol>
+<li>选择克隆源<ul>
+<li>虚拟机当前状态</li>
+<li>某个快照</li>
+</ul>
+</li>
+<li>克隆类型<ul>
+<li>链接克隆：克隆机占的资源很少(推荐这个)</li>
+<li>完整克隆：相当于复制一个原始机，两个计算机占用同样的大小</li>
+</ul>
+</li>
+<li>克隆机起名字，选择保存的位置，与原始机的目录放一起</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Spark与MapReduce对比测评]]></title>
       <url>http://shengdeng.github.io/2016/05/13/Spark%E4%B8%8EMapReduce%E5%AF%B9%E6%AF%94%E6%B5%8B%E8%AF%84/</url>
-      <content type="html"><![CDATA[<h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p><em>MapReduce</em>:</p>
+      <content type="html"><![CDATA[<h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p><em>MapReduce</em></p>
 <ul>
 <li>基于磁盘的大数据批量处理系统</li>
 <li>Map和Reduce阶段都是往磁盘读写</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>基于RDD(弹性分布式数据集)数据处理。RDD可以显示地(即可指定)存储到磁盘和内存中</li>
 </ul>
 <p><strong>总结</strong>：Spark比MR更灵活，更快速</p>
-<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p><em>MapReduce</em>:</p>
+<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p><em>MapReduce</em></p>
 <ul>
 <li>可以处理<strong>超大规模</strong>的数据</li>
 <li>适合日志分析挖掘等</li>
 <li>较少的迭代的长任务需求</li>
 <li>结合了数据的分布式计算、存储</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>适合海量数据，但<strong>不适合超大规模</strong>(毕竟数据放在内存中)</li>
 <li>适合<strong>数据挖掘</strong>(迭代中间结果放在内存中，迭代时很快)、机器学习等多轮迭代式计算任务</li>
 <li>在处理上是分布式的，但在存储上数据来源于HDFS等第三方系统</li>
 </ul>
 <p><strong>总结</strong>：Spark在数据挖掘处理方面比MapReduce优越，但在大规模数据处理上，目前MR更适合。</p>
-<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br><em>MapReduce</em>:</p>
+<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br><em>MapReduce</em></p>
 <ul>
 <li>数据的读和写都是往HDFS上，HDFS有很强的数据容错的措施</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>容错性建立在RDD的Linage上，重新构造RDD</li>
 </ul>
@@ -58,7 +122,8 @@
 <p><strong>2013年6月</strong>，Spark项目正式交给Apache基金会，目前已成为顶级项目。从此，Spark飞速发张。</p>
 <h1 id="伯克利数据分析堆栈"><a href="#伯克利数据分析堆栈" class="headerlink" title="伯克利数据分析堆栈"></a>伯克利数据分析堆栈</h1><p>BDAS的所有组件如下图(2016年版，如<a href="https://amplab.cs.berkeley.edu/software/" target="_blank" rel="external">官网</a>有更新欢迎留言告诉我)。其中，蓝色和绿色的模块所代表的组件完全开源可用，点击链接可进入对应项目的主页下载或了解更多。<br><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""></p>
 <p><strong>BDAS主要包括三层：存储层、资源管理层和数据处理层</strong>。AMP自己的项目中除了处理层的Spark,还有管理层的Mesos，存储层的Tachyon；考虑到Hadoop生态圈技术在某些情况下数据处理的会更好，作为Spark的互补技术，Spark对Hadoop支持且能够和Hadoop整合在一起。因此，BDAS表示的Spark生态系统还包括Hadoop的技术。下面详谈各个模块的细节。</p>
-<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2><h2 id="资源管理层"><a href="#资源管理层" class="headerlink" title="资源管理层"></a>资源管理层</h2><p>Mesos是资源管理层的，使多框架可以分享同一个集群的资源。这里你只要有一个集群就可以了，而不需要有很多个，能够在多个框架上用。好处是什么？资源节省效率更高，并且更容易共享数据。</p>
+<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2><p>Tachyon是一个基于内存的文件系统，在一个集群中有多个框架，这些框架的数据可能需要共享，如果把数据直接放在内存中共享时更快。Tachyon是华人弄得项目已经开源。</p>
+<h2 id="资源管理层"><a href="#资源管理层" class="headerlink" title="资源管理层"></a>资源管理层</h2><p>Mesos是资源管理层的，使多框架可以分享同一个集群的资源。这里你只要有一个集群就可以了，而不需要有很多个，能够在多个框架上用。好处是什么？资源节省效率更高，并且更容易共享数据。</p>
 <h2 id="处理层"><a href="#处理层" class="headerlink" title="处理层"></a>处理层</h2><p>Spark core是执行引擎，它有两个特点，它可以容错，内存存储效率也很高。在时效节点上它可以对数据进行重构，并且它有更强大的模型，也更快，比Hadoop MapReduce快上100倍。对于同样一个应用来说它写的代码量要比Hadoop MapReduce少2到5倍，并且它也支持互动计算。也就是说它对内存的利用效率更高，能更快得到响应，并且也可以通过内存共享数据。在Spark Core上面有很多个框架：</p>
 <h3 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h3><p>用Spark的功能做快速的计算。流式计算更适用于实时计算的场景。我们可以用它处理不同节点的计算，所有的这些特性实际上在其他类似Spark Streaming技术上不能实现的。这里我们支持批量流的计算。</p>
 <h3 id="MLlib"><a href="#MLlib" class="headerlink" title="MLlib"></a>MLlib</h3><p>用于机器学习的高质量库</p>

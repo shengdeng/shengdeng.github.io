@@ -171,32 +171,8 @@
             
 
             <li class="collapse-level-0" collapse-level="0">
-                <a class="no-padding" href="/categories/专业英语/">
-                    专业英语 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/专业英语/单词/">
-                    单词 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
-                    词汇辨析 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-0" collapse-level="0">
                 <a class="no-padding" href="/categories/我的技术栈/">
-                    我的技术栈 <span class="right">5</span></a>
+                    我的技术栈 <span class="right">6</span></a>
                 </a>
             </li>
 
@@ -227,6 +203,22 @@
         
 
             <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/我的技术栈/Linux/">
+                    Linux <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/我的技术栈/Linux/安装笔记/">
+                    安装笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
                 <a class="no-padding" href="/categories/我的技术栈/Kafka/">
                     Kafka <span class="right">1</span></a>
                 </a>
@@ -237,6 +229,30 @@
             <li class="collapse-level-2" collapse-level="2">
                 <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
                     官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/专业英语/">
+                    专业英语 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/专业英语/单词/">
+                    单词 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
+                    词汇辨析 <span class="right">1</span></a>
                 </a>
             </li>
 
@@ -326,35 +342,35 @@
 
 
             <div class="entry pink-link-context">
-                <h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p><em>MapReduce</em>:</p>
+                <h1 id="基本原理方面"><a href="#基本原理方面" class="headerlink" title="基本原理方面"></a>基本原理方面</h1><p><em>MapReduce</em></p>
 <ul>
 <li>基于磁盘的大数据批量处理系统</li>
 <li>Map和Reduce阶段都是往磁盘读写</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>基于RDD(弹性分布式数据集)数据处理。RDD可以显示地(即可指定)存储到磁盘和内存中</li>
 </ul>
 <p><strong>总结</strong>：Spark比MR更灵活，更快速</p>
-<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p><em>MapReduce</em>:</p>
+<h1 id="模型方面"><a href="#模型方面" class="headerlink" title="模型方面"></a>模型方面</h1><p><em>MapReduce</em></p>
 <ul>
 <li>可以处理<strong>超大规模</strong>的数据</li>
 <li>适合日志分析挖掘等</li>
 <li>较少的迭代的长任务需求</li>
 <li>结合了数据的分布式计算、存储</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>适合海量数据，但<strong>不适合超大规模</strong>(毕竟数据放在内存中)</li>
 <li>适合<strong>数据挖掘</strong>(迭代中间结果放在内存中，迭代时很快)、机器学习等多轮迭代式计算任务</li>
 <li>在处理上是分布式的，但在存储上数据来源于HDFS等第三方系统</li>
 </ul>
 <p><strong>总结</strong>：Spark在数据挖掘处理方面比MapReduce优越，但在大规模数据处理上，目前MR更适合。</p>
-<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br><em>MapReduce</em>:</p>
+<h1 id="容错性方面"><a href="#容错性方面" class="headerlink" title="容错性方面"></a>容错性方面</h1><p>数据的容错性、节点的容错性<br><em>MapReduce</em></p>
 <ul>
 <li>数据的读和写都是往HDFS上，HDFS有很强的数据容错的措施</li>
 </ul>
-<p><em>Spark</em>:</p>
+<p><em>Spark</em></p>
 <ul>
 <li>容错性建立在RDD的Linage上，重新构造RDD</li>
 </ul>

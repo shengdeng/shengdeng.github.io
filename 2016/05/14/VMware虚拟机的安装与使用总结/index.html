@@ -7,7 +7,7 @@
 
     
 
-    <title>阅读笔记 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>VMware虚拟机的使用总结 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="VMware虚拟机的使用总结"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -297,30 +297,145 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">Current page(Categories)</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/">Linux</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/安装笔记/">安装笔记</a>
+
 
         
-            <a class="breadcrumb" href="/categories/阅读笔记/">阅读笔记</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>VMware虚拟机的使用总结</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-14T11:36:17.000Z"><a href="/2016/05/14/VMware虚拟机的安装与使用总结/">2016-05-14</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/05/04/自品牌也应该有的信念：如果不能成为第一，一开始就不要碰/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-04T11:43:29.000Z">2016-05-04</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                自品牌也应该有的信念：如果不能成为第一，一开始就不要碰
-            </a>
+            <a href="/tags/VMware/" class="chip teal darken-1">VMware</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#VMware简介"><span class="section table-of-contents-text">VMware简介</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#新建一个虚拟机的向导步骤"><span class="section table-of-contents-text">新建一个虚拟机的向导步骤</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#修改虚拟机硬件设置"><span class="section table-of-contents-text">修改虚拟机硬件设置</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#VMware使用技巧"><span class="section table-of-contents-text">VMware使用技巧</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#虚拟机快照"><span class="section table-of-contents-text">虚拟机快照</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#克隆"><span class="section table-of-contents-text">克隆</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="VMware简介"><a href="#VMware简介" class="headerlink" title="VMware简介"></a>VMware简介</h1><p>VMware主要特点：</p>
+<ol>
+<li>在一台PC上运行多个系统</li>
+<li>本机系统可以与虚拟机系统网络通信</li>
+<li>可以设定并且随时修改虚拟机操作系统的硬件配置</li>
+</ol>
+<p>VMware安装：下一步下一步即可</p>
+<h1 id="新建一个虚拟机的向导步骤"><a href="#新建一个虚拟机的向导步骤" class="headerlink" title="新建一个虚拟机的向导步骤"></a>新建一个虚拟机的向导步骤</h1><ol>
+<li>新建虚拟机</li>
+<li>选择典型安装</li>
+<li>安装来源选择以后安装操作系统<ul>
+<li>光盘安装，系统刻成光盘了，比较麻烦；</li>
+<li>安装镜像文件，linux的镜像文件是从官方网站提前免费下载的，如果选这个下一步之后所有安装linux的过程都不需要你参与了，而且默认装的是最小化系统，；</li>
+<li>创建一个空白硬盘，以后再安装操作系统，可以自己配置硬件。</li>
+</ul>
+</li>
+<li>选择一个将要安装的系统，选linux，选择linux版本，linux版本众多，如果没有选择一个内核版本即可</li>
+<li>给新建的虚拟机起一个名字，与其他虚拟机区分开；给虚拟机选择一个文件保存的位置目录，不要选择C盘就可以，避免占用C盘空间，今后不需要这个虚拟机时，直接删除这个目录就可以。(编辑→首选项 中可以更改默认位置)</li>
+<li>指定磁盘大小。默认是20GB，足够了，虚拟机会根据你的使用情况分配磁盘，不会一次性分配20GB，这里的20GB指，从linux内查看磁盘大小为20GB</li>
+<li>完成</li>
+</ol>
+<h1 id="修改虚拟机硬件设置"><a href="#修改虚拟机硬件设置" class="headerlink" title="修改虚拟机硬件设置"></a>修改虚拟机硬件设置</h1><p><code>选中虚拟机→虚拟机→设置</code>或者点击<code>编辑虚拟机设置</code></p>
+<ul>
+<li>内存：注意虚拟机的内存不能超过真实机的一半。对CentOs以上的系统来讲，要想看到图形界面，内存的最低要求是628M</li>
+<li>处理器：如果真实机有多个处理器，可以选择处理器数量；处理器核数也可以根据真实机的核数选择</li>
+<li>硬盘：可以选择硬盘后点击<code>添加</code>下一步下一步添加多块硬盘</li>
+<li>光驱CD/DVD：右边连接设置选择<code>使用ISO映像文件</code>然后选择 下载的系统ISO镜像目录(如果有两个ISO镜像，选择DVD1保存了主体数据，DVD2保存了一些安装包)，此步相当于把光盘放进光驱；设备状态中的<code>已连接</code>没有打勾，表示光驱没有接电源，即光盘放进光驱里也不会运行，启动虚拟机后，如果发现光驱无法读取，可以检查<code>已连接</code>是否打勾</li>
+<li>软盘：可以删除，省得启动时还会检测拖慢启动速度，像虚拟打印机、声卡都可以删掉</li>
+<li>网络适配器：网络连接如下方式可选<ul>
+<li>桥接模式</li>
+<li>NAT模式</li>
+<li>Host-only模式</li>
+</ul>
+</li>
+</ul>
+<h1 id="VMware使用技巧"><a href="#VMware使用技巧" class="headerlink" title="VMware使用技巧"></a>VMware使用技巧</h1><h2 id="虚拟机快照"><a href="#虚拟机快照" class="headerlink" title="虚拟机快照"></a>虚拟机快照</h2><p>拍摄此虚拟机快照<code>小时钟</code>：把虚拟机当前状态保存下来，以后出现了问题可以恢复到此处，不需要重装系统；或者你不想启动虚拟机花费时间，可以在启动后创建一个快照，以后开机直接让VMware读取快照，就可以很快到开机后的状态；注意快照会占用硬盘资源</p>
+<ul>
+<li>名称：比如<code>初始安装的状态</code></li>
+<li>描述：描述下这个状态</li>
+</ul>
+<p>恢复快照<code>小扳手</code>：选中快照，点击<code>转到</code>就可恢复</p>
+<p>注意：真正的服务器中没有快照，工作时尽量减少误操作</p>
+<h2 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h2><p>说明：克隆出来一个和当前虚拟机一样的虚拟机，建立集群时很方便；好处是，克隆机并不像创建的虚拟机一样占用那么大的空间，而是克隆机实际用了多少空间就会占用多少空间，克隆机不是一个完整的计算机，可能只有几十兆，于是有了多台计算机，又占用的资源少</p>
+<p>注意：克隆机只是真实机的镜像，如果删掉了原始机，克隆机不能使用了；克隆机删除，不影响原始机使用</p>
+<p><code>虚拟机→管理→克隆</code>：设置向导</p>
+<ol>
+<li>选择克隆源<ul>
+<li>虚拟机当前状态</li>
+<li>某个快照</li>
+</ul>
+</li>
+<li>克隆类型<ul>
+<li>链接克隆：克隆机占的资源很少(推荐这个)</li>
+<li>完整克隆：相当于复制一个原始机，两个计算机占用同样的大小</li>
+</ul>
+</li>
+<li>克隆机起名字，选择保存的位置，与原始机的目录放一起</li>
+</ol>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/14/VMware虚拟机的安装与使用总结/" data-title="VMware虚拟机的使用总结" data-url="http://shengdeng.github.io/2016/05/14/VMware虚拟机的安装与使用总结/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>

@@ -171,32 +171,8 @@
             
 
             <li class="collapse-level-0" collapse-level="0">
-                <a class="no-padding" href="/categories/专业英语/">
-                    专业英语 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/专业英语/单词/">
-                    单词 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
-                    词汇辨析 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-0" collapse-level="0">
                 <a class="no-padding" href="/categories/我的技术栈/">
-                    我的技术栈 <span class="right">5</span></a>
+                    我的技术栈 <span class="right">6</span></a>
                 </a>
             </li>
 
@@ -227,6 +203,22 @@
         
 
             <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/我的技术栈/Linux/">
+                    Linux <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/我的技术栈/Linux/安装笔记/">
+                    安装笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
                 <a class="no-padding" href="/categories/我的技术栈/Kafka/">
                     Kafka <span class="right">1</span></a>
                 </a>
@@ -237,6 +229,30 @@
             <li class="collapse-level-2" collapse-level="2">
                 <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
                     官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/专业英语/">
+                    专业英语 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/专业英语/单词/">
+                    单词 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
+                    词汇辨析 <span class="right">1</span></a>
                 </a>
             </li>
 
@@ -339,7 +355,8 @@
 <p><strong>2013年6月</strong>，Spark项目正式交给Apache基金会，目前已成为顶级项目。从此，Spark飞速发张。</p>
 <h1 id="伯克利数据分析堆栈"><a href="#伯克利数据分析堆栈" class="headerlink" title="伯克利数据分析堆栈"></a>伯克利数据分析堆栈</h1><p>BDAS的所有组件如下图(2016年版，如<a href="https://amplab.cs.berkeley.edu/software/" target="_blank" rel="external">官网</a>有更新欢迎留言告诉我)。其中，蓝色和绿色的模块所代表的组件完全开源可用，点击链接可进入对应项目的主页下载或了解更多。<br><img src="http://7xtorv.com2.z0.glb.clouddn.com/%E6%8D%95%E8%8E%B7.PNG" alt=""></p>
 <p><strong>BDAS主要包括三层：存储层、资源管理层和数据处理层</strong>。AMP自己的项目中除了处理层的Spark,还有管理层的Mesos，存储层的Tachyon；考虑到Hadoop生态圈技术在某些情况下数据处理的会更好，作为Spark的互补技术，Spark对Hadoop支持且能够和Hadoop整合在一起。因此，BDAS表示的Spark生态系统还包括Hadoop的技术。下面详谈各个模块的细节。</p>
-<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2><h2 id="资源管理层"><a href="#资源管理层" class="headerlink" title="资源管理层"></a>资源管理层</h2><p>Mesos是资源管理层的，使多框架可以分享同一个集群的资源。这里你只要有一个集群就可以了，而不需要有很多个，能够在多个框架上用。好处是什么？资源节省效率更高，并且更容易共享数据。</p>
+<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2><p>Tachyon是一个基于内存的文件系统，在一个集群中有多个框架，这些框架的数据可能需要共享，如果把数据直接放在内存中共享时更快。Tachyon是华人弄得项目已经开源。</p>
+<h2 id="资源管理层"><a href="#资源管理层" class="headerlink" title="资源管理层"></a>资源管理层</h2><p>Mesos是资源管理层的，使多框架可以分享同一个集群的资源。这里你只要有一个集群就可以了，而不需要有很多个，能够在多个框架上用。好处是什么？资源节省效率更高，并且更容易共享数据。</p>
 <h2 id="处理层"><a href="#处理层" class="headerlink" title="处理层"></a>处理层</h2><p>Spark core是执行引擎，它有两个特点，它可以容错，内存存储效率也很高。在时效节点上它可以对数据进行重构，并且它有更强大的模型，也更快，比Hadoop MapReduce快上100倍。对于同样一个应用来说它写的代码量要比Hadoop MapReduce少2到5倍，并且它也支持互动计算。也就是说它对内存的利用效率更高，能更快得到响应，并且也可以通过内存共享数据。在Spark Core上面有很多个框架：</p>
 <h3 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h3><p>用Spark的功能做快速的计算。流式计算更适用于实时计算的场景。我们可以用它处理不同节点的计算，所有的这些特性实际上在其他类似Spark Streaming技术上不能实现的。这里我们支持批量流的计算。</p>
 <h3 id="MLlib"><a href="#MLlib" class="headerlink" title="MLlib"></a>MLlib</h3><p>用于机器学习的高质量库</p>
