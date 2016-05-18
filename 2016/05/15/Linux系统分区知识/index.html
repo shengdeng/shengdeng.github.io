@@ -7,7 +7,7 @@
 
     
 
-    <title>Archives: 2016/5 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
+    <title>Linux系统分区知识 | 邓晟Stefan的技术专栏：大数据、专业英语、读书笔记、生活启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Linux系统分区知识"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -297,88 +297,157 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
-        <span class="breadcrumb">Current page(Archives)</span>
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/">Linux</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/安装笔记/">安装笔记</a>
+
+
         
 
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux系统分区知识</h1>
+    
 
 
-    <ul class="collapsible mt-0" data-collapsible="accordion">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-15T03:33:24.000Z"><a href="/2016/05/15/Linux系统分区知识/">2016-05-15</a></time>
+
+            
+    <div class="tags-row">
         
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
-            <li>
-                <div class="collapsible-header active">
-                    <i class="fa fa-archive"></i>2016
-                </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        
-                            <a href="/2016/05/15/Linux系统分区知识/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-15T03:33:24.000Z">2016-05-15</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Linux系统分区知识
-                            </a>
-                        
-                            <a href="/2016/05/14/VMware虚拟机的安装与使用总结/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-14T11:36:17.000Z">2016-05-14</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                VMware虚拟机的使用总结
-                            </a>
-                        
-                            <a href="/2016/05/13/Spark与MapReduce对比测评/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-13T01:12:30.000Z">2016-05-13</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Spark与MapReduce对比测评
-                            </a>
-                        
-                            <a href="/2016/05/12/前沿技术追踪：伯克利数据分析堆栈/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-12T02:37:56.000Z">2016-05-12</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                前沿追踪：伯克利数据分析堆栈
-                            </a>
-                        
-                            <a href="/2016/05/10/Spark四大特性/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-10T03:51:11.000Z">2016-05-10</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Spark四大特性
-                            </a>
-                        
-                            <a href="/2016/05/06/Kafka官方文档中文版：第1章GettingStarted/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-06T12:55:36.000Z">2016-05-06</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Kafka官方文档中文版：第1章 Getting Started
-                            </a>
-                        
-                            <a href="/2016/05/06/Spark编程指南中文版/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-06T12:24:58.000Z">2016-05-06</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Spark编程指南中文版
-                            </a>
-                        
-                            <a href="/2016/05/06/Guide、Manual和Tutorial的区别/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-06T07:57:53.000Z">2016-05-06</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                Guide、Manual和Tutorials的区别
-                            </a>
-                        
-                            <a href="/2016/05/04/自品牌也应该有的信念：如果不能成为第一，一开始就不要碰/" class="collection-item indigo-text text-darken-1">
-                                <time datetime="2016-05-04T11:43:29.000Z">2016-05-04</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                自品牌也应该有的信念：如果不能成为第一，一开始就不要碰
-                            </a>
-                        
-                    </div>
-                </div>
-            </li>
-        
-    </ul>
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-分区"><span class="section table-of-contents-text">1. 分区</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-磁盘分区"><span class="section table-of-contents-text">1.1 磁盘分区</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-分区类型"><span class="section table-of-contents-text">1.2 分区类型</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-格式化"><span class="section table-of-contents-text">2. 格式化</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-设备文件名（系统自动识别）"><span class="section table-of-contents-text">3 设备文件名（系统自动识别）</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-1-硬盘设备文件名"><span class="section table-of-contents-text">3.1 硬盘设备文件名</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-2-分区设备文件名"><span class="section table-of-contents-text">3.2.分区设备文件名</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="1-分区"><a href="#1-分区" class="headerlink" title="1. 分区"></a>1. 分区</h1><h2 id="1-1-磁盘分区"><a href="#1-1-磁盘分区" class="headerlink" title="1.1 磁盘分区"></a>1.1 磁盘分区</h2><p>系统分区也即磁盘分区，是使用分区编辑器(partition editor)在磁盘上划分几个逻辑部分。磁盘划分成数个分区(Patition)以后，不同类的目录与文件可以存储进不同的分区。</p>
+<p>如果不分区会怎样？就像橱柜中没有分小隔间，所有东西都堆在一起，存放和取东西都十分不方便。同样的，磁盘数据量很大，不分区则读取数据和写入数据的效率会大大降低。例如，C盘放操作系统，D盘放娱乐资料。</p>
+<h2 id="1-2-分区类型"><a href="#1-2-分区类型" class="headerlink" title="1.2 分区类型"></a>1.2 分区类型</h2><ul>
+<li>主分区：最多只有4个</li>
+<li>扩展分区：主分区有限，可以在主分区之上建立扩展分区<ul>
+<li>一块硬盘上最多只能有1个</li>
+<li>一块磁盘上，主分区＋扩展分区：总个数最多4个</li>
+<li>扩展分区本身不能写入数据，也不能格式化；扩展分区唯一的作用就是包含更多逻辑分区。</li>
+</ul>
+</li>
+<li>逻辑分区：可以正确的读写数据、格式化</li>
+</ul>
+<p>以上限制不是linux系统的限制，而是磁盘的限制，只要硬盘的结构不发生变化这种限制依然存在。</p>
+<h1 id="2-格式化"><a href="#2-格式化" class="headerlink" title="2. 格式化"></a>2. 格式化</h1><p>硬盘正确分区之后还不能写入数据，还需要格式化才能读写数据。</p>
+<p>格式化指的是高级格式化(还有低级格式化是硬盘的操作，不是操作系统的操作，不研究)，是系统的操作，又称逻辑格式化。</p>
+<ul>
+<li>格式化的目的是为了在硬盘中写入文件系统。<strong>两个工作：</strong><ul>
+<li>格式化最主要的工作就是按照文件系统的规则将硬盘<strong>分割成等大小的数据块</strong>，数据块叫做Block。可以理解成柜子中加入隔断，但是隔断布局有一定的规则。EXT4的格式化是将分区变成一个一个等大小的数据块，默认的标准大小是4KB，假设一个数据是10KB，会拆成三个数据块，最后一个数据块内容有2KB但本身还是4KB，剩余的2KB空间不能再被占用；磁盘也不是连续保存这三个数据块的，而是分散在不同位置分别保存着三个数据块，所以windows中有磁盘碎片整理工具，原理就是保存文件的不同数据块尽量放在一起，这样更加利于数据的读取。</li>
+<li><strong>建立一个inode列表</strong>。当用户需要读取文件时，根据表来查找文件放在那些数据块中。文件的编号成为i节点号(inode)，通过i节点号来找到文件的元数据信息，从而得知文件保存在哪几个数据块中，然后取出这些数据块，拼凑起来成为完整文件。</li>
+</ul>
+</li>
+<li>文件系统<ul>
+<li>windows可以识别的有FAT16、FAT32、NTFS</li>
+<li>linux可以识别的有EXT2、EXT3、EXT4；新版本CentOs中默认使用ETX4<h1 id="3-设备文件名（系统自动识别）"><a href="#3-设备文件名（系统自动识别）" class="headerlink" title="3 设备文件名（系统自动识别）"></a>3 设备文件名（系统自动识别）</h1><h2 id="3-1-硬盘设备文件名"><a href="#3-1-硬盘设备文件名" class="headerlink" title="3.1 硬盘设备文件名"></a>3.1 硬盘设备文件名</h2>如果是windows，硬盘进行了分区→格式化→分配盘符→可以直接使用了。因为windows有完善的图形界面，可以通过图形界面看到分区在哪，所以可以直接分配盘符。</li>
+</ul>
+</li>
+</ul>
+<p>但是linux最早出现的时候没有图形界面，要让系统知道给哪个分区分配盘符，就必须先给每个硬件设备起一个设备文件名。<br>分区→格式化→给设备起文件名→挂载（分配盘符）→可以使用了。</p>
+<p>注意：在linux中，所有硬件设备都是文件，比如 /dev下的文件都是设备文件名；<br>这些设备文件名是固定的，系统自动检测的，我们能够看懂就行。</p>
+<table>
+<thead>
+<tr>
+<th>硬件</th>
+<th>设备文件名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDE接口的硬盘</td>
+<td>/dev/hd[a-d]</td>
+</tr>
+<tr>
+<td>SCSI/SATA/USB接口的硬盘</td>
+<td>/dev/sd[a-p]</td>
+</tr>
+<tr>
+<td>光驱</td>
+<td>/dev/cdrom或/dev/sr0</td>
+</tr>
+<tr>
+<td>打印机（USB）</td>
+<td>/dev/usb/lp[0-15]</td>
+</tr>
+<tr>
+<td>鼠标</td>
+<td>/dev/mouse</td>
+</tr>
+</tbody>
+</table>
+<p>比如有一块硬盘就是sda，两块就是sda、sdb</p>
+<ul>
+<li>IDE硬盘最古老，理论的最高传输速度是133MB/s（基本淘汰）</li>
+<li>SCSI硬盘与IDE同时代，更加昂贵理论传输速度200MB/s；主要用在服务器上，因为贵（基本淘汰）</li>
+<li>SATA接口硬盘，小口的，现在使用最多，SATA三代理论传输速度可以达到500MB/s；目前不管服务器还是个人PC的硬盘接口一般都是SATA接口的硬盘（现在虚拟机模拟的接口也都是SATA接口硬盘）</li>
+</ul>
+<h2 id="3-2-分区设备文件名"><a href="#3-2-分区设备文件名" class="headerlink" title="3.2.分区设备文件名"></a>3.2.分区设备文件名</h2><p>硬盘有设备文件名，硬盘上的分区也要有设备文件名</p>
+<p>规则：在硬盘文件名之后加分区号即可</p>
+<ul>
+<li>/dev/sda1 : 表示SATA硬盘中的第一个分区</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/15/Linux系统分区知识/" data-title="Linux系统分区知识" data-url="http://shengdeng.github.io/2016/05/15/Linux系统分区知识/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
