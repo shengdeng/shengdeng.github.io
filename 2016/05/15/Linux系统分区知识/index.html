@@ -187,14 +187,6 @@
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
-                    学习笔记 <span class="right">3</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-2" collapse-level="2">
                 <a class="no-padding" href="/categories/我的技术栈/Spark/官网翻译/">
                     官网翻译 <span class="right">1</span></a>
                 </a>
@@ -202,17 +194,9 @@
 
         
 
-            <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/我的技术栈/Kafka/">
-                    Kafka <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
-                    官网翻译 <span class="right">1</span></a>
+                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
+                    学习笔记 <span class="right">3</span></a>
                 </a>
             </li>
 
@@ -229,6 +213,22 @@
             <li class="collapse-level-2" collapse-level="2">
                 <a class="no-padding" href="/categories/我的技术栈/Linux/安装笔记/">
                     安装笔记 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/我的技术栈/Kafka/">
+                    Kafka <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
                 </a>
             </li>
 
@@ -337,7 +337,7 @@
 
 
             <div class="toc pink-link-context hide-on-med-and-down">
-    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-分区"><span class="section table-of-contents-text">1. 分区</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-磁盘分区"><span class="section table-of-contents-text">1.1 磁盘分区</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-分区类型"><span class="section table-of-contents-text">1.2 分区类型</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-格式化"><span class="section table-of-contents-text">2. 格式化</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-设备文件名（系统自动识别）"><span class="section table-of-contents-text">3 设备文件名（系统自动识别）</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-1-硬盘设备文件名"><span class="section table-of-contents-text">3.1 硬盘设备文件名</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-2-分区设备文件名"><span class="section table-of-contents-text">3.2.分区设备文件名</span></a></li></ol></li></ol>
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-分区"><span class="section table-of-contents-text">1. 分区</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-磁盘分区"><span class="section table-of-contents-text">1.1 磁盘分区</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-分区类型"><span class="section table-of-contents-text">1.2 分区类型</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-格式化"><span class="section table-of-contents-text">2. 格式化</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-设备文件名（系统自动识别）"><span class="section table-of-contents-text">3 设备文件名（系统自动识别）</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-1-硬盘设备文件名"><span class="section table-of-contents-text">3.1 硬盘设备文件名</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-2-分区文件名"><span class="section table-of-contents-text">3.2.分区文件名</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#4-挂载"><span class="section table-of-contents-text">4 挂载</span></a></li></ol>
 </div>
 
 
@@ -408,11 +408,24 @@
 <li>SCSI硬盘与IDE同时代，更加昂贵理论传输速度200MB/s；主要用在服务器上，因为贵（基本淘汰）</li>
 <li>SATA接口硬盘，小口的，现在使用最多，SATA三代理论传输速度可以达到500MB/s；目前不管服务器还是个人PC的硬盘接口一般都是SATA接口的硬盘（现在虚拟机模拟的接口也都是SATA接口硬盘）</li>
 </ul>
-<h2 id="3-2-分区设备文件名"><a href="#3-2-分区设备文件名" class="headerlink" title="3.2.分区设备文件名"></a>3.2.分区设备文件名</h2><p>硬盘有设备文件名，硬盘上的分区也要有设备文件名</p>
+<h2 id="3-2-分区文件名"><a href="#3-2-分区文件名" class="headerlink" title="3.2.分区文件名"></a>3.2.分区文件名</h2><p>硬盘有设备文件名，硬盘上的分区也要有设备文件名</p>
 <p>规则：在硬盘文件名之后加分区号即可</p>
 <ul>
 <li>/dev/sda1 : 表示SATA硬盘中的第一个分区</li>
+<li>分区方式一，在sda这块硬盘上：<ul>
+<li>分了三个主分区文件命名为sda1、sda2、sda3</li>
+<li>一个扩展分区文件命名sda4；里面有两个逻辑分区文件命名为sda5、sda6</li>
 </ul>
+</li>
+<li>分区方式二（更常用），在sdb这个硬盘上：<ul>
+<li>一个主分区，对应文件命名为sdb1</li>
+<li>一个扩展分区，对应文件命名为sdb2；里面又分多个逻辑分区，分别命名为sdb5、sdb6、sdb7。<strong>注意：逻辑分区是从sdb5开始命名的，因为sdb1\2\3\4只能给主分区或者扩展分区使用，就算硬盘上没有分够四个分区，逻辑分区也不能用sdb1\2\3\4</strong>。所以sdb5一定是第一个逻辑分区。</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/partition.PNG" alt=""></p>
+<p>以上过程是系统自动识别，我们需要明白其命名规则就行。</p>
+<h1 id="4-挂载"><a href="#4-挂载" class="headerlink" title="4 挂载"></a>4 挂载</h1><p>把给分区分配盘符的过程称为挂载，</p>
 
             </div>
         </div>
