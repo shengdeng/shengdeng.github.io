@@ -7,7 +7,7 @@
 
     
 
-    <title>我的技术栈 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>在VMware上安装Liunx CentOs系统 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="在VMware上安装Liunx CentOs系统"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -297,72 +297,189 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">Current page(Categories)</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/">Linux</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/安装笔记/">安装笔记</a>
+
 
         
-            <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>在VMware上安装Liunx CentOs系统</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-05-25T11:14:58.000Z"><a href="/2016/05/25/在VMware上安装Liunx系统/">2016-05-25</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/05/25/在VMware上安装Liunx系统/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-25T11:14:58.000Z">2016-05-25</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                在VMware上安装Liunx CentOs系统
-            </a>
-        
-            <a href="/2016/05/15/Linux系统分区知识/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-15T03:33:24.000Z">2016-05-15</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Linux系统分区知识
-            </a>
-        
-            <a href="/2016/05/14/VMware虚拟机的安装与使用总结/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-14T11:36:17.000Z">2016-05-14</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                VMware虚拟机的使用总结
-            </a>
-        
-            <a href="/2016/05/13/Spark与MapReduce对比测评/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-13T01:12:30.000Z">2016-05-13</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark与MapReduce对比测评
-            </a>
-        
-            <a href="/2016/05/12/前沿技术追踪：伯克利数据分析堆栈/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-12T02:37:56.000Z">2016-05-12</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                前沿追踪：伯克利数据分析堆栈
-            </a>
-        
-            <a href="/2016/05/10/Spark四大特性/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-10T03:51:11.000Z">2016-05-10</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark四大特性
-            </a>
-        
-            <a href="/2016/05/06/Kafka官方文档中文版：第1章GettingStarted/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T12:55:36.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Kafka官方文档中文版：第1章 Getting Started
-            </a>
-        
-            <a href="/2016/05/06/Spark编程指南中文版/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T12:24:58.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark编程指南中文版
-            </a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-Linux系统下载"><span class="section table-of-contents-text">1. Linux系统下载</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-安装"><span class="section table-of-contents-text">2. 安装</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#2-1-硬件设置"><span class="section table-of-contents-text">2.1 硬件设置</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#2-2-界面安装"><span class="section table-of-contents-text">2.2 界面安装</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-安装日志"><span class="section table-of-contents-text">3. 安装日志</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="1-Linux系统下载"><a href="#1-Linux系统下载" class="headerlink" title="1. Linux系统下载"></a>1. Linux系统下载</h1><p>CentOs官网下载，免费</p>
+<h1 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h1><h2 id="2-1-硬件设置"><a href="#2-1-硬件设置" class="headerlink" title="2.1 硬件设置"></a>2.1 硬件设置</h2><ul>
+<li>内存至少628Mb,少于828Mb时linux只能使用字符界面安装，不再使用图形界面；</li>
+<li>CD/DVD光驱选择使用ISO镜像，选在下载好的ISO包</li>
+<li>网卡设置</li>
+<li>打开电源：点击打开电源，相当于开机，才会有界面</li>
+<li>挂起 功能：把虚拟机当前状态卡住；只要点恢复就可以恢复过来。</li>
+</ul>
+<h2 id="2-2-界面安装"><a href="#2-2-界面安装" class="headerlink" title="2.2 界面安装"></a>2.2 界面安装</h2><ol>
+<li>迅速的按下F2，进去BIOS界面。计算机默认通过硬盘启动，需要改成通过<strong>光盘启动</strong>。<ul>
+<li>主板的操作系统就是BIOS系统，用于计算机基本信息设置，比如主板信息、系统时间</li>
+<li>选择Boot菜单，将CD-ROM Drive移动到第一个</li>
+<li>VMware中不需要此步操作，会智能的选择光盘启动。</li>
+<li>真实机在安装时需要调整光盘启动，安装完后调整回硬盘启动。否则每次都从光盘重新安装。</li>
+</ul>
+</li>
+<li><strong>光盘启动界面</strong>有五个选项：<ul>
+<li>安装或者升级现有操作系统（选这个！）</li>
+<li>安装操作系统，且使用基本显卡驱动</li>
+<li>修复已安装的系统：进入系统修复模式</li>
+<li>退出安装，并从硬盘启动（已安装了系统，又从光盘进去了）</li>
+<li>内存检测</li>
+</ul>
+</li>
+<li>选择第一个后，Linux开始进行<strong>自检</strong>，内存大于628Mb,才能进入图形安装界面（更简单可靠），否则字符安装</li>
+<li>弹出Disc Found 询问是否需要检测光盘。下载好的光盘无需检测，选skip</li>
+<li>自动检测显卡和内存，只要支持图形安装的要求，就可以进入图形安装欢迎界面<ul>
+<li>ctrl+alt+enter，全屏显示</li>
+</ul>
+</li>
+<li>安装语言：选简体中文（如果选英文，那么后面的安装包一定要选择中文字体，否则要手工安装中文字体）</li>
+<li>选键盘：美式键盘</li>
+<li>选择基本存储；提示你，可能会把硬盘中数据清空，选择是</li>
+<li>起一个主机名（先用默认的，Linux对主机名并不敏感；在局域网内，windows系统IP地址不能重，主机名也不能重，否则两台相同主机名的计算机不能通信）</li>
+<li>选择时区：默认上海</li>
+<li>root用户设置密码</li>
+<li><p>询问<strong>如何分区、挂载    </strong></p>
+<ul>
+<li>选择：创建自定义布局<ul>
+<li>有一块sda(/dev/sda)硬盘    </li>
+</ul>
+</li>
+<li>创建→标准分区<ul>
+<li>RAID分区、LVM是高级文件系统的分区</li>
+</ul>
+</li>
+<li>挂载点：<strong>/boot</strong>（任何目录都可以，建议先分/boot分区，然后剩余空间都给/分区）→文件系统类型：ext4→大小：200Mb<ul>
+<li>/boot分区会默认被分为sda1,因为/boot用于系统启动，所以他一定会放在硬盘最开始的部分，如果强制改成sda2，即不在硬盘开始部分，可能会造成系统无法启动</li>
+<li>sda1、sda2这些分区号是系统自动分配的，看懂就行</li>
+</ul>
+</li>
+<li>创建→标准分区→挂载点：不选→文件系统类型：<strong>swap</strong>→大小：1Gb<ul>
+<li>swap分区在文件系统中选；没有挂载点目录，这部分空间，不是给用户用的，是给系统内核直接调用的</li>
+<li>swap其实对系统性能没多大影响，1Gb差不多了</li>
+</ul>
+</li>
+<li>创建→标准分区→挂载点：<strong>/home</strong>→ext4→2Gb<ul>
+<li>服务器如果用作文件服务器，允许用户上传下载数据到/home中，单独分区，可以保证数据的安全性</li>
+<li>其他的目录分区也<strong>不是必须的</strong>，根据使用用途自定义</li>
+</ul>
+</li>
+<li>创建→标准分区→挂载点：<strong>/</strong>→ ext4→使用全部可用空间<ul>
+<li>如果已经有了三个分区，当分第四个分区的时候，<strong>第四个分区sda4默认为扩展分区</strong>，这样你就可以分更多的逻辑分区。</li>
+<li>前面已经有sda1/2/3那么根分区就会变成sda5分区，第一个逻辑分区</li>
+</ul>
+</li>
+</ul>
+<p>以上为基本分区，安装好操作系统；还有高级分区，以后讨论。</p>
+</li>
+<li><p><strong>格式化</strong>（目的：写入文件系统）</p>
+</li>
+<li>询问将引导程序安装在哪里：用默认，直接下一步<ul>
+<li>引导程序是什么？</li>
+</ul>
+</li>
+<li><p><strong>询问需要安装哪些软件</strong>：选择basic server</p>
+<ul>
+<li>desktop：桌面，即图形界面（个人用户推荐）</li>
+<li>minimal desktop：最小化桌面</li>
+<li>minimal：最小化（服务器推荐，没有图形界面，linux占用资源更少，更多的空间给服务使用，服务越少，报错被攻击的可能性也越低；服务器的要求是稳定和安全；但是很多命名不会安装，要自己安装软件）</li>
+<li>basic server：安装基本服务器的软件包（运维学习者推荐，常见的工具都会装好）</li>
+<li>database server：安装数据库服务器的软件包</li>
+<li>web server：安装网页服务器的软件包</li>
+<li>virtual host ：虚拟主机</li>
+<li>software development workstation : 软件开发工作站</li>
+</ul>
+<p>如果对linux非常熟悉，自己能够配置软件包环境，可以不用以上集成的软件包安装，可以自定义选择需要安装的软件，则会出现更加详细的linux软件选择。初学者不建议自定义软件安装。</p>
+<p>如果第6步选择了英文安装，那么这里自定义中，在语言支持中勾选中文支持，否则之后要手工安装中文字体</p>
+</li>
+<li>软件包全部安装完成后，选择重新引导重启系统。注意：真实机再次重启后进入BIOS调整硬盘启动优先</li>
+<li>启动完成，进入纯字符界面。安装完成</li>
+<li>输入用户名root，输入密码（不会显示）</li>
+</ol>
+<h2 id="3-安装日志"><a href="#3-安装日志" class="headerlink" title="3. 安装日志"></a>3. 安装日志</h2><ul>
+<li><strong>/root</strong> ： root用户的家目录，即每个用户的初始登陆位置 ~</li>
+<li><strong>/root/install.log</strong> ：系统安装时，装了哪些软件包及其版本信息</li>
+<li><strong>/root/install.log.syslog</strong> ：安装过程中留下的事件记录</li>
+<li><strong>/root/anaconda-ks.cfg</strong> ：以Kickstart配置文件的格式记录安装过程中设置的选项信息<ul>
+<li>kickstart指的是linux同时<strong>安装好几千台服务器时</strong>，如果完全手工安装很耗时，linux准备了<strong>无人值守安装</strong>，即不需要用户参与可以自动安装，安装过程依赖一个已经安装好的服务器，某个服务器作为模板，其他服务器跟它装的一样。依赖的配置文件就是 anaconda-ks.cfg</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/05/25/在VMware上安装Liunx系统/" data-title="在VMware上安装Liunx CentOs系统" data-url="http://shengdeng.github.io/2016/05/25/在VMware上安装Liunx系统/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
