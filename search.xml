@@ -99,7 +99,7 @@
 <li>启动完成，进入纯字符界面。安装完成</li>
 <li>输入用户名root，输入密码（不会显示）</li>
 </ol>
-<h2 id="3-安装日志"><a href="#3-安装日志" class="headerlink" title="3. 安装日志"></a>3. 安装日志</h2><ul>
+<h1 id="3-安装日志"><a href="#3-安装日志" class="headerlink" title="3. 安装日志"></a>3. 安装日志</h1><ul>
 <li><strong>/root</strong> ： root用户的家目录，即每个用户的初始登陆位置 ~</li>
 <li><strong>/root/install.log</strong> ：系统安装时，装了哪些软件包及其版本信息</li>
 <li><strong>/root/install.log.syslog</strong> ：安装过程中留下的事件记录</li>
