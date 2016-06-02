@@ -9,6 +9,9 @@
       <content type="html"><![CDATA[<p>本文给出列出了<a href="https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem" target="_blank" rel="external">kafka官方wiki文档</a>中声称已经集成了kafka的各种工具，组成了kafka的生态系统。但是这些工具集成kafka效果如何本文未作评估。</p>
 <p><em>官网最后更新：2016年4月</em></p>
 <a id="more"></a>
+<h1 id="补充-Kafka-Streams"><a href="#补充-Kafka-Streams" class="headerlink" title="补充:Kafka Streams"></a>补充:Kafka Streams</h1><p><em>更新：2016年6月2日</em></p>
+<p>Kafka Streams在几个月前由<a href="http://www.confluent.io/" target="_blank" rel="external">Confluent Platform</a>首先在其平台的技术预览中行提出，目前已经<strong>在Apache Kafka 0.10.0.0上可用</strong>了。</p>
+<p>Kafka Streams其实是一套类库，它使得Apache Kafka可以<strong>拥有流处理的能力</strong>。Kafka Streams包含了一整套描述常见流操作的高级语言API（比如 joining, filtering以及aggregating records），这使得开发者可以快速开发强大的流处理应用程序。Kafka Streams提供了状态和无状态的处理能力，并且可以部署在很多系统之上： Kafka Streams应用程序可以运行在YARN、Mesos、Docker containers上，甚至直接嵌入到现有的Java应用程序中。</p>
 <h1 id="1-数据导入导出工具-Kafka-Connect"><a href="#1-数据导入导出工具-Kafka-Connect" class="headerlink" title="1.数据导入导出工具(Kafka Connect)"></a>1.数据导入导出工具(Kafka Connect)</h1><p>Kafka Connect是Kafka 0.9+的一个自带工具，通过connectors可以将大数据从其它系统导入到Kafka中，也可以从Kafka中导出到其它系统。 详情可以参考<a href="http://docs.confluent.io/2.0.0/connect/index.html" target="_blank" rel="external">Kafka Connect的官方文档</a>和我的文章。</p>
 <h1 id="2-商业平台的kafka集成包-Distributions-amp-Packaging"><a href="#2-商业平台的kafka集成包-Distributions-amp-Packaging" class="headerlink" title="2.商业平台的kafka集成包(Distributions &amp; Packaging)"></a>2.商业平台的kafka集成包(Distributions &amp; Packaging)</h1><ul>
 <li><strong>Confluent Platform</strong> 是首个以kafka为基础的流式数据平台- <a href="http://confluent.io/product/" target="_blank" rel="external">http://confluent.io/product/</a>. Downloads - <a href="http://confluent.io/downloads/" target="_blank" rel="external">http://confluent.io/downloads/</a>.</li>
@@ -32,9 +35,9 @@
 <li><strong>Kafka Hadoop Loader</strong> A different take on Hadoop loading functionality from what is included in the main distribution.</li>
 <li><strong>Flume</strong> Contains Kafka Source (consumer) and Sink (producer)</li>
 <li><strong>KaBoom</strong> A high-performance HDFS data loader</li>
-<li><h1 id="5-与搜索查询系统集成-Search-and-Query"><a href="#5-与搜索查询系统集成-Search-and-Query" class="headerlink" title="5.与搜索查询系统集成(Search and Query)"></a>5.与搜索查询系统集成(Search and Query)</h1></li>
-<li><p><strong>ElasticSearch</strong> - This project, Kafka Standalone Consumer will read the messages from Kafka, processes and index them in ElasticSearch. There are also several Kafka Connect connectors for ElasticSeach.<br><strong>Presto</strong> The Presto Kafka connector allows you to query Kafka in SQL using Presto.<br><strong>Hive</strong> Hive SerDe that allows querying Kafka (Avro only for now) using Hive SQL</p>
-</li>
+</ul>
+<h1 id="5-与搜索查询系统集成-Search-and-Query"><a href="#5-与搜索查询系统集成-Search-and-Query" class="headerlink" title="5.与搜索查询系统集成(Search and Query)"></a>5.与搜索查询系统集成(Search and Query)</h1><ul>
+<li><strong>ElasticSearch</strong> - This project, Kafka Standalone Consumer will read the messages from Kafka, processes and index them in ElasticSearch. There are also several Kafka Connect connectors for ElasticSeach.<br><strong>Presto</strong> The Presto Kafka connector allows you to query Kafka in SQL using Presto.<br><strong>Hive</strong> Hive SerDe that allows querying Kafka (Avro only for now) using Hive SQL</li>
 </ul>
 <h1 id="6-kafka的监控管理-Management-Consoles"><a href="#6-kafka的监控管理-Management-Consoles" class="headerlink" title="6.kafka的监控管理(Management Consoles)"></a>6.kafka的监控管理(Management Consoles)</h1><ul>
 <li><strong>Kafka Manager</strong> - A tool for managing Apache Kafka.</li>
