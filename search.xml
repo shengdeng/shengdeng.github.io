@@ -10,7 +10,7 @@
 <p><em>官网最后更新：2016年4月</em></p>
 <a id="more"></a>
 <hr>
-<h1 id="补充-Kafka-Streams"><a href="#补充-Kafka-Streams" class="headerlink" title="补充:Kafka Streams"></a>补充:Kafka Streams</h1><p><em>更新：2016年6月2日</em></p>
+<h1 id="0-Kafka-Streams"><a href="#0-Kafka-Streams" class="headerlink" title="0.Kafka Streams"></a>0.Kafka Streams</h1><p><em>更新：2016年6月2日</em></p>
 <p>Kafka Streams在几个月前由<a href="http://www.confluent.io/" target="_blank" rel="external">Confluent Platform</a>首先在其平台的技术预览中行提出，目前已经<strong>在Apache Kafka 0.10.0.0上可用</strong>了。</p>
 <p>Kafka Streams其实是一套类库，它使得Apache Kafka可以<strong>拥有流处理的能力</strong>。Kafka Streams包含了一整套描述常见流操作的高级语言API（比如 joining, filtering以及aggregating records），这使得开发者可以快速开发强大的流处理应用程序。Kafka Streams提供了状态和无状态的处理能力，并且可以部署在很多系统之上： Kafka Streams应用程序可以运行在YARN、Mesos、Docker containers上，甚至直接嵌入到现有的Java应用程序中。</p>
 <hr>
