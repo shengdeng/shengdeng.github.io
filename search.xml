@@ -4,10 +4,10 @@
   
     
     <entry>
-      <title><![CDATA[Kafka生态系统系统]]></title>
+      <title><![CDATA[Kafka生态系统]]></title>
       <url>http://shengdeng.github.io/2016/06/02/Kafka%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F%E7%B3%BB%E7%BB%9F/</url>
-      <content type="html"><![CDATA[<p>Here is a list of tools we have been told about that integrate with Kafka outside the main distribution. </p>
-<p>We haven’t tried them all, so they may not work!<br>Clients, of course, are listed separately here.</p>
+      <content type="html"><![CDATA[<p>本文给出列出了<a href="https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem" target="_blank" rel="external">kafka官方wiki文档</a>中声称已经集成了kafka的各种工具，组成了kafka的生态系统。但是这些工具集成kafka效果如何本文未作评估。</p>
+<p><em>官网最后更新：2016年4月</em><br><a id="more"></a></p>
 <h1 id="1-Kafka-Connect"><a href="#1-Kafka-Connect" class="headerlink" title="1.Kafka Connect"></a>1.Kafka Connect</h1><p>Kafka has a built-in framework called Kafka Connect for writing sources and sinks that either continuously ingest data into Kafka or continuously ingest data in Kafka into external systems. The connectors themselves for different applications or data systems are federated and maintained separately from the main code base. You can find a list of them here.</p>
 <h1 id="2-Distributions-amp-Packaging"><a href="#2-Distributions-amp-Packaging" class="headerlink" title="2.Distributions &amp; Packaging"></a>2.Distributions &amp; Packaging</h1><ul>
 <li>Confluent Platform - <a href="http://confluent.io/product/" target="_blank" rel="external">http://confluent.io/product/</a>. Downloads - <a href="http://confluent.io/downloads/" target="_blank" rel="external">http://confluent.io/downloads/</a>.</li>
@@ -16,12 +16,12 @@
 <li>IBM Message Hub - <a href="https://developer.ibm.com/messaging/message-hub/" target="_blank" rel="external">https://developer.ibm.com/messaging/message-hub/</a> - Kafka as-a-service in a IBM’s Bluemix PaaS</li>
 </ul>
 <h1 id="与流处理框架集成-Stream-Processing"><a href="#与流处理框架集成-Stream-Processing" class="headerlink" title="与流处理框架集成(Stream Processing)"></a>与流处理框架集成(Stream Processing)</h1><ul>
-<li><strong>Kafka Streams </strong>Built-in library as part of the Kafka project.</li>
+<li><strong>Kafka Streams</strong> Built-in library as part of the Kafka project.</li>
 <li><strong>Storm</strong> A stream-processing framework.</li>
 <li><strong>Samza</strong> A YARN-based stream processing framework.</li>
 <li><strong>Storm Spout</strong> Consume messages from Kafka and emit as Storm tuples</li>
 <li><strong>Kafka-Storm</strong> Kafka 0.8, Storm 0.9, Avro integration</li>
-<li>[x] <strong>SparkStreaming</strong> Kafka receiver supports Kafka 0.8 and above</li>
+<li><strong>SparkStreaming</strong> Kafka receiver supports Kafka 0.8 and above</li>
 <li><strong>Flink</strong> Apache Flink has an integration with Kafka</li>
 <li><strong>IBM Streams</strong> A stream processing framework with Kafka source and sink to consume and produce Kafka messages <h1 id="与Hadoop-集成-Integration"><a href="#与Hadoop-集成-Integration" class="headerlink" title="与Hadoop 集成(Integration)"></a>与Hadoop 集成(Integration)</h1></li>
 <li>Kafka Connect sink A sink for Kafka’s connector framework.</li>
@@ -33,8 +33,13 @@
     <entry>
       <title><![CDATA[初识Kafka：分布式消息系统比较]]></title>
       <url>http://shengdeng.github.io/2016/06/02/%E5%88%9D%E8%AF%86Kafka/</url>
-      <content type="html"><![CDATA[<p>简单介绍了消息队列系统的应用场景，以及流行的消息队列系统ActiveMQ、RabbitMQ、Kafka比较<br><a id="more"></a></p>
-<h1 id="1-消息系统的使用场景"><a href="#1-消息系统的使用场景" class="headerlink" title="1.消息系统的使用场景"></a>1.消息系统的使用场景</h1><p>在我们大量使用<strong>分布式数据库</strong>、<strong>分布式计算集群</strong>的时候，会遇到这样的问题：</p>
+      <content type="html"><![CDATA[<p>主要内容</p>
+<ol>
+<li>消息队列系统的应用场景</li>
+<li>流行的消息队列系统ActiveMQ、RabbitMQ、Kafka的比较</li>
+<li>kafka支持的客户端语言<a id="more"></a>
+<h1 id="1-消息系统的使用场景"><a href="#1-消息系统的使用场景" class="headerlink" title="1.消息系统的使用场景"></a>1.消息系统的使用场景</h1>在我们大量使用<strong>分布式数据库</strong>、<strong>分布式计算集群</strong>的时候，会遇到这样的问题：</li>
+</ol>
 <ul>
 <li>分析用户行为(pageviews)，以便设计出更好的广告位</li>
 <li>对用户搜索关键词进行统计，分析出当前的流行趋势</li>
@@ -139,6 +144,28 @@
 <li>生产者：向broker发送消息的客户端应用程序</li>
 <li>AMQP服务器端(broker):用来接收生产者发送的消息并将这些消息路由给服务器中的队列；例如，kafka将生产者发送的消息动态的添加到磁盘，并给每一条消息一个偏移量</li>
 </ul>
+<h1 id="5-kafka支持的客户端语言"><a href="#5-kafka支持的客户端语言" class="headerlink" title="5.kafka支持的客户端语言"></a>5.kafka支持的客户端语言</h1><p><a href="https://cwiki.apache.org/confluence/display/KAFKA/Clients#Clients-For0.8.x" target="_blank" rel="external">官方wiki中指出</a>，kafka客户端支持当前大部分主流语言，包括</p>
+<ul>
+<li>Producer Daemon</li>
+<li>Python</li>
+<li>Go (AKA golang)</li>
+<li>C/C++</li>
+<li>.net</li>
+<li>Clojure</li>
+<li>Ruby</li>
+<li>Node.js</li>
+<li>Alternative Java Clients</li>
+<li>Storm </li>
+<li>Scala DSL </li>
+<li>HTTP REST </li>
+<li>JRuby </li>
+<li>Perl</li>
+<li>stdin/stdout</li>
+<li>Erlang</li>
+<li>PHP</li>
+<li>Rust</li>
+</ul>
+<p>可以使用以上任何一种语言和kafka服务器进行通信，即编写自己的consumer程序和produce程序。一个分布式系统支持的客户端语言是很重要的，因为不同的开发人员使用不同的语言是很常见的现象，若只支持一种语言则会提高开发和维护的成本。</p>
 ]]></content>
     </entry>
     

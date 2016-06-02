@@ -211,16 +211,16 @@
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
-                    学习笔记 <span class="right">3</span></a>
+                <a class="no-padding" href="/categories/我的技术栈/Spark/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
                 </a>
             </li>
 
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/官网翻译/">
-                    官网翻译 <span class="right">1</span></a>
+                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
+                    学习笔记 <span class="right">3</span></a>
                 </a>
             </li>
 
@@ -345,13 +345,18 @@
 
 
             <div class="toc pink-link-context hide-on-med-and-down">
-    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-消息系统的使用场景"><span class="section table-of-contents-text">1.消息系统的使用场景</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-Kafka定义"><span class="section table-of-contents-text">2.Kafka定义</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-目前开源分布式消息系统比较"><span class="section table-of-contents-text">3.目前开源分布式消息系统比较</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#4-AMQP协议"><span class="section table-of-contents-text">4.AMQP协议</span></a></li></ol>
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-消息系统的使用场景"><span class="section table-of-contents-text">1.消息系统的使用场景</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-Kafka定义"><span class="section table-of-contents-text">2.Kafka定义</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-目前开源分布式消息系统比较"><span class="section table-of-contents-text">3.目前开源分布式消息系统比较</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#4-AMQP协议"><span class="section table-of-contents-text">4.AMQP协议</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#5-kafka支持的客户端语言"><span class="section table-of-contents-text">5.kafka支持的客户端语言</span></a></li></ol>
 </div>
 
 
             <div class="entry pink-link-context">
-                <p>简单介绍了消息队列系统的应用场景，以及流行的消息队列系统ActiveMQ、RabbitMQ、Kafka比较<br><a id="more"></a></p>
-<h1 id="1-消息系统的使用场景"><a href="#1-消息系统的使用场景" class="headerlink" title="1.消息系统的使用场景"></a>1.消息系统的使用场景</h1><p>在我们大量使用<strong>分布式数据库</strong>、<strong>分布式计算集群</strong>的时候，会遇到这样的问题：</p>
+                <p>主要内容</p>
+<ol>
+<li>消息队列系统的应用场景</li>
+<li>流行的消息队列系统ActiveMQ、RabbitMQ、Kafka的比较</li>
+<li>kafka支持的客户端语言<a id="more"></a>
+<h1 id="1-消息系统的使用场景"><a href="#1-消息系统的使用场景" class="headerlink" title="1.消息系统的使用场景"></a>1.消息系统的使用场景</h1>在我们大量使用<strong>分布式数据库</strong>、<strong>分布式计算集群</strong>的时候，会遇到这样的问题：</li>
+</ol>
 <ul>
 <li>分析用户行为(pageviews)，以便设计出更好的广告位</li>
 <li>对用户搜索关键词进行统计，分析出当前的流行趋势</li>
@@ -456,6 +461,28 @@
 <li>生产者：向broker发送消息的客户端应用程序</li>
 <li>AMQP服务器端(broker):用来接收生产者发送的消息并将这些消息路由给服务器中的队列；例如，kafka将生产者发送的消息动态的添加到磁盘，并给每一条消息一个偏移量</li>
 </ul>
+<h1 id="5-kafka支持的客户端语言"><a href="#5-kafka支持的客户端语言" class="headerlink" title="5.kafka支持的客户端语言"></a>5.kafka支持的客户端语言</h1><p><a href="https://cwiki.apache.org/confluence/display/KAFKA/Clients#Clients-For0.8.x" target="_blank" rel="external">官方wiki中指出</a>，kafka客户端支持当前大部分主流语言，包括</p>
+<ul>
+<li>Producer Daemon</li>
+<li>Python</li>
+<li>Go (AKA golang)</li>
+<li>C/C++</li>
+<li>.net</li>
+<li>Clojure</li>
+<li>Ruby</li>
+<li>Node.js</li>
+<li>Alternative Java Clients</li>
+<li>Storm </li>
+<li>Scala DSL </li>
+<li>HTTP REST </li>
+<li>JRuby </li>
+<li>Perl</li>
+<li>stdin/stdout</li>
+<li>Erlang</li>
+<li>PHP</li>
+<li>Rust</li>
+</ul>
+<p>可以使用以上任何一种语言和kafka服务器进行通信，即编写自己的consumer程序和produce程序。一个分布式系统支持的客户端语言是很重要的，因为不同的开发人员使用不同的语言是很常见的现象，若只支持一种语言则会提高开发和维护的成本。</p>
 
             </div>
         </div>
