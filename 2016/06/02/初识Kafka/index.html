@@ -7,7 +7,7 @@
 
     
 
-    <title>初识Kafka | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>初识Kafka：分布式消息系统比较 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta property="og:title" content="初识Kafka"/>
+    <meta property="og:title" content="初识Kafka：分布式消息系统比较"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -203,6 +203,30 @@
         
 
             <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/我的技术栈/Spark/">
+                    Spark <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/我的技术栈/Spark/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
+                    学习笔记 <span class="right">3</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
                 <a class="no-padding" href="/categories/我的技术栈/Linux/">
                     Linux <span class="right">3</span></a>
                 </a>
@@ -227,14 +251,6 @@
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
-                    官网翻译 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-2" collapse-level="2">
                 <a class="no-padding" href="/categories/我的技术栈/Kafka/学习笔记/">
                     学习笔记 <span class="right">1</span></a>
                 </a>
@@ -242,25 +258,9 @@
 
         
 
-            <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/">
-                    Spark <span class="right">4</span></a>
-                </a>
-            </li>
-
-        
-
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/官网翻译/">
+                <a class="no-padding" href="/categories/我的技术栈/Kafka/官网翻译/">
                     官网翻译 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/我的技术栈/Spark/学习笔记/">
-                    学习笔记 <span class="right">3</span></a>
                 </a>
             </li>
 
@@ -329,7 +329,7 @@
             <div class="article-title">
                 
     
-        <h1>初识Kafka</h1>
+        <h1>初识Kafka：分布式消息系统比较</h1>
     
 
 
@@ -345,12 +345,12 @@
 
 
             <div class="toc pink-link-context hide-on-med-and-down">
-    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-消息系统的使用场景"><span class="section table-of-contents-text">1.消息系统的使用场景</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-Kafka定义"><span class="section table-of-contents-text">2.Kafka定义</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-目前开源分布式消息系统比较"><span class="section table-of-contents-text">3.目前开源分布式消息系统比较</span></a></li></ol>
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-消息系统的使用场景"><span class="section table-of-contents-text">1.消息系统的使用场景</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-Kafka定义"><span class="section table-of-contents-text">2.Kafka定义</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-目前开源分布式消息系统比较"><span class="section table-of-contents-text">3.目前开源分布式消息系统比较</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#4-AMQP协议"><span class="section table-of-contents-text">4.AMQP协议</span></a></li></ol>
 </div>
 
 
             <div class="entry pink-link-context">
-                <a id="more"></a>
+                <p>简单介绍了消息队列系统的应用场景，以及流行的消息队列系统ActiveMQ、RabbitMQ、Kafka比较<br><a id="more"></a></p>
 <h1 id="1-消息系统的使用场景"><a href="#1-消息系统的使用场景" class="headerlink" title="1.消息系统的使用场景"></a>1.消息系统的使用场景</h1><p>在我们大量使用<strong>分布式数据库</strong>、<strong>分布式计算集群</strong>的时候，会遇到这样的问题：</p>
 <ul>
 <li>分析用户行为(pageviews)，以便设计出更好的广告位</li>
@@ -449,6 +449,13 @@
 <li>ActiveMQ、RabbitMQ和Kafka相比不具有高吞吐量和高水平扩展的能力</li>
 <li>kafka动态扩容是通过zookeeper来实现的，kafka增加或者减少节点，都会在zookeeper上触发相应的事件，kafka系统会捕获这些事件来进行新一轮的负载均衡；客户端也可以捕获这些事件。</li>
 </ul>
+<h1 id="4-AMQP协议"><a href="#4-AMQP协议" class="headerlink" title="4.AMQP协议"></a>4.AMQP协议</h1><p>三种比较流行的消息队列要么支持AMQP协议，要么借鉴了AMQP协议思想。AMQP协议主要由一下三个组件组成</p>
+<p>【<strong>producer</strong>】→(push)→【<strong>broker</strong>】←(pull)←【<strong>comsumer</strong>】</p>
+<ul>
+<li>消费者：从消息队列中请求消息的客户端应用程序</li>
+<li>生产者：向broker发送消息的客户端应用程序</li>
+<li>AMQP服务器端(broker):用来接收生产者发送的消息并将这些消息路由给服务器中的队列；例如，kafka将生产者发送的消息动态的添加到磁盘，并给每一条消息一个偏移量</li>
+</ul>
 
             </div>
         </div>
@@ -462,7 +469,7 @@
         <div class="card">
             <div class="card-content">
                 <!-- Duoshuo Comment BEGIN -->
-                <div class="ds-thread" data-thread-key="2016/06/02/初识Kafka/" data-title="初识Kafka" data-url="http://shengdeng.github.io/2016/06/02/初识Kafka/"></div>
+                <div class="ds-thread" data-thread-key="2016/06/02/初识Kafka/" data-title="初识Kafka：分布式消息系统比较" data-url="http://shengdeng.github.io/2016/06/02/初识Kafka/"></div>
 
                 <script type="text/javascript">
                     console.log(document.querySelector('.ds-thread'));
