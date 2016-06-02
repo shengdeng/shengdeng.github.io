@@ -35,7 +35,61 @@
 </ul>
 <p>应用领域：已被多加不同类型的公司作为<strong>多种类型的数据管道</strong>和<strong>消息系统</strong>使用</p>
 <p>因为kafka的高水平扩展和高吞吐的能力，目前越来越多的<strong>开源分布式处理系统</strong>，如flume(用于日志收集)、Storm(用于实时数据处理)、Spark(用于内存数据处理)、elasticsearch(用于全文检索)都支持<strong>与Kafka集成</strong>。</p>
-<h1 id="3-目前开源分布式消息系统比较"><a href="#3-目前开源分布式消息系统比较" class="headerlink" title="3.目前开源分布式消息系统比较"></a>3.目前开源分布式消息系统比较</h1>]]></content>
+<h1 id="3-目前开源分布式消息系统比较"><a href="#3-目前开源分布式消息系统比较" class="headerlink" title="3.目前开源分布式消息系统比较"></a>3.目前开源分布式消息系统比较</h1><table>
+<thead>
+<tr>
+<th></th>
+<th>ActiveMQ</th>
+<th>RabbitMQ</th>
+<th>Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公式/社区</td>
+<td>Apache</td>
+<td>Mozilla Public License</td>
+<td>Apache/LinkedIn</td>
+</tr>
+<tr>
+<td>开发语言</td>
+<td>java</td>
+<td>Erlang</td>
+<td>Scala</td>
+</tr>
+<tr>
+<td><strong>支持的协议</strong></td>
+<td>OpenWire\STOMP\REST\XMPP\ <strong>AMQP</strong></td>
+<td><strong>AMQP</strong></td>
+<td>类似AMQP</td>
+</tr>
+<tr>
+<td><strong>事务</strong></td>
+<td>支持</td>
+<td>不支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>集群</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>负载均衡</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td><strong>动态扩容</strong></td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持(Zookeeper)</td>
+</tr>
+</tbody>
+</table>
+]]></content>
     </entry>
     
     <entry>
