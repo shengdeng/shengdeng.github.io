@@ -4,6 +4,88 @@
   
     
     <entry>
+      <title><![CDATA[Linux软件安装管理（一）：初识Linux软件包及其分类]]></title>
+      <url>http://shengdeng.github.io/2016/06/11/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86Linux%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%8F%8A%E5%85%B6%E5%88%86%E7%B1%BB/</url>
+      <content type="html"><![CDATA[<p><strong>内容提要</strong></p>
+<ol>
+<li>软件包发布的两种形式：源码包和RPM包</li>
+<li>写脚本安装软件</li>
+<li>利用yum软件管理RPM的依赖</li>
+</ol>
+<a id="more"></a>
+<h1 id="1-软件包分类"><a href="#1-软件包分类" class="headerlink" title="1. 软件包分类"></a>1. 软件包分类</h1><p>Linux的软件的发布形式有如下两种</p>
+<ul>
+<li><p><strong>源代码包</strong>：需手工编译</p>
+<ul>
+<li>绝大多数开源软件都是直接<strong>以源代码形式发布</strong>，被打包成一个<strong>.tar.gz</strong>的归档压缩文件</li>
+<li>源代码需要<strong>手工编译</strong>才能运行，所以针对特定运行环境的编译出来的软件兼容性和可控性好</li>
+<li>优点：<ul>
+<li>开源，学习者可以直接看到高手写的代码，可以修改源代码</li>
+<li>编译安装，更加适合自己的系统，更稳定高效</li>
+<li>卸载方便：直接删除安装文件目录就行</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>安装过程步骤较多，尤其是大型软件</li>
+<li>编译过程时间长，编译时开源软件需要大量依赖其他开源软件包</li>
+<li>万一源码问题导致编译出错，不是自己写的很难解决</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>二进制包（即RPM包）</strong>：RPM命令管理</p>
+<ul>
+<li>Linux系统就是用RPM包安装的，系统光盘中软件的系统默认包</li>
+<li><strong>厂商</strong>把源码包<strong>编译好</strong>以后，发布的二进制包</li>
+<li>优点：<ul>
+<li>软件包管理简单，通过命令就可以实现安装、升级、卸载</li>
+<li>软件安装速度快</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>不能看到源代码</li>
+<li>依赖性：开源软件一般都会大量使用其他软件的功能，所以开源软件会有大量的依赖关系；安装中出现很多问题基本都是要解决依赖关系</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-写脚本安装大型复杂软件"><a href="#3-写脚本安装大型复杂软件" class="headerlink" title="3. 写脚本安装大型复杂软件"></a>3. 写脚本安装大型复杂软件</h1><p>脚本安装：</p>
+<ul>
+<li>有的软件安装，需要几十个软件包联合安装</li>
+<li>高手把复杂的软件安装过程<strong>写成了shell脚本</strong>，安装直接执行脚本即可。但<strong>实际安装还是编译源码包或者RPM包</strong></li>
+<li>优点：安装步骤少</li>
+<li>缺点：丧失了自定义性，自定义时需要修改脚本</li>
+</ul>
+<h1 id="2-利用yum软件管理RPM依赖"><a href="#2-利用yum软件管理RPM依赖" class="headerlink" title="2. 利用yum软件管理RPM依赖"></a>2. 利用yum软件管理RPM依赖</h1><ul>
+<li>是用来管理RPM的软件</li>
+<li>用来解决RPM的依赖关系问题。特性：<ul>
+<li><strong>自动解决依赖关系</strong></li>
+<li>可以对RPM进行分组，并基于组进行安装操作：原本RPM每个软件包独立的；基于组的安装即一次性安装一类软件，只需要安装一个组，一类软件就安装好了</li>
+<li>引入<strong>仓库概念</strong>，支持多个仓库</li>
+<li>配置简单</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[linux服务管理（一）：服务分类]]></title>
+      <url>http://shengdeng.github.io/2016/06/11/linux%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86%EF%BC%9A%E6%9C%8D%E5%8A%A1%E5%88%86%E7%B1%BB/</url>
+      <content type="html"><![CDATA[<h1 id="1-Linux服务的分类"><a href="#1-Linux服务的分类" class="headerlink" title="1.Linux服务的分类"></a>1.Linux服务的分类</h1><p>在windous中，有些软件包安装以后成为应用，有些成为系统服务，Linux也一样，Linux服务分类</p>
+<ul>
+<li><strong>RPM包默认安装的服务</strong>：整个Linux系统都是用RPM软件包安装的<ul>
+<li><strong>独立的服务</strong>：大多数服务都是独立的，直接在内存中，直接快速响应用户，但耗费内存</li>
+<li><strong>基于xinetd服务</strong>：xinetd服务本身是独立的，就在内存中，唯一的功能是管理一系列服务；通过xinetd服务区访问那些被管理的服务；所有基于xinetd的服务不占内存</li>
+</ul>
+</li>
+<li><strong>源码包安装的服务</strong></li>
+</ul>
+<h1 id="2-启动与自启动"><a href="#2-启动与自启动" class="headerlink" title="2.启动与自启动"></a>2.启动与自启动</h1>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[下载和编译Spark]]></title>
       <url>http://shengdeng.github.io/2016/06/11/%E7%BC%96%E8%AF%91Spark/</url>
       <content type="html"><![CDATA[<a id="more"></a>

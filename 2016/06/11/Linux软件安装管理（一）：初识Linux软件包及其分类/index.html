@@ -7,7 +7,7 @@
 
     
 
-    <title>我的技术栈 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>Linux软件安装管理（一）：初识Linux软件包及其分类 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Linux软件安装管理（一）：初识Linux软件包及其分类"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -337,84 +337,148 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">Current page(Categories)</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/">Linux</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/学习笔记/">学习笔记</a><a class="breadcrumb" href="/categories/我的技术栈/Linux/学习笔记/软件管理/">软件管理</a>
+
 
         
-            <a class="breadcrumb" href="/categories/我的技术栈/">我的技术栈</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux软件安装管理（一）：初识Linux软件包及其分类</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-06-11T12:15:21.000Z"><a href="/2016/06/11/Linux软件安装管理（一）：初识Linux软件包及其分类/">2016-06-11</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/06/11/Linux软件安装管理（一）：初识Linux软件包及其分类/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-11T12:15:21.000Z">2016-06-11</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Linux软件安装管理（一）：初识Linux软件包及其分类
-            </a>
-        
-            <a href="/2016/06/11/linux服务管理：服务分类/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-11T07:49:33.000Z">2016-06-11</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                linux服务管理（一）：服务分类
-            </a>
-        
-            <a href="/2016/06/11/编译Spark/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-11T01:17:34.000Z">2016-06-11</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                下载和编译Spark
-            </a>
-        
-            <a href="/2016/06/10/前沿追踪：热门大数据技术TOP10/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-10T01:19:55.000Z">2016-06-10</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                前沿追踪：热门大数据技术TOP10
-            </a>
-        
-            <a href="/2016/06/02/Kafka生态系统系统/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-02T03:36:41.000Z">2016-06-02</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Kafka1.0生态系统
-            </a>
-        
-            <a href="/2016/06/02/初识Kafka/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-02T01:50:32.000Z">2016-06-02</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                初识Kafka：分布式消息系统比较
-            </a>
-        
-            <a href="/2016/05/25/在VMware上安装Liunx系统/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-25T11:14:58.000Z">2016-05-25</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                在VMware上安装Liunx CentOs系统
-            </a>
-        
-            <a href="/2016/05/15/Linux系统分区知识/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-15T03:33:24.000Z">2016-05-15</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Linux系统分区知识
-            </a>
-        
-            <a href="/2016/05/14/VMware虚拟机的安装与使用总结/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-14T11:36:17.000Z">2016-05-14</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                VMware虚拟机的使用总结
-            </a>
-        
-            <a href="/2016/05/13/Spark与MapReduce对比测评/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-13T01:12:30.000Z">2016-05-13</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Spark与MapReduce对比测评
-            </a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-软件包分类"><span class="section table-of-contents-text">1. 软件包分类</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-写脚本安装大型复杂软件"><span class="section table-of-contents-text">3. 写脚本安装大型复杂软件</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-利用yum软件管理RPM依赖"><span class="section table-of-contents-text">2. 利用yum软件管理RPM依赖</span></a></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p><strong>内容提要</strong></p>
+<ol>
+<li>软件包发布的两种形式：源码包和RPM包</li>
+<li>写脚本安装软件</li>
+<li>利用yum软件管理RPM的依赖</li>
+</ol>
+<a id="more"></a>
+<h1 id="1-软件包分类"><a href="#1-软件包分类" class="headerlink" title="1. 软件包分类"></a>1. 软件包分类</h1><p>Linux的软件的发布形式有如下两种</p>
+<ul>
+<li><p><strong>源代码包</strong>：需手工编译</p>
+<ul>
+<li>绝大多数开源软件都是直接<strong>以源代码形式发布</strong>，被打包成一个<strong>.tar.gz</strong>的归档压缩文件</li>
+<li>源代码需要<strong>手工编译</strong>才能运行，所以针对特定运行环境的编译出来的软件兼容性和可控性好</li>
+<li>优点：<ul>
+<li>开源，学习者可以直接看到高手写的代码，可以修改源代码</li>
+<li>编译安装，更加适合自己的系统，更稳定高效</li>
+<li>卸载方便：直接删除安装文件目录就行</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>安装过程步骤较多，尤其是大型软件</li>
+<li>编译过程时间长，编译时开源软件需要大量依赖其他开源软件包</li>
+<li>万一源码问题导致编译出错，不是自己写的很难解决</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>二进制包（即RPM包）</strong>：RPM命令管理</p>
+<ul>
+<li>Linux系统就是用RPM包安装的，系统光盘中软件的系统默认包</li>
+<li><strong>厂商</strong>把源码包<strong>编译好</strong>以后，发布的二进制包</li>
+<li>优点：<ul>
+<li>软件包管理简单，通过命令就可以实现安装、升级、卸载</li>
+<li>软件安装速度快</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>不能看到源代码</li>
+<li>依赖性：开源软件一般都会大量使用其他软件的功能，所以开源软件会有大量的依赖关系；安装中出现很多问题基本都是要解决依赖关系</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-写脚本安装大型复杂软件"><a href="#3-写脚本安装大型复杂软件" class="headerlink" title="3. 写脚本安装大型复杂软件"></a>3. 写脚本安装大型复杂软件</h1><p>脚本安装：</p>
+<ul>
+<li>有的软件安装，需要几十个软件包联合安装</li>
+<li>高手把复杂的软件安装过程<strong>写成了shell脚本</strong>，安装直接执行脚本即可。但<strong>实际安装还是编译源码包或者RPM包</strong></li>
+<li>优点：安装步骤少</li>
+<li>缺点：丧失了自定义性，自定义时需要修改脚本</li>
+</ul>
+<h1 id="2-利用yum软件管理RPM依赖"><a href="#2-利用yum软件管理RPM依赖" class="headerlink" title="2. 利用yum软件管理RPM依赖"></a>2. 利用yum软件管理RPM依赖</h1><ul>
+<li>是用来管理RPM的软件</li>
+<li>用来解决RPM的依赖关系问题。特性：<ul>
+<li><strong>自动解决依赖关系</strong></li>
+<li>可以对RPM进行分组，并基于组进行安装操作：原本RPM每个软件包独立的；基于组的安装即一次性安装一类软件，只需要安装一个组，一类软件就安装好了</li>
+<li>引入<strong>仓库概念</strong>，支持多个仓库</li>
+<li>配置简单</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/06/11/Linux软件安装管理（一）：初识Linux软件包及其分类/" data-title="Linux软件安装管理（一）：初识Linux软件包及其分类" data-url="http://shengdeng.github.io/2016/06/11/Linux软件安装管理（一）：初识Linux软件包及其分类/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
