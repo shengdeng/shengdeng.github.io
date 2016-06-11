@@ -4,6 +4,97 @@
   
     
     <entry>
+      <title><![CDATA[下载和编译Spark]]></title>
+      <url>http://shengdeng.github.io/2016/06/11/%E7%BC%96%E8%AF%91Spark/</url>
+      <content type="html"><![CDATA[<a id="more"></a>
+<h1 id="1-下载Spark"><a href="#1-下载Spark" class="headerlink" title="1. 下载Spark"></a>1. 下载Spark</h1><p>登陆<a href="http://spark.apache.org/downloads.html" target="_blank" rel="external">Spark官网的下载页面</a>可以下载Spark源码或预编译好的包，进入页面后下载有如下5步：</p>
+<ol>
+<li>选择Spark的版本；</li>
+<li>选择包的类型：有源码包，也有预编译的包如Pre-built for CDH4，即运行在CDH4集群上的Spark；</li>
+<li>选择下载的类型：镜像文件或者直接下载文件</li>
+<li>下载链接</li>
+<li>校验和下载</li>
+</ol>
+<p>还需注意，如官网的所述</p>
+<blockquote>
+<p>Spark 1.6.1 runs on <strong>Java 7+</strong>, Python 2.6+ and R 3.1+. For the Scala API, Spark 1.6.1 uses <strong>Scala 2.10</strong>. You will need to use a compatible Scala version (2.10.x).</p>
+</blockquote>
+<p>即Spark使用的是Scala2.10版本；scala2.11的用户需要下载Spark源码然后用Scala2.11进行编译，编译方法见<a href="http://spark.apache.org/docs/latest/building-spark.html#building-for-scala-211" target="_blank" rel="external">Building for scala 2.11</a>。</p>
+<p>也就是说，Spark需要针对特定的运行环境进行编译，比如CDH或Hadoop的版本，Scala的版本等。实际生产环境使用的CDH版本常常没有对应的预编译包，不同的生产环境使用的Hadoop和Hive的版本也不一样，所以需要自行编译，官方只是针对某一部分版本进行了编译。<a href="http://spark.apache.org/docs/latest/building-spark.html" target="_blank" rel="external">官方指导文档</a>给出了编译Spark的方法。</p>
+<p>此处下载Spark源码，接下来对Spark进行编译。</p>
+<p>注意：下载后的源文件要修改成普通用户权限，否则会报权限的错误。</p>
+<h2 id="下载页面其他信息"><a href="#下载页面其他信息" class="headerlink" title="下载页面其他信息"></a>下载页面其他信息</h2><p>在官方的下载页面，还有其他有用的信息</p>
+<ul>
+<li>Link with Spark 给出了Spark的当前版本在maven仓库中的三元组信息</li>
+<li>Spark Source Code Management 是关于从github上clone Spark版本分支的方法，也即从github获得源码的方法<ul>
+<li>Spark是apache的项目托管在github上：<a href="https://github.com/apache/spark" target="_blank" rel="external">https://github.com/apache/spark</a></li>
+<li>选择分支branch可以看到最新的分支是Spark 2.0</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-Spark1-x的三种编译方式"><a href="#2-Spark1-x的三种编译方式" class="headerlink" title="2. Spark1.x的三种编译方式"></a>2. Spark1.x的三种编译方式</h1><ul>
+<li>SBT编译<ul>
+<li>Simple Build Tool</li>
+<li>专门针对Scala的工程项目构建 </li>
+</ul>
+</li>
+<li>Maven编译<ul>
+<li>项目管理构建工具</li>
+<li>Spark是scala语言写的，但是支持maven编译</li>
+<li>一定要提前安装maven；一定要保证联网</li>
+<li>spark源文件中有pom.xml，就是用来maven编译的</li>
+</ul>
+</li>
+<li>打包编译make-distribution.sh<ul>
+<li>实际上就是maven编译，只不过写成.sh的脚本运行</li>
+<li>本文主要介绍这种编译方式</li>
+<li>spark源文件中有make-distribution.sh</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-编译官方指导"><a href="#3-编译官方指导" class="headerlink" title="3. 编译官方指导"></a>3. 编译官方指导</h1><h2 id="2-1-编译环境的准备"><a href="#2-1-编译环境的准备" class="headerlink" title="2.1 编译环境的准备"></a>2.1 编译环境的准备</h2><ol>
+<li>Linux上安装好JDK</li>
+<li>Linux上安装好maven</li>
+<li>Linux上安装Scala 2.10<br>注意<a href="http://spark.apache.org/docs/latest/building-spark.html" target="_blank" rel="external">官方指导</a>中建议的JDK和maven的版本<blockquote>
+<p>Building Spark using Maven requires <strong>Maven 3.3.3</strong> or newer and <strong>Java 7+</strong>. The Spark build can supply a suitable Maven binary; see below.</p>
+</blockquote>
+</li>
+</ol>
+<p>scala推荐2.10版本，2.11版本需要自行编译Spark参见官方指导的<strong>Building for Scala 2.11</strong></p>
+<pre><code>./dev/change-scala-version.sh 2.11
+mvn -Pyarn -Phadoop-2.4 -Dscala-2.11 -DskipTests clean package
+</code></pre><h2 id="2-2-maven编译"><a href="#2-2-maven编译" class="headerlink" title="2.2 maven编译"></a>2.2 maven编译</h2><p>参见官方指导的<strong>building with build/mvn</strong></p>
+<pre><code>build/mvn -Pyarn -Phadoop-2.4 -Dhadoop.version=2.4.0 -DskipTests clean package
+</code></pre><ul>
+<li>-Pyarn表示支持yarn</li>
+<li>-Phadoop-2.4 -Dhadoop.version=2.4.0表示hadoop的版本</li>
+<li>-DskipTests 编译的时候跳过测试</li>
+<li>clean package 打包</li>
+</ul>
+<p>注意在编译的时候，可能会出现<strong>out of memory</strong>的错误，避免这个错误，需要进行设置，参考<strong>Setting up maven’s memory usage</strong> 中说明的参数MAVEN_OPTS。</p>
+<pre><code>export MAVEN_OPTS=&quot;-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m&quot;
+</code></pre><p>即设置maven编译时最多使用的内存堆栈的大小。使用打包编译，就不用设置。</p>
+<p>在指定hadoop版本的时候可以参考<strong>Specifying the Hadoop Version</strong>中的说明，也给了很多实例，例如针对CDH 4.2的编译方法：</p>
+<pre><code>mvn -Dhadoop.version=2.0.0-mr1-cdh4.2.0 -Phadoop-1 -DskipTests clean package
+</code></pre><p>是否支持Hive和JDBC的编译方法，参考<strong>Building With Hive and JDBC Support</strong>，例如</p>
+<pre><code># Apache Hadoop 2.4.X with Hive 13 support
+mvn -Pyarn -Phadoop-2.4 -Dhadoop.version=2.4.0 -Phive -Phive-thriftserver -DskipTests clean package
+</code></pre><h2 id="2-3-利用make-distribution-sh编译"><a href="#2-3-利用make-distribution-sh编译" class="headerlink" title="2.3 利用make-distribution.sh编译"></a>2.3 利用make-distribution.sh编译</h2><p>打开make-distribution.sh文件查看内容</p>
+<ul>
+<li>177行设置了参数MAVEN_OPTS避免内存溢出</li>
+<li>182行编译的命令，就是mvn命令</li>
+<li><p>54行开始，是解析参数，这些参数hadoop、yarn、hive过时了，需要设置–name–tgz等参数</p>
+<p>  ./make-distribution.sh –name custom-spark –tgz -Psparkr -Phadoop-2.4 -Phive -Phive-thriftserver -Pyarn</p>
+</li>
+</ul>
+<p>在实际生产中，用的多的是CDH的hadoop版本，可以在 <a href="http://archive.cloudera.com/cdh5/" target="_blank" rel="external">http://archive.cloudera.com/cdh5/</a> 中下载和查到CDH版本，因此可以写成</p>
+<pre><code># cdh和hive都指定版本
+./make-distribution.sh --name custom-spark --tgz -Pyarn -Psparkr -Phadoop-2.4 -Dhadoop.version=2.6.0-CDH5.4.0 -Phive-0.13.1 -Phive-thriftserver 
+</code></pre><p>注意：maven编译一定要翻墙，因为需要下载很多依赖包。出现几次错误是正常的。make-distribution.sh运行以后，半天才有反应很迟钝，这是因为make-distribution.sh会去进行很多操作，为了节省时间你可以进行一些修改129-138行注释掉（每一行都注释），这几行是解析spark、hadoop、hive的版本，我们输入命令时加上版本信息就行（草稿）</p>
+<h1 id="4-编译spark实战"><a href="#4-编译spark实战" class="headerlink" title="4.编译spark实战"></a>4.编译spark实战</h1>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[前沿追踪：热门大数据技术TOP10]]></title>
       <url>http://shengdeng.github.io/2016/06/10/%E5%89%8D%E6%B2%BF%E8%BF%BD%E8%B8%AA%EF%BC%9A%E7%83%AD%E9%97%A8%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AFTOP10/</url>
       <content type="html"><![CDATA[<p>随着大数据分析市场的快速扩展到各行业务，哪些大数据技术是刚需？哪些技术有极大的潜在价值？弗雷斯特研究公司发布的<a href="http://www.forbes.com/sites/gilpress/2016/03/14/top-10-hot-big-data-technologies/#5b01c3da7f26" target="_blank" rel="external">TechRadar: Big Data, Q1 2016</a>报告评估了数据生命周期中22项大数据技术的成熟度和发展状态。本文介绍了排名靠前的10项大数据技术，可为大数据从业者的职业发展方向提供参考。</p>
@@ -41,12 +132,14 @@
 <p>以上10项技术均处在significant success非常成功的轨迹线上，而且都处于技术发展中的成熟阶段，前8项技术处在growth平稳成长期，后两项技术处在survival快速发展期。前两项技术被评估为具有较高的商业价值，第三四项被评估为中等商业价值，剩下的6项技术被评估为较低的商业价值，不用怀疑，因为后6项新兴技术还在快速发展且并不十分成熟可靠。</p>
 <p>Why did I add to the list of hottest technologies two that are still in the Survival phase—data preparation and data quality? In the same report, Forrester also provides the following data from its Q4 2015 survey of 63 big data vendors:</p>
 <p>What is the level of customer interest in each of the following capabilities? (% answering “very high”)</p>
+<blockquote>
 <p>Data preparation and discovery 52%</p>
 <p>Data integration 48%</p>
 <p>Advanced analytics 46%</p>
 <p>Customer analytics 46%</p>
 <p>Data security 38%</p>
 <p>In-memory computing 37%</p>
+</blockquote>
 <p>While Forrester predicts that a few standalone vendors of data preparation will survive, it believes this is “an essential capability for achieving democratization of data,” or rather, its analysis, letting data scientists spend more time on modeling and discovering insights and allowing more business users to have fun with data mining.  Data Quality includes data security from the table above, in addition to other features ensuring decisions are based on reliable and accurate data. Forrester “expects that data quality will have significant success in the coming years as firms formalize a data certification process. Data certification efforts seek to guarantee that data meets expected standards for quality; security; and regulatory compliance supporting business decision-making, business performance, and business processes.”</p>
 <p>“Big Data” as a topic of conversation has reached mainstream audiences probably far more than any other technology buzzword before it. That did not help the discussion of this amorphous term, defined for the masses as “the planet’s nervous system” (see my rant here) or as “Hadoop” for technical audiences.  Forrester’s report helps clarify the term, defining big data as the ecosystem of 22 technologies, each with its specific benefits for enterprises and, through them, consumers.</p>
 <p>Big data, specifically one its attributes, big volume, has recently gave rise to a new general topic of discussion, Artificial Intelligence. The availability of very large data sets is one of the reasons Deep Learning, a sub-set of AI, has been in the limelight, from identifying Internet cats to beating a Go champion.  In its turn, AI may lead to the emergence of new tools for collecting and analyzing data.</p>
