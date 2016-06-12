@@ -4,6 +4,269 @@
   
     
     <entry>
+      <title><![CDATA[Linux软件安装管理（二）：RPM命令管理]]></title>
+      <url>http://shengdeng.github.io/2016/06/12/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89-RPM%E5%91%BD%E4%BB%A4%E7%AE%A1%E7%90%86/</url>
+      <content type="html"><![CDATA[<h1 id="1-RPM包的来源"><a href="#1-RPM包的来源" class="headerlink" title="1.RPM包的来源"></a>1.RPM包的来源</h1><p>Linux的系统光盘DVD1中ISO中有软件的RPM包，只需在虚拟机<strong>光驱</strong>中选择这个DVD1，勾选<strong>连接</strong>选项，即给光驱通电。</p>
+<p>给虚拟机光驱中加入DVD后，在linux系统中给光盘创建一个挂载点</p>
+<pre><code>mkdir /mnt/cdrom
+</code></pre><p>输入挂载命令</p>
+<pre><code>mount /dev/sr0 /mnt/cdrom
+</code></pre><p>然后打开文件夹<code>cd /mnt/cdrom</code>，再<code>cd package/</code>目录中可以看到好几千个RPM包。所有的RPM包在系统光盘中的package目录中。</p>
+<h1 id="2-RPM包命名规则"><a href="#2-RPM包命名规则" class="headerlink" title="2.RPM包命名规则"></a>2.RPM包命名规则</h1><p>所有的RPM包都必须按照以下规则命名，看懂它有助于选择合适的软件包：</p>
+<ul>
+<li>httpd-2.2.15-15.el6.centos.1.i686.rpm<ul>
+<li>包名称，即软件名称httpd<ul>
+<li>包全名：操作的包是<strong>没有安装的软件包</strong>时，使用包全名，包括路径，即此时包只是一个文件，比如安装包时到这个文件的目录下或者用绝对路径+包名</li>
+<li>包名：操作<strong>已安装的软件包</strong>时，使用包名，即httpd；比如卸载时，直接使用包名即可</li>
+</ul>
+</li>
+<li>版本号2.2.15</li>
+<li>软件发布次数15</li>
+<li>适合的Linux平台el6.centos；el6指的是redhat的企业版</li>
+<li>适合的硬件平台i686；如果是x64表示只适合64位系统</li>
+<li>扩展名rpm</li>
+</ul>
+</li>
+</ul>
+<p>可见，rpm是<strong>针对特定平台</strong>编译的二进制包！rpm支持不同平台指的是针对不同平台发布不同的rpm。</p>
+<h1 id="3-RPM包的依赖性"><a href="#3-RPM包的依赖性" class="headerlink" title="3.RPM包的依赖性"></a>3.RPM包的依赖性</h1><ul>
+<li>树形依赖<ul>
+<li>a→b→c，装a的时候需要装b,装b的时候需要装c</li>
+<li>先装c,再装b,最后装a</li>
+<li>依赖可以在光盘中找到，光盘中找依赖（package目录下自动补全）软后安装</li>
+</ul>
+</li>
+<li>环形依赖<ul>
+<li>a→b→c→a</li>
+<li>a\b\c三个包放在一起安装</li>
+<li>依赖可以在光盘中找到，光盘中找依赖（package目录下自动补全）软后安装</li>
+</ul>
+</li>
+<li>模块依赖<ul>
+<li><strong>.so.数字</strong>结尾的库文件</li>
+<li>在光盘中找不到，因为它是一个文件（函数），而不是软件包</li>
+<li>它其实是藏身在光盘中几千个RPM包的某一个包中的文件而已，只要把这个文件所在的包装上就行</li>
+<li>这个文件在哪个包中？登陆<a href="http://www.rpmfind.net/" target="_blank" rel="external">www.rpmfind.net</a>中查询</li>
+</ul>
+</li>
+</ul>
+<p>报错提示：B依赖A，需要先装A</p>
+<blockquote>
+<p>error：Failed dependencise: A is needed by B</p>
+</blockquote>
+<p>yum在线安装可以解决rpm依赖性的问题，yum仓库里放了所有的软件在服务器上，只要能够访问服务器，使用yum命令安装，所有的依赖会自动解决。但是redhad将yum服务作为付费项目，centos的yum是免费的。</p>
+<h1 id="4-rpm包管理命令"><a href="#4-rpm包管理命令" class="headerlink" title="4.rpm包管理命令"></a>4.rpm包管理命令</h1><p>安装和卸载时使用的包（全）名不同，注意区别：</p>
+<ul>
+<li><strong>包全名</strong>：操作的包是<strong>没有安装的软件包</strong>时，使用包全名，<strong>包括路径</strong><ul>
+<li>即此时包只是一个文件</li>
+<li>比如<strong>安装包时、升级包时</strong>到这个文件的目录下或者用绝对路径+包名</li>
+</ul>
+</li>
+<li><strong>包名</strong>：操作<strong>已安装的软件包</strong>时，使用包名，即httpd<ul>
+<li>比如<strong>卸载时、查询时</strong>，直接使用包名即可</li>
+<li>安装后的软件，软件名都会保存在/var/lib/rpm的数据库中</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-1-rpm安装命令-i"><a href="#4-1-rpm安装命令-i" class="headerlink" title="4.1 rpm安装命令 -i"></a>4.1 rpm安装命令 -i</h2><ul>
+<li><code>rpm -ivh 包全名</code></li>
+<li>选项<ul>
+<li>-i（install）</li>
+<li>-v （verbose）显示详细信息</li>
+<li>-h (hash)显示进度</li>
+<li>–nodeps 不检测依赖性，<strong>不推荐使用</strong>，因为不解决依赖软件安了也用不了</li>
+</ul>
+</li>
+</ul>
+<p>提示：安装的时候，<strong>会告诉你要依赖哪些rpm，依次装完这些软件即可</strong>；安装成功会提示两个100%，第一个是准备成功，第二个才是安装成功；rpm包进入光盘中的package中查找</p>
+<p>虽然yum方便的解决了依赖，可以安装和卸载rpm包，但是<strong>yum没有查询和校验命令</strong>。今后可以用<strong>yum的安装和卸载命令取代rpm的安装和卸载</strong>，但是查询和校验依然用rpm的命令。</p>
+<h2 id="4-2-rpm升级命令-U"><a href="#4-2-rpm升级命令-U" class="headerlink" title="4.2 rpm升级命令 -U"></a>4.2 rpm升级命令 -U</h2><ul>
+<li><code>rpm -Uvh 包全名</code></li>
+<li>选项<ul>
+<li>-U（upgrade）升级</li>
+<li>-v （verbose）显示详细信息</li>
+<li>-h (hash)显示进度</li>
+</ul>
+</li>
+</ul>
+<p>注意:</p>
+<ul>
+<li>新的升级包对系统来说也是完全陌生的包，必须用包全名；</li>
+<li>得有一个比当前版本更高版本的包，才会升级安装！比如安装了一个2.0版本的httpd软件，现在用<strong>更高版本的包</strong>httpd-2.2.15-15.el6.centos.1.i686.rpm进行升级安装</li>
+<li>版本相同不会安装，报A is already installed；没有安装过，则相当于安装命名</li>
+</ul>
+<h2 id="4-3-rpm卸载命令-e"><a href="#4-3-rpm卸载命令-e" class="headerlink" title="4.3 rpm卸载命令 -e"></a>4.3 rpm卸载命令 -e</h2><ul>
+<li><code>rpm -Uvh 包名</code></li>
+<li>选项<ul>
+<li>-e（erase）卸载</li>
+<li>–nodeps 不检测依赖性，<strong>不推荐使用</strong>，否则卸载不干净，依赖的软件都卸不掉！！</li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>使用包名即可</li>
+<li>卸载也要解决依赖性，卸载时的依赖性与安装时相反，依次卸载</li>
+</ul>
+<blockquote>
+<p><strong>rpm包为什么准备了卸载命令？</strong></p>
+<p>在安装rpm包的时候，没有指定安装位置，软件将会安装在系统默认的位置，即写这个rpm包的人认为软件装在哪最好，就会装在哪。会在系统中装的乱七八糟，手工删除要一个一个文件删很麻烦，所以有卸载命令更方便。</p>
+<p>但是源码包安装没有卸载命令，因为源码包指定安装位置，直接删除安装的目录即可。</p>
+<p>linux比windows稳定是因为linux不会产生垃圾文件，windows卸载软件常卸载不干净注册表中还有很多垃圾文件；linux不需要考虑这些，删除安装的位置文件即可，不会遗留垃圾文件。</p>
+</blockquote>
+<h2 id="4-4-rpm包查询方法-q"><a href="#4-4-rpm包查询方法-q" class="headerlink" title="4.4 rpm包查询方法 -q"></a>4.4 rpm包查询方法 -q</h2><p>yum只能实现安装、卸载，但是不能<strong>查询已经安装好的rpm包</strong>。常用命令如下</p>
+<h3 id="4-4-1-查询软件是否安装-q："><a href="#4-4-1-查询软件是否安装-q：" class="headerlink" title="4.4.1 查询软件是否安装 -q："></a>4.4.1 查询软件<strong>是否安装</strong> -q：</h3><ul>
+<li><code>rpm -q 包名</code><ul>
+<li>查询包是否<strong>安装</strong>，使用包名即可，返回rpm包的命名</li>
+<li>-q (query) 查询</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>rpm -qa</code><ul>
+<li>查询所有<strong>已经安装的</strong>rpm包</li>
+<li>-a (all)</li>
+<li><code>rpm -qa | grep 关键字</code> 返回含有关键字的已安装的rpm包（√推荐使用）</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-2-查询软件包的详细信息-i："><a href="#4-4-2-查询软件包的详细信息-i：" class="headerlink" title="4.4.2 查询软件包的详细信息 -i："></a>4.4.2 查询软件包的<strong>详细信息</strong> -i：</h3><ul>
+<li><p><code>rpm -qi (已安装的)包名</code></p>
+<ul>
+<li>-i (information) 返回包的详细信息（写rpm包的作者写的详细信息）</li>
+</ul>
+</li>
+<li><p><code>rpm -qip （未安装的）包全名</code></p>
+<ul>
+<li>-p (package) 查询未安装包信息</li>
+</ul>
+</li>
+</ul>
+<p>查询详细信息命令用的不多，但当软件出现问题时，可以通过查看URL官方网站去查找解决方法</p>
+<h3 id="4-4-3-查询包中文件安装位置-l："><a href="#4-4-3-查询包中文件安装位置-l：" class="headerlink" title="4.4.3 查询包中文件安装位置 -l："></a>4.4.3 查询包中<strong>文件安装位置</strong> -l：</h3><ul>
+<li><code>rpm -ql 包名</code><ul>
+<li>-l (list) 列表</li>
+<li>可以查看到<strong>软件的每个文件安装的详细位置</strong>，目录及其子目录；比如安装后的软件文件一般会分布在/etc配置文件中，/usr/lib函数库文件中，/var目录下</li>
+<li>rpm包会将安装的到处都是，装在哪是写rpm包的人决定的，所以安装的乱七八糟</li>
+</ul>
+</li>
+</ul>
+<p>PRM包默认的安装位置</p>
+<p>—|—<br>/etc/|配置文件安装目录<br>/usr/bin/|可执行的命令安装目录<br>/usr/lib/|程序所使用的函数库保存位置<br>/usr/share/doc/|基本的软件使用手册保存位置<br>/usr/share/man/|帮助文件保存位置</p>
+<ul>
+<li><code>rpm -qlp 包全名</code><ul>
+<li>-l (list) 列表</li>
+<li>-p (package)查询未安装包的信息</li>
+<li><strong>查看未安装的包</strong>安装以后将会安装到哪里</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-4-查询系统文件属于哪个RPM包-f"><a href="#4-4-4-查询系统文件属于哪个RPM包-f" class="headerlink" title="4.4.4 查询系统文件属于哪个RPM包 -f"></a>4.4.4 查询系统文件属于哪个RPM包 -f</h3><ul>
+<li><code>rpm -qf 系统文件名</code><ul>
+<li>-f (file) 查询系统文件属于哪个软件包</li>
+</ul>
+</li>
+</ul>
+<p>Linux系统和几乎所有的系统软件都是rpm包安装的，例如查找配置文件yum.conf属于哪个包</p>
+<pre><code>rpm -qf yum.conf
+</code></pre><p>返回<code>yum-3.2.29-30.el6.centos.noarch</code>所属包名</p>
+<p>但是，你自己创建的文件夹 <code>touch aaa</code>去查询<code>rpm -qf aaa</code>则会返回 <code>file /root/aaa is not owned by any package.</code></p>
+<p>只有<strong>通过rpm包安装产生的文件</strong>才能反向查询属于哪个rpm包。</p>
+<h3 id="4-4-5-查询软件包的依赖性-R"><a href="#4-4-5-查询软件包的依赖性-R" class="headerlink" title="4.4.5 查询软件包的依赖性 -R"></a>4.4.5 查询软件包的依赖性 -R</h3><ul>
+<li><p><code>rpm -qR 包名</code></p>
+<ul>
+<li>-R (requires) 查询软件包的依赖性</li>
+</ul>
+</li>
+<li><p><code>rpm -qRp 包全名</code></p>
+<ul>
+<li>-p (package) <strong>查看未安装包</strong>的依赖性</li>
+<li>依赖包是在写这个rpm包的时候就依赖了，所以未安装也可以查询</li>
+</ul>
+</li>
+</ul>
+<p>查询出来的结果其实意义不大，结果中还包含了linux的标准shell即bash这样的依赖，所以返回的依赖会很多，可读性不强。还不如<strong>直接去装软件包</strong>，让他去报错误，提示还需要哪些依赖。</p>
+<h2 id="4-5-rpm包的校验"><a href="#4-5-rpm包的校验" class="headerlink" title="4.5 rpm包的校验"></a>4.5 rpm包的校验</h2><ul>
+<li>rpm -V 已安装的包名<ul>
+<li>-V (verify)校验指定rpm包中的文件 </li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>验证内容中的8个信息</strong>的具体内容如下：SM5DLUGT</p>
+<ol>
+<li>S 文件<strong>大小</strong>是否改变</li>
+<li>M 文件的<strong>类型</strong>或文件的<strong>权限(rwx)</strong>是否改变</li>
+<li>5 文件的<strong>MD5校验和</strong>是否发生改变(可以看成文件内容是否改变)</li>
+<li>D 设备的主从代码是否改变</li>
+<li>L <strong>文件路径</strong>是否改变</li>
+<li>U 文件的<strong>所属用户</strong>是否改变</li>
+<li>G 文件的<strong>所属组</strong>是否改变</li>
+<li>T 文件的<strong>修改时间</strong>是否改变</li>
+</ol>
+</blockquote>
+<p><strong>MD5校验和的作用</strong>是，下载完一个软件以后，利用MD5校验软件去检验这个下载的程序，然后拿你检验出的MD5校验码和官网的MD5校验码比较，如果一样则证明<strong>文件的完整性</strong>。</p>
+<blockquote>
+<p><strong>文件类型</strong>校验：</p>
+<ul>
+<li>c config file 配置文件</li>
+<li>d documentation 普通文档</li>
+<li>g ghost 鬼文件，很少见，<strong>说明该文件不应该被这个RPM包包含</strong>，出现这个可能被攻击</li>
+<li>L license file 授权文件</li>
+<li>r read me 描述文件</li>
+</ul>
+</blockquote>
+<p>如果安装包未改变，校验以后则不返回任何东西。如果有改变，则返回以上信息。例如，给httpd的配置文件httpd.conf中注释部分加一点内容</p>
+<pre><code># rpm -V httpd
+</code></pre><p>返回：</p>
+<pre><code>S.5....T. c /etc/httpd/conf/httpd.conf
+</code></pre><p>说明S\5\T这些项都被改变，c指的是一个正常的配置文件。如果自己从来没有动过这个文件，校验结果显示被修改了，可以怀疑有人偷偷修改过。</p>
+<h2 id="4-6-rpm包中文件提取"><a href="#4-6-rpm包中文件提取" class="headerlink" title="4.6 rpm包中文件提取"></a>4.6 rpm包中文件提取</h2><p>只要指导rpm包中有哪些文件，就可以通过以下命令提取文件，包中文件绝对路径就是默认安装的位置，见 4.4.3</p>
+<ul>
+<li><code>rpm2cpio 包全名 | cpio -idv .包中文件绝对路径</code></li>
+</ul>
+<blockquote>
+<p>两个命令的功能说明：</p>
+<ul>
+<li><p>rpm2cpio 包全名</p>
+<ul>
+<li><strong>将rpm包转换为cpio格式</strong></li>
+</ul>
+</li>
+<li><p>cpio</p>
+<ul>
+<li>一个标准工具，用于创建软件档案文件和<strong>从档案文件中提取文件</strong></li>
+<li>这个命令并不知道从哪里提取文件，所以一般使<strong>用管道符输入给cpio</strong>，或者用重定向，让cpio从这些文件中提取</li>
+</ul>
+</li>
+</ul>
+<p>cpio用重定向的使用格式为</p>
+<ul>
+<li>cpio -idv &lt; [文件|设备]<ul>
+<li>-i copy-in 模式，提取</li>
+<li>-d 提取时自动新建目录</li>
+<li>-v 显示提取过程</li>
+<li>利用<strong>管道符或者重定向得知从哪里提取数据</strong>！</li>
+<li>-idv 是提取的标准选项！</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>例如，系统命令ls是放在bin下的ls当中</p>
+<pre><code>whereis ls
+</code></pre><p>返回</p>
+<pre><code>ls:/bin/ls
+</code></pre><p>但是如果误操作，将/bin/ls文件删了，这时ls命令会消失。解决方法是再找一台linux，把这台linux上的/bin/ls拷贝过来只要版本一致就行。</p>
+<p>如果没有另一台linux，则可以考虑通过rpm包提取文件的方法。包括linux系统在内的所有软件都是通过rpm包安装出来的，因此所有系统文件都在rpm包当中，可以从中提取出需要的系统文件。</p>
+<p>第一步：了解到要提取的文件属于哪个包</p>
+<pre><code>rpm -qf /bin/ls
+</code></pre><p>第二步：提取文件,从光盘中的某个rpm包中提取</p>
+<pre><code>rpm2cpio /mnt/cdrom/packages/coreutils-8.4-19.el6.i686.rpm |cpio -idv ./bin/ls
+</code></pre><p>通过rpm2cpio命令，将/mnt/cdrom/packages/coreutils-8.4-19.el6.i686.rpm转换成cpio格式；通过管道符，<code>cpio -idv</code> 命令知道从前面的数据中提取文件，提取的文件就是./bin下的ls文件；<strong>. 表示</strong>把提取出的文件会保存在当前目录下。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux软件安装管理（一）：初识Linux软件包及其分类]]></title>
       <url>http://shengdeng.github.io/2016/06/11/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%88%9D%E8%AF%86Linux%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%8F%8A%E5%85%B6%E5%88%86%E7%B1%BB/</url>
       <content type="html"><![CDATA[<p><strong>内容提要</strong></p>
