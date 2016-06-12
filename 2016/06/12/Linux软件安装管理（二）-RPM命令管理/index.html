@@ -171,6 +171,30 @@
             
 
             <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Kafka/">
+                    Kafka <span class="right">3</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/学习笔记/">
+                    学习笔记 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
                 <a class="no-padding" href="/categories/专业英语/">
                     专业英语 <span class="right">1</span></a>
                 </a>
@@ -219,16 +243,16 @@
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/Linux/学习笔记/软件管理/">
-                    软件管理 <span class="right">2</span></a>
+                <a class="no-padding" href="/categories/Linux/学习笔记/服务管理/">
+                    服务管理 <span class="right">1</span></a>
                 </a>
             </li>
 
         
 
             <li class="collapse-level-2" collapse-level="2">
-                <a class="no-padding" href="/categories/Linux/学习笔记/服务管理/">
-                    服务管理 <span class="right">1</span></a>
+                <a class="no-padding" href="/categories/Linux/学习笔记/软件管理/">
+                    软件管理 <span class="right">2</span></a>
                 </a>
             </li>
 
@@ -243,14 +267,6 @@
         
 
             <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/Spark/官网翻译/">
-                    官网翻译 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-1" collapse-level="1">
                 <a class="no-padding" href="/categories/Spark/学习笔记/">
                     学习笔记 <span class="right">4</span></a>
                 </a>
@@ -258,25 +274,9 @@
 
         
 
-            <li class="collapse-level-0" collapse-level="0">
-                <a class="no-padding" href="/categories/Kafka/">
-                    Kafka <span class="right">3</span></a>
-                </a>
-            </li>
-
-        
-
             <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/Kafka/官网翻译/">
+                <a class="no-padding" href="/categories/Spark/官网翻译/">
                     官网翻译 <span class="right">1</span></a>
-                </a>
-            </li>
-
-        
-
-            <li class="collapse-level-1" collapse-level="1">
-                <a class="no-padding" href="/categories/Kafka/学习笔记/">
-                    学习笔记 <span class="right">2</span></a>
                 </a>
             </li>
 
@@ -374,7 +374,15 @@
 
 
             <div class="entry pink-link-context">
-                <h1 id="1-RPM包的来源"><a href="#1-RPM包的来源" class="headerlink" title="1.RPM包的来源"></a>1.RPM包的来源</h1><p>Linux的系统光盘DVD1中ISO中有软件的RPM包，只需在虚拟机<strong>光驱</strong>中选择这个DVD1，勾选<strong>连接</strong>选项，即给光驱通电。</p>
+                <p><strong>内容提要</strong></p>
+<ol>
+<li>RPM包都在系统安装光盘中</li>
+<li>rpm包命名规则：httpd-2.2.15-15.el6.centos.1.i686.rpm</li>
+<li>rpm包的依赖性问题</li>
+<li>rpm包命令：安装-i;卸载-e;升级-U；查询-q,-qa,-qi,-qip,-ql,-qlp,-qf;校验 -V；rpm中提取文件。其中，安装卸载可以被yum取代。而yum没有查询、校验rpm包的功能</li>
+</ol>
+<a id="more"></a>
+<h1 id="1-RPM包的来源"><a href="#1-RPM包的来源" class="headerlink" title="1.RPM包的来源"></a>1.RPM包的来源</h1><p>Linux的系统光盘DVD1中ISO中有软件的RPM包，只需在虚拟机<strong>光驱</strong>中选择这个DVD1，勾选<strong>连接</strong>选项，即给光驱通电。</p>
 <p>给虚拟机光驱中加入DVD后，在linux系统中给光盘创建一个挂载点</p>
 <pre><code>mkdir /mnt/cdrom
 </code></pre><p>输入挂载命令</p>
@@ -383,11 +391,7 @@
 <h1 id="2-RPM包命名规则"><a href="#2-RPM包命名规则" class="headerlink" title="2.RPM包命名规则"></a>2.RPM包命名规则</h1><p>所有的RPM包都必须按照以下规则命名，看懂它有助于选择合适的软件包：</p>
 <ul>
 <li>httpd-2.2.15-15.el6.centos.1.i686.rpm<ul>
-<li>包名称，即软件名称httpd<ul>
-<li>包全名：操作的包是<strong>没有安装的软件包</strong>时，使用包全名，包括路径，即此时包只是一个文件，比如安装包时到这个文件的目录下或者用绝对路径+包名</li>
-<li>包名：操作<strong>已安装的软件包</strong>时，使用包名，即httpd；比如卸载时，直接使用包名即可</li>
-</ul>
-</li>
+<li>包名称，即软件名称httpd</li>
 <li>版本号2.2.15</li>
 <li>软件发布次数15</li>
 <li>适合的Linux平台el6.centos；el6指的是redhat的企业版</li>
@@ -520,7 +524,7 @@
 </li>
 </ul>
 <p>PRM包默认的安装位置</p>
-<p>—|—<br>/etc/|配置文件安装目录<br>/usr/bin/|可执行的命令安装目录<br>/usr/lib/|程序所使用的函数库保存位置<br>/usr/share/doc/|基本的软件使用手册保存位置<br>/usr/share/man/|帮助文件保存位置</p>
+<p>|—|—|<br>/etc/|配置文件安装目录<br>/usr/bin/|可执行的命令安装目录<br>/usr/lib/|程序所使用的函数库保存位置<br>/usr/share/doc/|基本的软件使用手册保存位置<br>/usr/share/man/|帮助文件保存位置</p>
 <ul>
 <li><code>rpm -qlp 包全名</code><ul>
 <li>-l (list) 列表</li>
