@@ -4,6 +4,59 @@
   
     
     <entry>
+      <title><![CDATA[VMware中网络连接的配置]]></title>
+      <url>http://shengdeng.github.io/2016/06/13/VMware%E4%B8%AD%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<p>VMware中虚拟机联网方式：桥接模式、host-only模式、NAT模式使用介绍。<br><a id="more"></a></p>
+<h1 id="1-虚拟机三种网络设置功能"><a href="#1-虚拟机三种网络设置功能" class="headerlink" title="1.虚拟机三种网络设置功能"></a>1.虚拟机三种网络设置功能</h1><p>在windous上通过<code>控制面板→更改适配器设置</code>可以看到</p>
+<ul>
+<li>计算机有两个<strong>真实网卡</strong>：有线连接和无线连接；</li>
+<li>安装完虚拟机以后，会出现两块<strong>虚拟网卡</strong>VMnet1和VMnet8。</li>
+</ul>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/3333.PNG" alt=""></p>
+<p>VMware中网络适配器的三种设置：</p>
+<ul>
+<li><strong>桥接方式</strong><ul>
+<li>如果选择桥接，虚拟机<strong>使用真实的网卡</strong>，即本地的有线连接或者本地的无线连接。将<strong>虚拟机的IP设置成真实机IP同一个网段</strong>，就可以与真实机之间进行通信，还可以与局域网（同网段）其他计算机进行通信。</li>
+<li>坏处：会占用网段的一个ip，如果有多台虚拟机使用桥接，占用很多ip，会出现ip地址冲突现象。</li>
+</ul>
+</li>
+<li><strong>NAT模式</strong><ul>
+<li>虚拟机通过VMware8这块假网卡与真实机进行通信</li>
+</ul>
+</li>
+<li><strong>Host-Only模式</strong><ul>
+<li>虚拟机通过VMware1这块假网卡与真实机通信</li>
+</ul>
+</li>
+</ul>
+<p>区别一：</p>
+<ul>
+<li>桥接：利用真实网卡，需设置与真实机<strong>在同一个网段</strong>即局域网内，可与局域网内计算机通信</li>
+<li>Nat\Host-only利用虚拟网卡，只<strong>能与真实机通信</strong>，但和真实机所在的局域网不能通信，因为<strong>不在同一网段</strong></li>
+</ul>
+<p>区别二：</p>
+<ul>
+<li>host-only：只能和真实机通信</li>
+<li>NAT：虚拟机和真实机、<strong>互联网</strong>通信</li>
+</ul>
+<h1 id="2-host-only模式ip设置"><a href="#2-host-only模式ip设置" class="headerlink" title="2.host-only模式ip设置"></a>2.host-only模式ip设置</h1><p>第一步：选中host-only </p>
+<p>第二步：查看VMware1的TCP/IPV4网络属性，查看这块虚拟网卡的网段；由于<strong>真实机和虚拟机通过VMware1网卡通信</strong>，所以虚拟机IP要在VMware网卡网段中。</p>
+<p>第三步：设置虚拟机ip，使得ip与VMware1在同一网段。</p>
+<pre><code>ifconfig #查看当前网卡信息（if，interface接口）
+</code></pre><p>ip的信息显示在<code>eth0：</code>内容里，eth0指的是一块网卡ethernet以太网；lo是回环网卡loopback，用于在没有网卡的时候，本机通信测试，不需要插网线网卡自己ping自己，所有的操作系统OS都有，没有多大实际意义。</p>
+<h1 id="3-桥接模式ip设置"><a href="#3-桥接模式ip设置" class="headerlink" title="3.桥接模式ip设置"></a>3.桥接模式ip设置</h1><p>设置虚拟机的ip与真实的网卡网段一致。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux软件安装管理（三）：yum在线安装]]></title>
+      <url>http://shengdeng.github.io/2016/06/13/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Ayum%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85/</url>
+      <content type="html"><![CDATA[<p>rpm软件包形式管理软件，需要手工解决软件的依赖关系，rpm安装一个软件时有时需要先安装其他软件，十分麻烦。yum可以解决这个问题，将所有软件包放到官方服务器上，当进行yum在线安装时，可以自动解决依赖性的问题。redhat的yum在线安装需要付费，而centos是免费的。</p>
+<h1 id="1-yum仓库"><a href="#1-yum仓库" class="headerlink" title="1. yum仓库"></a>1. yum仓库</h1><p>yum引入仓库repo的概念，仓库用来存放所有现有的rpm包，当使用yum安装一个rpm</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux软件安装管理（二）：RPM命令管理]]></title>
       <url>http://shengdeng.github.io/2016/06/12/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%BA%8C%EF%BC%89-RPM%E5%91%BD%E4%BB%A4%E7%AE%A1%E7%90%86/</url>
       <content type="html"><![CDATA[<p><strong>内容提要</strong></p>
@@ -100,7 +153,7 @@
 <li>版本相同不会安装，报A is already installed；没有安装过，则相当于安装命名</li>
 </ul>
 <h2 id="4-3-rpm卸载命令-e"><a href="#4-3-rpm卸载命令-e" class="headerlink" title="4.3 rpm卸载命令 -e"></a>4.3 rpm卸载命令 -e</h2><ul>
-<li><code>rpm -Uvh 包名</code></li>
+<li><code>rpm -e 包名</code></li>
 <li>选项<ul>
 <li>-e（erase）卸载</li>
 <li>–nodeps 不检测依赖性，<strong>不推荐使用</strong>，否则卸载不干净，依赖的软件都卸不掉！！</li>

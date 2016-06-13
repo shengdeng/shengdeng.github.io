@@ -7,7 +7,7 @@
 
     
 
-    <title>Spark四大特性 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>VMware中网络连接的配置 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta property="og:title" content="Spark四大特性"/>
+    <meta property="og:title" content="VMware中网络连接的配置"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -336,7 +336,7 @@
             
     
     
-    <a class="breadcrumb" href="/categories/Spark/">Spark</a><a class="breadcrumb" href="/categories/Spark/学习笔记/">学习笔记</a>
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/安装笔记/">安装笔记</a>
 
 
         
@@ -353,66 +353,66 @@
             <div class="article-title">
                 
     
-        <h1>Spark四大特性</h1>
+        <h1>VMware中网络连接的配置</h1>
     
 
 
             </div>
-            <time class="pink-link-context" datetime="2016-05-10T03:51:11.000Z"><a href="/2016/05/10/Spark四大特性/">2016-05-10</a></time>
+            <time class="pink-link-context" datetime="2016-06-13T01:30:42.000Z"><a href="/2016/06/13/VMware中网络连接的配置/">2016-06-13</a></time>
 
             
     <div class="tags-row">
         
-            <a href="/tags/Spark/" class="chip teal darken-1">Spark</a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
 
 
             <div class="toc pink-link-context hide-on-med-and-down">
-    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#快速-Speed"><span class="section table-of-contents-text">快速(Speed)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#易使用-Ease-of-Use"><span class="section table-of-contents-text">易使用(Ease of Use)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#通用性-Generality"><span class="section table-of-contents-text">通用性(Generality)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#运行在各个地方-Runs-Everywhere"><span class="section table-of-contents-text">运行在各个地方(Runs Everywhere)</span></a></li></ol>
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-虚拟机三种网络设置功能"><span class="section table-of-contents-text">1.虚拟机三种网络设置功能</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-host-only模式ip设置"><span class="section table-of-contents-text">2.host-only模式ip设置</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-桥接模式ip设置"><span class="section table-of-contents-text">3.桥接模式ip设置</span></a></li></ol>
 </div>
 
 
             <div class="entry pink-link-context">
-                <p><a href="http://spark.apache.org/" target="_blank" rel="external">Apache Spark™</a> is a fast and general engine for large-scale data processing.<br>Apache Spark™是一个<strong>快速的</strong>、<strong>通用的</strong>，针对于<strong>大数据集</strong>的<strong>数据处理分析</strong>的计算引擎（框架）。</p>
+                <p>VMware中虚拟机联网方式：桥接模式、host-only模式、NAT模式使用介绍。<br><a id="more"></a></p>
+<h1 id="1-虚拟机三种网络设置功能"><a href="#1-虚拟机三种网络设置功能" class="headerlink" title="1.虚拟机三种网络设置功能"></a>1.虚拟机三种网络设置功能</h1><p>在windous上通过<code>控制面板→更改适配器设置</code>可以看到</p>
 <ul>
-<li>Hadoop:数据存储（HDFS）与分析(MR)</li>
-<li>Spark：数据分析</li>
+<li>计算机有两个<strong>真实网卡</strong>：有线连接和无线连接；</li>
+<li>安装完虚拟机以后，会出现两块<strong>虚拟网卡</strong>VMnet1和VMnet8。</li>
 </ul>
-<p>在数据处理上Spark与MR比较，主要有如下四点优势特性</p>
-<a id="more"></a>
-<h1 id="快速-Speed"><a href="#快速-Speed" class="headerlink" title="快速(Speed)"></a>快速(Speed)</h1><p>与Hadoop MapReduce比较，内存中运行快100倍以上，磁盘中运行快10倍以上。</p>
-<p>主要原因：</p>
-<ol>
-<li>Spark使用有向无环图DAG（任务划为一个一个流程图）</li>
-<li>Spark在内存中运行（MR map输出结果仿真磁盘，reduce读数据从磁盘读，磁盘读写速度依赖网络IO、磁盘速度）</li>
-</ol>
-<h1 id="易使用-Ease-of-Use"><a href="#易使用-Ease-of-Use" class="headerlink" title="易使用(Ease of Use)"></a>易使用(Ease of Use)</h1><p>spark编程简单，支持scala、java、python，尤其scala和python代码很简洁，代码量少：</p>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/3333.PNG" alt=""></p>
+<p>VMware中网络适配器的三种设置：</p>
 <ul>
-<li>spark提供了<strong>80个以上的操作</strong>（除了map\reduce还有很多操作）使得编程简单。</li>
-<li>提供了可交互的 <strong>scala shell</strong> 和 python shell</li>
+<li><strong>桥接方式</strong><ul>
+<li>如果选择桥接，虚拟机<strong>使用真实的网卡</strong>，即本地的有线连接或者本地的无线连接。将<strong>虚拟机的IP设置成真实机IP同一个网段</strong>，就可以与真实机之间进行通信，还可以与局域网（同网段）其他计算机进行通信。</li>
+<li>坏处：会占用网段的一个ip，如果有多台虚拟机使用桥接，占用很多ip，会出现ip地址冲突现象。</li>
 </ul>
-<p>MR编程则十分麻烦，虽然有模板可以套用，但代码总体庞大；MR只有map和reduce两个操作，一个业务总要想办法拆成（多个）map和reduce，甚至多个job，</p>
-<h1 id="通用性-Generality"><a href="#通用性-Generality" class="headerlink" title="通用性(Generality)"></a>通用性(Generality)</h1><p>Spark框架可以视为core，建立在spark运算框架上，还有其他专用框架（像MR上建立的框架：MapReduce难写有了Hive框架、机器学习Mahont框架、Pig、图形计算Giraph），Spark上的框架相当于一些Jar包库，不需要像Hive、Mahont要另外部署配置。</p>
-<p>Spark powers（为…提供动力） a stack of libraries including SQL and DataFrames, MLlib for machine learning, GraphX, and Spark Streaming. You can combine these libraries seamlessly in the same application.<br>Spark内核框架驱动一堆高级工具库包括SQL，DataFrames, 机器学习库MLlib, GraphX, and Spark Streaming。 你只要部署好了spark，这些类库就直接可以用，即<strong>一站式的大数据处理解决方案(One stack to rule all!)</strong>。因此不需要为了各种业务而搭建平台。（Hadoop平台上要为了各种业务搭建一堆东西，比如Hive、Pig等等）</p>
-<p>总之，基于Spark core上的大一统软件栈的优点：</p>
+</li>
+<li><strong>NAT模式</strong><ul>
+<li>虚拟机通过VMware8这块假网卡与真实机进行通信</li>
+</ul>
+</li>
+<li><strong>Host-Only模式</strong><ul>
+<li>虚拟机通过VMware1这块假网卡与真实机通信</li>
+</ul>
+</li>
+</ul>
+<p>区别一：</p>
 <ul>
-<li>spark下层core的改进优化时，上层程序库也自动获得性能提升；</li>
-<li>运行整个软件栈的代价小（包括部署、维护、测试、支持），不需要运行多套独立的软件系统；</li>
-<li>能够无缝整合不同处理模型的应用（如机器学习的应用和SQL实时查询结果数据的应用在Spark上同时进行）</li>
+<li>桥接：利用真实网卡，需设置与真实机<strong>在同一个网段</strong>即局域网内，可与局域网内计算机通信</li>
+<li>Nat\Host-only利用虚拟网卡，只<strong>能与真实机通信</strong>，但和真实机所在的局域网不能通信，因为<strong>不在同一网段</strong></li>
 </ul>
-<h1 id="运行在各个地方-Runs-Everywhere"><a href="#运行在各个地方-Runs-Everywhere" class="headerlink" title="运行在各个地方(Runs Everywhere)"></a>运行在各个地方(Runs Everywhere)</h1><p>多种运行方式</p>
+<p>区别二：</p>
 <ul>
-<li>单独部署：standalone</li>
-<li>Yarn</li>
-<li>类似于yarn的资源管理框架Mesos</li>
-<li>云端：EMC、EC2</li>
+<li>host-only：只能和真实机通信</li>
+<li>NAT：虚拟机和真实机、<strong>互联网</strong>通信</li>
 </ul>
-<p>运行数据来源</p>
-<ul>
-<li><strong>Spark可以支持任何实现了Hadoop API的存储系统</strong>(Access data in HDFS, Cassandra, HBase, Hive, Tachyon, and any Hadoop data source.)。Spark可以从存储在Hadoop分布式文件系统（HDFS）中的任何文件，或其他Hadoop API支持的存储系统（如本地文件系统，Amazon S3， Cassandra， Hive，HBase等）创建分布式数据集。</li>
-<li><strong>Hadoop对Spark来说不是必须的</strong>，Spark支持文本文件、序列文件、Avro、Parquet，以及任何其他Hadoop的输入格式。</li>
-</ul>
+<h1 id="2-host-only模式ip设置"><a href="#2-host-only模式ip设置" class="headerlink" title="2.host-only模式ip设置"></a>2.host-only模式ip设置</h1><p>第一步：选中host-only </p>
+<p>第二步：查看VMware1的TCP/IPV4网络属性，查看这块虚拟网卡的网段；由于<strong>真实机和虚拟机通过VMware1网卡通信</strong>，所以虚拟机IP要在VMware网卡网段中。</p>
+<p>第三步：设置虚拟机ip，使得ip与VMware1在同一网段。</p>
+<pre><code>ifconfig #查看当前网卡信息（if，interface接口）
+</code></pre><p>ip的信息显示在<code>eth0：</code>内容里，eth0指的是一块网卡ethernet以太网；lo是回环网卡loopback，用于在没有网卡的时候，本机通信测试，不需要插网线网卡自己ping自己，所有的操作系统OS都有，没有多大实际意义。</p>
+<h1 id="3-桥接模式ip设置"><a href="#3-桥接模式ip设置" class="headerlink" title="3.桥接模式ip设置"></a>3.桥接模式ip设置</h1><p>设置虚拟机的ip与真实的网卡网段一致。</p>
 
             </div>
         </div>
@@ -426,7 +426,7 @@
         <div class="card">
             <div class="card-content">
                 <!-- Duoshuo Comment BEGIN -->
-                <div class="ds-thread" data-thread-key="2016/05/10/Spark四大特性/" data-title="Spark四大特性" data-url="http://shengdeng.github.io/2016/05/10/Spark四大特性/"></div>
+                <div class="ds-thread" data-thread-key="2016/06/13/VMware中网络连接的配置/" data-title="VMware中网络连接的配置" data-url="http://shengdeng.github.io/2016/06/13/VMware中网络连接的配置/"></div>
 
                 <script type="text/javascript">
                     console.log(document.querySelector('.ds-thread'));
