@@ -52,8 +52,77 @@
       <title><![CDATA[Linux软件安装管理（三）：yum在线安装]]></title>
       <url>http://shengdeng.github.io/2016/06/13/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Ayum%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85/</url>
       <content type="html"><![CDATA[<p>rpm软件包形式管理软件，需要手工解决软件的依赖关系，rpm安装一个软件时有时需要先安装其他软件，十分麻烦。yum可以解决这个问题，将所有软件包放到官方服务器上，当进行yum在线安装时，可以自动解决依赖性的问题。redhat的yum在线安装需要付费，而centos是免费的。</p>
-<h1 id="1-yum仓库"><a href="#1-yum仓库" class="headerlink" title="1. yum仓库"></a>1. yum仓库</h1><p>yum引入仓库repo的概念，仓库用来存放所有现有的rpm包，当使用yum安装一个rpm</p>
-]]></content>
+<h1 id="1-yum仓库"><a href="#1-yum仓库" class="headerlink" title="1. yum仓库"></a>1. yum仓库</h1><p>yum引入仓库repo的概念，仓库用来存放所有现有的rpm包，当使用yum安装一个rpm，如果存在依赖关系，<strong>会自动在仓库中查找依赖软件并安装</strong>。如果仓库中没有这个依赖，那么yum安装失败。</p>
+<p>仓库可以是<strong>本地的（文件夹）</strong>，也可以通过HTTP、FTP、NFS形式使用集中的、统一的<strong>网络仓库</strong>。</p>
+<p>所以，要使用yum，必须先配置yum仓库：</p>
+<h2 id="1-1-yum仓库repo的配置"><a href="#1-1-yum仓库repo的配置" class="headerlink" title="1.1 yum仓库repo的配置"></a>1.1 yum仓库repo的配置</h2><ul>
+<li>yum仓库的配置文件存放在<strong>/etc/yum.repos.d/</strong></li>
+<li>仓库配置文件名随意取，但一定要<strong>以.repo结尾</strong></li>
+<li><strong>一个.repo配置文件</strong>中可以保存<strong>多个仓库的配置信息</strong></li>
+<li>centOS安装好以后，yum仓库已经配置好了，因为是免费的。如果使用红帽，默认不会配置，可以去购买红帽的订阅，或者上网查仓库的地址，或者使用centOS的网络仓库也可以。</li>
+</ul>
+<p>例如，CentOS-Base.repo配置文件中有很多仓库，其中一个名为base仓库的配置：</p>
+<pre><code>[base]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=os&amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+</code></pre><p>注意：等号=无空格。<code>file:///etc/</code>中<code>file://</code>是协议的双斜杠，路径是<code>/etc/</code>，所以有三个双斜杠。</p>
+<p>配置参数说明：</p>
+<ul>
+<li><strong>[base]</strong> 仓库的名字，用[]扩起，随意取名</li>
+<li><strong>name=</strong>this is 说明，可随便写</li>
+<li><strong>mirrorlist=</strong> 镜像站点，可以注释掉</li>
+<li><strong>baseurl=</strong> yum仓库的地址。可以是本地的file：//。也可以是网络仓库http、ftp、nfs</li>
+<li><strong>enabled</strong> 仓库是否生效<ul>
+<li>enable=1或者<strong>不写</strong>：生效</li>
+<li>enable=0：不生效</li>
+</ul>
+</li>
+<li><strong>gpgcheck</strong> RPM数字证书是否生效<ul>
+<li>gpgcheck=1：生效。建议开启，可以验证下载的软件是否安全完整</li>
+<li>gpgcheck=0：不生效</li>
+</ul>
+</li>
+<li><strong>gpgkey</strong> 数字证书的公钥文件保存位置/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7，不用修改</li>
+</ul>
+<h2 id="1-2-创建yum仓库"><a href="#1-2-创建yum仓库" class="headerlink" title="1.2 创建yum仓库"></a>1.2 创建yum仓库</h2><h3 id="第一步：将所有RPM拷贝到一个文件夹中"><a href="#第一步：将所有RPM拷贝到一个文件夹中" class="headerlink" title="第一步：将所有RPM拷贝到一个文件夹中"></a>第一步：将所有RPM拷贝到一个文件夹中</h3><p>如将光盘中的rpm包放到本地的文件夹中</p>
+<ol>
+<li>挂载光盘<ul>
+<li>mkdir /mnt/cdrom #建立挂载点，即文件夹</li>
+<li>mount /dev/cdrom /mnt/cdrom #挂载光盘</li>
+</ul>
+</li>
+<li>复制光盘中的rpm包到本地文件夹中<ul>
+<li>mkdir my_yum</li>
+<li>cp -rv /mnt/cdrom/package/* /my_yum </li>
+</ul>
+</li>
+</ol>
+<h3 id="第二步：创建索引文件"><a href="#第二步：创建索引文件" class="headerlink" title="第二步：创建索引文件"></a>第二步：创建索引文件</h3><ol>
+<li>先用rpm命令手工安装creatrepo软件，creatrepo用于创建索引文件<ul>
+<li>cd /my_yum #进入仓库的文件夹</li>
+<li>rpm -ivh creatrepo #会报错，提示安装deltarpm,phython-deltarpm</li>
+<li>rpm -ivh creatrepo deltarpm phython-deltarpm #如果需要解决依赖，可以三个一起安装</li>
+</ul>
+</li>
+<li>使用creatrepo创建索引文件<ul>
+<li>creatrepo -v /yum仓库的路径</li>
+<li>比如，creatrepo -v /my_yum</li>
+<li>命令会对仓库中的rpm包创建索引，会在当前目录（仓库文件夹下）创建一个repodata的目录，里面保存索引信息</li>
+</ul>
+</li>
+</ol>
+<h3 id="第三步：在-etc-yum-repos-d-中添加仓库的配置文件"><a href="#第三步：在-etc-yum-repos-d-中添加仓库的配置文件" class="headerlink" title="第三步：在/etc/yum.repos.d/中添加仓库的配置文件"></a>第三步：在/etc/yum.repos.d/中添加仓库的配置文件</h3><ol>
+<li>cd /etc/yum.repos.d/</li>
+<li><p>vim myyum.repo</p>
+<p> [myyum]<br> name=this is my repo<br> baseurl=file:///my_yum<br> enable=1 #也可以不写默认开启<br> gpgcheck=1 #自己创建的仓库，也可以不验证gpgcheck=0<br> gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</p>
+</li>
+</ol>
+<p>注意：yum为了提高速度，会缓存很多信息，但也会导致故障。所以每次使用yum命令后，请清除缓存：</p>
+<pre><code>yum clean call
+</code></pre>]]></content>
     </entry>
     
     <entry>
