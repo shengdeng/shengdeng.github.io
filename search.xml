@@ -106,9 +106,12 @@
 </li>
 <li>安装的时候信息量大，不需要每行去看，只要确认没有报错就行</li>
 </ul>
-<p>第一步：下载源码包；解压缩下载的源码包；<strong>进入解压缩目录</strong>（必须在源代码文件夹下操作）</p>
-<p>未完。。。现在大型软件还有 <strong>maven编译</strong> 如spark</p>
-]]></content>
+<p>一般源码包中会有一个INSTALLATION的安装说明</p>
+<pre><code>./configure --prefix=安装路径/usr/local/软件名
+make
+make install
+/usr/local/软件名/bin/启动文件 start
+</code></pre>]]></content>
     </entry>
     
     <entry>
