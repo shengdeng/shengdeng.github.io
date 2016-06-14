@@ -7,7 +7,7 @@
 
     
 
-    <title>词汇辨析 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>Linux软件安装管理（四）：源码包安装 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Linux软件安装管理（四）：源码包安装"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -329,30 +329,189 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">当前位置（分类目录）</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/学习笔记/">学习笔记</a><a class="breadcrumb" href="/categories/Linux/学习笔记/软件管理/">软件管理</a>
+
 
         
-            <a class="breadcrumb" href="/categories/专业英语/单词/词汇辨析/">词汇辨析</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux软件安装管理（四）：源码包安装</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-06-14T07:15:38.000Z"><a href="/2016/06/14/Linux软件安装管理（四）：源码包安装/">2016-06-14</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/05/06/Guide、Manual和Tutorial的区别/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-05-06T07:57:53.000Z">2016-05-06</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                Guide、Manual和Tutorials的区别
-            </a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-源码包与RPM包的区别"><span class="section table-of-contents-text">1.源码包与RPM包的区别</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-RPM包的安装位置：默认位置"><span class="section table-of-contents-text">1.1 RPM包的安装位置：默认位置</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-源码包的安装位置-手工指定"><span class="section table-of-contents-text">1.2 源码包的安装位置:手工指定</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-3-安装位置不同带来什么后果"><span class="section table-of-contents-text">1.3 安装位置不同带来什么后果</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-4-应该选择哪种安装方式？"><span class="section table-of-contents-text">1.4 应该选择哪种安装方式？</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-源码包安装"><span class="section table-of-contents-text">2. 源码包安装</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#注意事项"><span class="section table-of-contents-text">注意事项</span></a></li></ol></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="1-源码包与RPM包的区别"><a href="#1-源码包与RPM包的区别" class="headerlink" title="1.源码包与RPM包的区别"></a>1.源码包与RPM包的区别</h1><ul>
+<li>安装之前的区别：概念上的区别<ul>
+<li>详见（一）</li>
+</ul>
+</li>
+<li>安装之后的区别：安装的位置不同<ul>
+<li>重点：安装位置不同对软件使用有什么影响？</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-1-RPM包的安装位置：默认位置"><a href="#1-1-RPM包的安装位置：默认位置" class="headerlink" title="1.1 RPM包的安装位置：默认位置"></a>1.1 RPM包的安装位置：默认位置</h2><p>回顾一下RPM包的默认安装位置</p>
+<table>
+<thead>
+<tr>
+<th>PRM包默认的安装位置</th>
+<th>文件归类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/</td>
+<td>配置文件安装目录</td>
+</tr>
+<tr>
+<td>/usr/bin/</td>
+<td>可执行的命令安装目录</td>
+</tr>
+<tr>
+<td>/usr/lib/</td>
+<td>程序所使用的函数库保存位置</td>
+</tr>
+<tr>
+<td>/usr/share/doc/</td>
+<td>基本的软件使用手册保存位置</td>
+</tr>
+<tr>
+<td>/usr/share/man/</td>
+<td>帮助文件保存位置</td>
+</tr>
+</tbody>
+</table>
+<p>以上表格只是一个一般情况，具体RPM包软件的安装位置是写这个软件的人决定的，安装的时候无需指定安装位置。但是，rpm安装支持指定安装位置</p>
+<pre><code>rpm --help
+</code></pre><p>可以找到有安装路径的参数</p>
+<pre><code>--prefix=&lt;dir&gt;   如果可重定位，便把软件包重定位到 &lt;dir&gt;
+</code></pre><ul>
+<li>rpm包安装通常不指定安装位置，其安装的默认位置是系统设定应该安装的位置；</li>
+<li>因为软件安装的默认位置“到处都是”，所以提供了<strong>卸载命令一次删除</strong> <code>rpm -e 包名</code></li>
+<li>若自定义安装位置，系统反而找不到，因此<strong>RPM包不建议自己指定安装路径</strong>。例如<ul>
+<li>RPM包安装的服务可以使用系统服务管理命令service来管理。例如RPM包安装的apache的启动方法有两种<ul>
+<li>根据绝对路径启动：<code>/etc/rc.d/init.d/httpd start</code></li>
+<li>系统命令service启动：<code>service http start</code></li>
+</ul>
+</li>
+<li>如果自己指定了安装位置，安装路径就不是<code>/etc/rc.d/init.d/httpd</code>了，以上两个启动命令都用不了！！因为service命令也是要先搜索默认路径/etc/rc.d/init.d/httpd</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：RPM包安装就用默认安装位置，好处是配置文件就在/etc下，启动程序就在/usr/bin或者/usr/sbin下，管理方便，符合系统要求，还有卸载命令</strong><code>rpm -e 包名</code>。</p>
+<h2 id="1-2-源码包的安装位置-手工指定"><a href="#1-2-源码包的安装位置-手工指定" class="headerlink" title="1.2 源码包的安装位置:手工指定"></a>1.2 源码包的安装位置:手工指定</h2><ul>
+<li>安装在指定的位置中，一般是：/usr/local/软件名/<ul>
+<li>local相当于win下的program file</li>
+<li>源码包为什么一定要指定安装目录？因为源码包安装没有卸载命令。若不指定，软件也会装的到处都是，删也删不干净</li>
+<li><strong>源码包卸载方式：包安装目录直接删除即可</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="1-3-安装位置不同带来什么后果"><a href="#1-3-安装位置不同带来什么后果" class="headerlink" title="1.3 安装位置不同带来什么后果"></a>1.3 安装位置不同带来什么后果</h2><p>rpm采用默认位置安装，源码包采用自定义位置安装。导致软件管理的不同：</p>
+<ul>
+<li>启动方法不同：<ul>
+<li>所有的rpm服务可以用service启动。因为rpm软件的启动程序都会装在<code>/etc/rc.d/init.d/软件名</code>目录中。源码包则不能用service。</li>
+<li>源码包安装的服务的启动：<code>/usr/local/软件名/bin/启动文件 start</code></li>
+</ul>
+</li>
+<li>卸载方法不同：<ul>
+<li>rpm用命令；源码包直接删除安装位置文件夹</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>已经用yum安装了一个rpm包软件A，用源码包再安一个软件A？</p>
+<p>是可以得。因为两种安装方法安装位置不一样。但是，两个软件同时只能启动一个，因为他们会占用相同的资源，比如端口。在实际的生产环境，绝不会装两个相同的软件，因为只能用一个，还浪费资源。</p>
+</blockquote>
+<h2 id="1-4-应该选择哪种安装方式？"><a href="#1-4-应该选择哪种安装方式？" class="headerlink" title="1.4 应该选择哪种安装方式？"></a>1.4 应该选择哪种安装方式？</h2><ul>
+<li>源码包开源自定义本机编译效率更高。如果软件是用来给成千上万的客户端访问的，请用源码包安装，效率更高</li>
+<li>如果是底层软件，像编译软件gcc，用rpm包更简单，不会有过多用户访问，效率问题不明显</li>
+</ul>
+<h1 id="2-源码包安装"><a href="#2-源码包安装" class="headerlink" title="2. 源码包安装"></a>2. 源码包安装</h1><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>源码包保存位置：/usr/local/scr<ul>
+<li>这个位置是系统预留的，装好系统就有，专门用来保存源代码的文件夹</li>
+</ul>
+</li>
+<li>软件安装位置：/usr/local</li>
+<li>如何确定安装过程报错<ul>
+<li>安装过程停止</li>
+<li>并出现error、warning或no的提示</li>
+</ul>
+</li>
+<li>安装的时候信息量大，不需要每行去看，只要确认没有报错就行</li>
+</ul>
+<p>第一步：下载源码包；解压缩下载的源码包；<strong>进入解压缩目录</strong>（必须在源代码文件夹下操作）</p>
+<p>未完。。。现在大型软件还有 <strong>maven编译</strong> 如spark</p>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/06/14/Linux软件安装管理（四）：源码包安装/" data-title="Linux软件安装管理（四）：源码包安装" data-url="http://shengdeng.github.io/2016/06/14/Linux软件安装管理（四）：源码包安装/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
