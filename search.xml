@@ -51,7 +51,14 @@
     <entry>
       <title><![CDATA[Linux软件安装管理（三）：yum在线安装]]></title>
       <url>http://shengdeng.github.io/2016/06/13/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Ayum%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85/</url>
-      <content type="html"><![CDATA[<p>rpm软件包形式管理软件，需要手工解决软件的依赖关系，rpm安装一个软件时有时需要先安装其他软件，十分麻烦。yum可以解决这个问题，将所有软件包放到官方服务器上，当进行yum在线安装时，可以自动解决依赖性的问题。redhat的yum在线安装需要付费，而centos是免费的。</p>
+      <content type="html"><![CDATA[<ol>
+<li>yum仓库的配置文件详解和仓库的创建</li>
+<li>yum的安装软件命令</li>
+<li>升级、卸载(依赖也会卸载掉)使用需谨慎；yum查询仓库中的软件，其他rpm包查询推荐用rpm查询命令。</li>
+<li>yum软件组的查询与安装，装语言包很方便</li>
+</ol>
+<a id="more"></a>
+<p>rpm软件包形式管理软件，需要手工解决软件的依赖关系，rpm安装一个软件时有时需要先安装其他软件，十分麻烦。yum可以解决这个问题，将所有软件包放到官方服务器上，当进行yum在线安装时，可以自动解决依赖性的问题。redhat的yum在线安装需要付费，而centos是免费的。</p>
 <h1 id="1-yum仓库"><a href="#1-yum仓库" class="headerlink" title="1. yum仓库"></a>1. yum仓库</h1><p>yum引入仓库repo的概念，仓库用来存放所有现有的rpm包，当使用yum安装一个rpm，如果存在依赖关系，<strong>会自动在仓库中查找依赖软件并安装</strong>。如果仓库中没有这个依赖，那么yum安装失败。</p>
 <p>仓库可以是<strong>本地的（文件夹）</strong>，也可以通过HTTP、FTP、NFS形式使用集中的、统一的<strong>网络仓库</strong>。</p>
 <p>所以，要使用yum，必须先配置yum仓库：</p>
@@ -122,7 +129,90 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 </ol>
 <p>注意：yum为了提高速度，会缓存很多信息，但也会导致故障。所以每次使用yum命令后，请清除缓存：</p>
 <pre><code>yum clean call
-</code></pre>]]></content>
+</code></pre><h1 id="2-yum命令"><a href="#2-yum命令" class="headerlink" title="2.yum命令"></a>2.yum命令</h1><h2 id="2-1-查询"><a href="#2-1-查询" class="headerlink" title="2.1 查询"></a>2.1 查询</h2><p>注意：关于rpm包的查询，用rpm查询命令比较好。</p>
+<h3 id="查询仓库的软件"><a href="#查询仓库的软件" class="headerlink" title="查询仓库的软件"></a>查询仓库的软件</h3><ul>
+<li><p>yum list</p>
+<ul>
+<li>查询<strong>仓库中所有</strong>可用<strong>软件包</strong>列表</li>
+<li>三列：软件名|版本号|来自哪个仓库</li>
+</ul>
+</li>
+<li><p>yum list (all|installed|recent|updates)</p>
+<ul>
+<li>列出（全部|已安装的|最近安装的|有更新的）软件</li>
+</ul>
+</li>
+<li><p>yum search 关键字</p>
+<ul>
+<li>搜索仓库中所有和关键字相关的包</li>
+</ul>
+</li>
+</ul>
+<p>注意：yum没有本机装了哪些rpm包的命令；yum没有查询rpm包装到了哪些位置的命令。</p>
+<h3 id="查询软件详细信息"><a href="#查询软件详细信息" class="headerlink" title="查询软件详细信息"></a>查询软件详细信息</h3><ul>
+<li>yum info 软件名 <ul>
+<li>列出软件的<strong>详细信息</strong></li>
+<li>可以用tab补全</li>
+</ul>
+</li>
+</ul>
+<h3 id="查询文件属于哪个rpm包"><a href="#查询文件属于哪个rpm包" class="headerlink" title="查询文件属于哪个rpm包"></a>查询文件属于哪个rpm包</h3><ul>
+<li>yum whatprovides 文件名</li>
+</ul>
+<h2 id="2-2-安装"><a href="#2-2-安装" class="headerlink" title="2.2 安装"></a>2.2 安装</h2><ul>
+<li>yum -y install 包名<ul>
+<li>install 安装</li>
+<li>-y 自动回答yes</li>
+</ul>
+</li>
+</ul>
+<p>rpm命令需要区分包全名和包名；yum命令不需要包全名，只要写包名即可。</p>
+<p>系统最小化安装，安装的软件就越少，需要解决的依赖就越多。比如要安装c的编译器gcc，必须使用rpm安装，不能用源码包安装方法，因为源码不能编译。</p>
+<h2 id="2-3-升级"><a href="#2-3-升级" class="headerlink" title="2.3 升级"></a>2.3 升级</h2><ul>
+<li>yum -y update 包名<ul>
+<li>update</li>
+<li>-y 自动回答yes</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>危险：对于服务器来说，最好不要升级。除非有重要bug。不要写成<code>yum -y update</code>，会导致内核和所有程序的更新，可能会导致系统直接崩溃。</p>
+</blockquote>
+<h2 id="2-4-卸载"><a href="#2-4-卸载" class="headerlink" title="2.4 卸载"></a>2.4 卸载</h2><ul>
+<li>yum -y remove 包名<ul>
+<li>remove</li>
+<li>-y 自动回答yes</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>危险：服务器最好使用最小化安装，用什么软件安装什么软件，<strong>尽量不要卸载</strong>！！因为，卸载时也会将<strong>依赖的软件依次卸载</strong>，而且yum不会询问直接卸载。如果软件依赖的包被系统依赖，却被卸载了，可能导致崩溃！！</p>
+<p>所以，最小化安装！用什么装什么！不要卸载！服务器上的操作一定要小心，管理员最好把命令都记下来作为日志，都是为了防止服务器 崩溃。</p>
+</blockquote>
+<h2 id="2-5-yum软件组管理命令"><a href="#2-5-yum软件组管理命令" class="headerlink" title="2.5 yum软件组管理命令"></a>2.5 yum软件组管理命令</h2><p>例如，如果linux安装的时候没有选择中文语言，不能正常显示中文，  如果要手工安装中文语言很麻烦，因为他需要装很多个包，包括字体包编码包，但是他们都属于<code>中文支持[zh]</code>组包内，使用yum grouplist就能查看到所有组包：</p>
+<ul>
+<li><p>yum grouplist </p>
+<ul>
+<li><strong>列出</strong>所有可用的软件组列表</li>
+<li><strong>本机</strong>使用grouplist命令时组名是英文显示；<strong>远程登录</strong>时组名默认中文显示</li>
+<li>要让<strong>远程登陆</strong>也显示英文，修改语言即可,执行命令：<code>LANG=en_US</code>；改回来：<code>LANG=zh_CN.utf8</code>(临时生效，永久改变语言要改/etc下的下相应配置文件)</li>
+</ul>
+</li>
+<li><p>yum groupinstall 软件组名(英文)</p>
+<ul>
+<li>安装指定的软件组</li>
+<li>组名可以有grouplist查询出来</li>
+<li>软件组名必须是英文</li>
+</ul>
+</li>
+<li><p>yum groupremove 软件组名(英文)</p>
+<ul>
+<li>卸载指定的软件组</li>
+<li>同样不推荐随便卸载</li>
+</ul>
+</li>
+</ul>
+]]></content>
     </entry>
     
     <entry>
