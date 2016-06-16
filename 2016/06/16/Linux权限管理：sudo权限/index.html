@@ -1,0 +1,784 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Linux权限管理：sudo命令 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <meta name="author" content="Sheng Deng">
+    
+    <meta name="description" content="Tec &amp; Life">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Linux权限管理：sudo命令"/>
+    <meta property="og:site_name" content="Stefan&#39;s blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Stefan&#39;s blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/atelier-seaside-light.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="blue-grey darken-3">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Stefan&#39;s blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            Home
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            Archives
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            Reading
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            About
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            Search
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav cyan darken-4" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xtorv.com2.z0.glb.clouddn.com/IMG_20160417_172813.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">邓晟Stefan</p>
+                        <p class="desc">Spark/Kafka/Scala</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    Home
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    Archives
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    Categories
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    Reading
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    About
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    Search
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav cyan darken-4" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/java/">
+                    java <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/java/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Kafka/">
+                    Kafka <span class="right">3</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/学习笔记/">
+                    学习笔记 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Linux/">
+                    Linux <span class="right">10</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/学习笔记/">
+                    学习笔记 <span class="right">6</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/权限管理/">
+                    权限管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/软件管理/">
+                    软件管理 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/服务管理/">
+                    服务管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/安装笔记/">
+                    安装笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/专业英语/">
+                    专业英语 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/专业英语/单词/">
+                    单词 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
+                    词汇辨析 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Spark/">
+                    Spark <span class="right">5</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/学习笔记/">
+                    学习笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/行业发展/">
+                    行业发展 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/阅读笔记/">
+                    阅读笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/阅读笔记/自我管理/">
+                    自我管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">Search</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper blue-grey darken-3">
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/学习笔记/">学习笔记</a><a class="breadcrumb" href="/categories/Linux/学习笔记/权限管理/">权限管理</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux权限管理：sudo命令</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-06-16T02:54:12.000Z"><a href="/2016/06/16/Linux权限管理：sudo权限/">2016-06-16</a></time>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-什么是sudo权限"><span class="section table-of-contents-text">1.什么是sudo权限</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-etc-sudoers配置文件"><span class="section table-of-contents-text">1.1 /etc/sudoers配置文件</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#授权用户模板格式"><span class="section table-of-contents-text">授权用户模板格式</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#授权组模板格式"><span class="section table-of-contents-text">授权组模板格式</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-查看sudo可执行的命令"><span class="section table-of-contents-text">1.2 查看sudo可执行的命令</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-sudo命令的危险"><span class="section table-of-contents-text">2. sudo命令的危险</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#实例1-授权普通用户：可以重启服务器（shutdown命令）"><span class="section table-of-contents-text">实例1. 授权普通用户：可以重启服务器（shutdown命令）</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#实例2-授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd-用户名）"><span class="section table-of-contents-text">实例2. 授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd 用户名）</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#实例3-【危险】让普通用户sudo执行vi命令！"><span class="section table-of-contents-text">实例3 【危险】让普通用户sudo执行vi命令！</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p>使用su切换用户时需知晓对应用户的登陆密码，即若切换成root用户身份，需知道root用户的登陆密码。作为root用户管理员，如何授权其他普通用户，<strong>在不需要知晓root密码的情况下，执行root权限的命令操作？</strong>，此时即可使用sudo。</p>
+<a id="more"></a>
+<h1 id="1-什么是sudo权限"><a href="#1-什么是sudo权限" class="headerlink" title="1.什么是sudo权限"></a>1.什么是sudo权限</h1><p>生产环境中，root用户是团队的负责人，因为root权限过于强大。但是每天工作的普通管理员日常操作常常权限限制，像重启、备份、tar等命令。在linux中普通用户受限严重，很多简单的命令都有权限限制。</p>
+<ul>
+<li>root用户把本来只能<strong>超级用户执行的命令</strong>赋予<strong>普通用户执行</strong></li>
+<li>sudo的操作对象是系统命令</li>
+<li><strong>文件的权限UGO、特殊权限</strong>作用是：用户能不能操作<strong>文件</strong></li>
+</ul>
+<blockquote>
+<p>总之，<strong>sudo命令</strong>的作用是：切换到root用户去执行命令！</p>
+</blockquote>
+<h2 id="1-1-etc-sudoers配置文件"><a href="#1-1-etc-sudoers配置文件" class="headerlink" title="1.1 /etc/sudoers配置文件"></a>1.1 /etc/sudoers配置文件</h2><ul>
+<li>sudo是一种权限管理机制，依赖于<strong>/etc/sudoers</strong>，其定义了<ul>
+<li>授权给<strong>哪个用户</strong></li>
+<li>可以<strong>以root身份</strong></li>
+<li>能够<strong>执行什么管理命令</strong></li>
+</ul>
+</li>
+<li><strong>root用户</strong>通过<strong>使用visudo命令</strong>编辑sudo的配置文件/etc/sudoers，才可以授权其他普通用户执行sudo命令。</li>
+<li>visudo命令可以提供basic sanitychecks和check for parse errors，即提供快速的正确性有效性检查，以及语法检查功能。</li>
+</ul>
+<p>查看/etc/sudoers文件</p>
+<pre><code>[root@localhost stefan]# visudo
+</code></pre><p>内容很多其中有如下几行比较重要：</p>
+<h3 id="授权用户模板格式"><a href="#授权用户模板格式" class="headerlink" title="授权用户模板格式"></a>授权用户模板格式</h3><p><code>root    ALL=(ALL)    ALL</code>一行就是授权用户的模板格式。</p>
+<pre><code>## Allow root to run any commands anywhere
+root    ALL=(ALL)   ALL
+#要授权的用户  需要生效的主机名或IP=(可切换的身份)  可执行的命令
+</code></pre><ul>
+<li>ALL即<strong>所有都ok</strong>。所以以上语句含义是：<strong>root用户</strong>(who) 在 <strong>所有主机</strong>(where) 上可以 <strong>切换成所有用户</strong>，<strong>执行所有命令</strong>(do what)。</li>
+<li>所有主机（<strong>第一个ALL</strong>）的含义是在集群场景中，以上授权在哪些主机上可以生效；单台主机用ALL就行。</li>
+<li>系统命令只能root执行。所以<strong>第二个ALL</strong>一般写成（root），即普通用户自动切换成root用户后执行系统命令。若省略默认为（root）。</li>
+<li><strong>第三个ALL</strong>，命令写的越简单（比如写ALL），普通用户得到的权限越大，越不安全。<strong>写的越详细，包括命令的参数也写上，普通用户得到的权限越小，越安全。</strong>有些centos版本规定命令最好用绝对路径。用<code>whereis 命令</code>可以查到命令的绝对路径</li>
+</ul>
+<blockquote>
+<p><strong>Tips:</strong> 如果是自己的系统，又不想每次都切换root输入密码，一个命令一个命令的配置visudo很麻烦，可以改成</p>
+<pre><code>用户名   ALL=(ALL)   ALL
+</code></pre><p>这样，直接输入命令就是普通用户，加上sudo就是超级用户。免去用su命令来回切换的麻烦。但是，生产环境一定要小心配置visudo原因见第2节。</p>
+</blockquote>
+<h3 id="授权组模板格式"><a href="#授权组模板格式" class="headerlink" title="授权组模板格式"></a>授权组模板格式</h3><p><code>%wheel    ALL=(ALL)    ALL</code>就是授权用户的模板格式。</p>
+<pre><code>## Allows people in group wheel to run all commands
+#允许组wheel的组成员运行所有的命令
+%wheel  ALL=(ALL)   ALL
+
+## Same thing without a password
+#允许组wheel的组成员运行所有的命令，并且不需要密码
+%wheel    ALL=(ALL)   NOPASSWD: ALL
+</code></pre><p>%百分号不能少</p>
+<h2 id="1-2-查看sudo可执行的命令"><a href="#1-2-查看sudo可执行的命令" class="headerlink" title="1.2 查看sudo可执行的命令"></a>1.2 查看sudo可执行的命令</h2><pre><code>$sudo -l #查看本用户可以执行的sudo命令
+</code></pre><h1 id="2-sudo命令的危险"><a href="#2-sudo命令的危险" class="headerlink" title="2. sudo命令的危险"></a>2. sudo命令的危险</h1><h2 id="实例1-授权普通用户：可以重启服务器（shutdown命令）"><a href="#实例1-授权普通用户：可以重启服务器（shutdown命令）" class="headerlink" title="实例1. 授权普通用户：可以重启服务器（shutdown命令）"></a>实例1. 授权普通用户：可以重启服务器（shutdown命令）</h2><p>切换到root用户，执行visudo命令，增加一行：</p>
+<pre><code>user1    ALL=(ALL)    /bin/shutdown -r now
+</code></pre><p>此时，user1只能重启，如果写成：</p>
+<pre><code>user1    ALL=(ALL)    /bin/shutdown
+</code></pre><p>那么user1不光可以重启-r，还可以关机和其他任何选项。</p>
+<h2 id="实例2-授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd-用户名）"><a href="#实例2-授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd-用户名）" class="headerlink" title="实例2. 授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd 用户名）"></a>实例2. 授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd 用户名）</h2><pre><code>user1 ALL=/usr/sbin/useradd    #(ALL)缺省默认为(root)，即切换成root用户
+
+user1 ALL=/usr/bin/passwd    #授予普通用户以root用户身份修改其他所有用户登录密码
+</code></pre><p>安全漏洞：第二个passwd含义是普通用户切换到root用户，然后执行passwd修改密码，因此，普通用户也可以修改root用户的密码了：</p>
+<pre><code>$sudo passwd root    #可以修改root用户的密码
+</code></pre><p>第二行passwd授权应该这么写：</p>
+<pre><code>user1    ALL=/usr/bin/passwd    [A-Za-z]*,    !/usr/bin/passwd &quot;&quot;,    !/usr/bin/passwd root
+</code></pre><p>其中</p>
+<ul>
+<li><code>/usr/bin/passwd    [A-Za-z]*</code>代表passwd的用户名一定要包含字母，[A-Za-z]<em>是正则表达式，</em>表示重复</li>
+<li><code>!/usr/bin/passwd &quot;&quot;</code>代表不允许passwd不加用户名执行。因为执行<code>$sudo passwd</code>时已经是root用户，不加用户名回车表示修改本用户的密码，即root用户的密码。！代表取反，不允许命令</li>
+<li><code>!/usr/bin/passwd root</code>不允许修改root用户密码</li>
+<li>以上三段代码中间有空格，顺序不能变</li>
+</ul>
+<h2 id="实例3-【危险】让普通用户sudo执行vi命令！"><a href="#实例3-【危险】让普通用户sudo执行vi命令！" class="headerlink" title="实例3 【危险】让普通用户sudo执行vi命令！"></a>实例3 【危险】让普通用户sudo执行vi命令！</h2><pre><code>user1 ALL=/bin/vi
+</code></pre><p>危险：普通用户在执行sudo vi 命令的时，会切换到root用户，因此普通用户可以修改任意系统文件了。比如/etc/shadow是保存密码的文件，权限是000，普通用户无权限查看和编辑</p>
+<pre><code>----------.  1 root root 1283 6月  15 21:32 shadow
+</code></pre><p>但如果让普通用户可以sudo执行vi命令，那么就可以查看和修改所有密码了</p>
+<pre><code>sudo vi /etc/shadow
+</code></pre>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/06/16/Linux权限管理：sudo权限/" data-title="Linux权限管理：sudo命令" data-url="http://shengdeng.github.io/2016/06/16/Linux权限管理：sudo权限/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large blue lighten-1">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red lighten-2" title="Return to top"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse orange lighten-2"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer blue-grey darken-3 darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m3 s12">
+                <h5 class="white-text">Social</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+            </div>
+            
+
+            
+            <div class="col m9 s12">
+                <h5 class="white-text">Links</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Stafan 专注大数据分析</a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 http://shengdeng.github.io/, All rights reserved.
+            <p class="right" style="margin-top: 0;">Blog powered by <a href="https://hexo.io">Hexo</a> | Theme <a href="https://github.com/shengdeng/shengdeng.github.io">stefanForest</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery-2.1.1.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal();
+            var searchXml = "search.xml";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-77353762-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56016042" charset="UTF-8"></script>
+
+
+
+
+
+</body>
+</html>

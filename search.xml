@@ -4,6 +4,104 @@
   
     
     <entry>
+      <title><![CDATA[Linux权限管理：sudo命令]]></title>
+      <url>http://shengdeng.github.io/2016/06/16/Linux%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86%EF%BC%9Asudo%E6%9D%83%E9%99%90/</url>
+      <content type="html"><![CDATA[<p>使用su切换用户时需知晓对应用户的登陆密码，即若切换成root用户身份，需知道root用户的登陆密码。作为root用户管理员，如何授权其他普通用户，<strong>在不需要知晓root密码的情况下，执行root权限的命令操作？</strong>，此时即可使用sudo。</p>
+<a id="more"></a>
+<h1 id="1-什么是sudo权限"><a href="#1-什么是sudo权限" class="headerlink" title="1.什么是sudo权限"></a>1.什么是sudo权限</h1><p>生产环境中，root用户是团队的负责人，因为root权限过于强大。但是每天工作的普通管理员日常操作常常权限限制，像重启、备份、tar等命令。在linux中普通用户受限严重，很多简单的命令都有权限限制。</p>
+<ul>
+<li>root用户把本来只能<strong>超级用户执行的命令</strong>赋予<strong>普通用户执行</strong></li>
+<li>sudo的操作对象是系统命令</li>
+<li><strong>文件的权限UGO、特殊权限</strong>作用是：用户能不能操作<strong>文件</strong></li>
+</ul>
+<blockquote>
+<p>总之，<strong>sudo命令</strong>的作用是：切换到root用户去执行命令！</p>
+</blockquote>
+<h2 id="1-1-etc-sudoers配置文件"><a href="#1-1-etc-sudoers配置文件" class="headerlink" title="1.1 /etc/sudoers配置文件"></a>1.1 /etc/sudoers配置文件</h2><ul>
+<li>sudo是一种权限管理机制，依赖于<strong>/etc/sudoers</strong>，其定义了<ul>
+<li>授权给<strong>哪个用户</strong></li>
+<li>可以<strong>以root身份</strong></li>
+<li>能够<strong>执行什么管理命令</strong></li>
+</ul>
+</li>
+<li><strong>root用户</strong>通过<strong>使用visudo命令</strong>编辑sudo的配置文件/etc/sudoers，才可以授权其他普通用户执行sudo命令。</li>
+<li>visudo命令可以提供basic sanitychecks和check for parse errors，即提供快速的正确性有效性检查，以及语法检查功能。</li>
+</ul>
+<p>查看/etc/sudoers文件</p>
+<pre><code>[root@localhost stefan]# visudo
+</code></pre><p>内容很多其中有如下几行比较重要：</p>
+<h3 id="授权用户模板格式"><a href="#授权用户模板格式" class="headerlink" title="授权用户模板格式"></a>授权用户模板格式</h3><p><code>root    ALL=(ALL)    ALL</code>一行就是授权用户的模板格式。</p>
+<pre><code>## Allow root to run any commands anywhere
+root    ALL=(ALL)   ALL
+#要授权的用户  需要生效的主机名或IP=(可切换的身份)  可执行的命令
+</code></pre><ul>
+<li>ALL即<strong>所有都ok</strong>。所以以上语句含义是：<strong>root用户</strong>(who) 在 <strong>所有主机</strong>(where) 上可以 <strong>切换成所有用户</strong>，<strong>执行所有命令</strong>(do what)。</li>
+<li>所有主机（<strong>第一个ALL</strong>）的含义是在集群场景中，以上授权在哪些主机上可以生效；单台主机用ALL就行。</li>
+<li>系统命令只能root执行。所以<strong>第二个ALL</strong>一般写成（root），即普通用户自动切换成root用户后执行系统命令。若省略默认为（root）。</li>
+<li><strong>第三个ALL</strong>，命令写的越简单（比如写ALL），普通用户得到的权限越大，越不安全。<strong>写的越详细，包括命令的参数也写上，普通用户得到的权限越小，越安全。</strong>有些centos版本规定命令最好用绝对路径。用<code>whereis 命令</code>可以查到命令的绝对路径</li>
+</ul>
+<blockquote>
+<p><strong>Tips:</strong> 如果是自己的系统，又不想每次都切换root输入密码，一个命令一个命令的配置visudo很麻烦，可以改成</p>
+<pre><code>用户名   ALL=(ALL)   ALL
+</code></pre><p>这样，直接输入命令就是普通用户，加上sudo就是超级用户。免去用su命令来回切换的麻烦。但是，生产环境一定要小心配置visudo原因见第2节。</p>
+</blockquote>
+<h3 id="授权组模板格式"><a href="#授权组模板格式" class="headerlink" title="授权组模板格式"></a>授权组模板格式</h3><p><code>%wheel    ALL=(ALL)    ALL</code>就是授权用户的模板格式。</p>
+<pre><code>## Allows people in group wheel to run all commands
+#允许组wheel的组成员运行所有的命令
+%wheel  ALL=(ALL)   ALL
+
+## Same thing without a password
+#允许组wheel的组成员运行所有的命令，并且不需要密码
+%wheel    ALL=(ALL)   NOPASSWD: ALL
+</code></pre><p>%百分号不能少</p>
+<h2 id="1-2-查看sudo可执行的命令"><a href="#1-2-查看sudo可执行的命令" class="headerlink" title="1.2 查看sudo可执行的命令"></a>1.2 查看sudo可执行的命令</h2><pre><code>$sudo -l #查看本用户可以执行的sudo命令
+</code></pre><h1 id="2-sudo命令的危险"><a href="#2-sudo命令的危险" class="headerlink" title="2. sudo命令的危险"></a>2. sudo命令的危险</h1><h2 id="实例1-授权普通用户：可以重启服务器（shutdown命令）"><a href="#实例1-授权普通用户：可以重启服务器（shutdown命令）" class="headerlink" title="实例1. 授权普通用户：可以重启服务器（shutdown命令）"></a>实例1. 授权普通用户：可以重启服务器（shutdown命令）</h2><p>切换到root用户，执行visudo命令，增加一行：</p>
+<pre><code>user1    ALL=(ALL)    /bin/shutdown -r now
+</code></pre><p>此时，user1只能重启，如果写成：</p>
+<pre><code>user1    ALL=(ALL)    /bin/shutdown
+</code></pre><p>那么user1不光可以重启-r，还可以关机和其他任何选项。</p>
+<h2 id="实例2-授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd-用户名）"><a href="#实例2-授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd-用户名）" class="headerlink" title="实例2. 授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd 用户名）"></a>实例2. 授权普通用户：可以添加其他用户（useradd命令）可以修改其他用户密码（passwd 用户名）</h2><pre><code>user1 ALL=/usr/sbin/useradd    #(ALL)缺省默认为(root)，即切换成root用户
+
+user1 ALL=/usr/bin/passwd    #授予普通用户以root用户身份修改其他所有用户登录密码
+</code></pre><p>安全漏洞：第二个passwd含义是普通用户切换到root用户，然后执行passwd修改密码，因此，普通用户也可以修改root用户的密码了：</p>
+<pre><code>$sudo passwd root    #可以修改root用户的密码
+</code></pre><p>第二行passwd授权应该这么写：</p>
+<pre><code>user1    ALL=/usr/bin/passwd    [A-Za-z]*,    !/usr/bin/passwd &quot;&quot;,    !/usr/bin/passwd root
+</code></pre><p>其中</p>
+<ul>
+<li><code>/usr/bin/passwd    [A-Za-z]*</code>代表passwd的用户名一定要包含字母，[A-Za-z]<em>是正则表达式，</em>表示重复</li>
+<li><code>!/usr/bin/passwd &quot;&quot;</code>代表不允许passwd不加用户名执行。因为执行<code>$sudo passwd</code>时已经是root用户，不加用户名回车表示修改本用户的密码，即root用户的密码。！代表取反，不允许命令</li>
+<li><code>!/usr/bin/passwd root</code>不允许修改root用户密码</li>
+<li>以上三段代码中间有空格，顺序不能变</li>
+</ul>
+<h2 id="实例3-【危险】让普通用户sudo执行vi命令！"><a href="#实例3-【危险】让普通用户sudo执行vi命令！" class="headerlink" title="实例3 【危险】让普通用户sudo执行vi命令！"></a>实例3 【危险】让普通用户sudo执行vi命令！</h2><pre><code>user1 ALL=/bin/vi
+</code></pre><p>危险：普通用户在执行sudo vi 命令的时，会切换到root用户，因此普通用户可以修改任意系统文件了。比如/etc/shadow是保存密码的文件，权限是000，普通用户无权限查看和编辑</p>
+<pre><code>----------.  1 root root 1283 6月  15 21:32 shadow
+</code></pre><p>但如果让普通用户可以sudo执行vi命令，那么就可以查看和修改所有密码了</p>
+<pre><code>sudo vi /etc/shadow
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[JDK安装配置]]></title>
+      <url>http://shengdeng.github.io/2016/06/16/JDK%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<h1 id="在centOS上安装JDK"><a href="#在centOS上安装JDK" class="headerlink" title="在centOS上安装JDK"></a>在centOS上安装JDK</h1><h2 id="第一步：检查现有JDK版本"><a href="#第一步：检查现有JDK版本" class="headerlink" title="第一步：检查现有JDK版本"></a>第一步：检查现有JDK版本</h2><p>一般装系统的时候会自动安装openJDK：</p>
+<pre><code>[stefan@localhost opt]$ java -version
+openjdk version &quot;1.8.0_65&quot;
+OpenJDK Runtime Environment (build 1.8.0_65-b17)
+OpenJDK 64-Bit Server VM (build 25.65-b01, mixed mode)
+</code></pre><p>不需要删除这个版本，接下来安装的oracle的JDK由于与系统rpm包安装的openJDK的安装位置不同，修改环境变量参数后，两者不会有影响。、</p>
+<p>系统没有安装oracle的JDK，需要去<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">oracle官网下载</a>，选择.tar.gz的归档包。</p>
+<h2 id="第二步：解压tar包到安装目录"><a href="#第二步：解压tar包到安装目录" class="headerlink" title="第二步：解压tar包到安装目录"></a>第二步：解压tar包到安装目录</h2>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[scala安装配置]]></title>
+      <url>http://shengdeng.github.io/2016/06/16/scala%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux软件安装管理（四）：源码包安装]]></title>
       <url>http://shengdeng.github.io/2016/06/14/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E7%AE%A1%E7%90%86%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%BA%90%E7%A0%81%E5%8C%85%E5%AE%89%E8%A3%85/</url>
       <content type="html"><![CDATA[<h1 id="1-源码包与RPM包的区别"><a href="#1-源码包与RPM包的区别" class="headerlink" title="1.源码包与RPM包的区别"></a>1.源码包与RPM包的区别</h1><ul>
