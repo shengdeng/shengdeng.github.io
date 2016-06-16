@@ -7,7 +7,7 @@
 
     
 
-    <title>行业发展 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>Linux基本操作：vim编辑器 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Linux基本操作：vim编辑器"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -361,30 +361,174 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">当前位置（分类目录）</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/学习笔记/">学习笔记</a><a class="breadcrumb" href="/categories/Linux/学习笔记/基本操作/">基本操作</a>
+
 
         
-            <a class="breadcrumb" href="/categories/行业发展/">行业发展</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux基本操作：vim编辑器</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-06-16T13:20:35.000Z"><a href="/2016/06/16/Linux基本操作：vim编辑器/">2016-06-16</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/06/10/前沿追踪：热门大数据技术TOP10/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-10T01:19:55.000Z">2016-06-10</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                前沿追踪：热门大数据技术TOP10
-            </a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-vim的三种模式"><span class="section table-of-contents-text">1. vim的三种模式</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#命令模式"><span class="section table-of-contents-text">命令模式</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#插入模式"><span class="section table-of-contents-text">插入模式</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#ex模式"><span class="section table-of-contents-text">ex模式</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <a id="more"></a>
+<p>vi是一个命令行界面下的文本编辑器，Vim是从vi发展出来的一个文本编辑器。代码补完、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用。和Emacs并列成为类Unix系统用户最喜欢的编辑器。</p>
+<pre><code>vim 目标文件路径
+</code></pre><ul>
+<li>如果目标文件存在，则打开目标文件</li>
+<li>如果不存在，则创建文件</li>
+</ul>
+<h1 id="1-vim的三种模式"><a href="#1-vim的三种模式" class="headerlink" title="1. vim的三种模式"></a>1. vim的三种模式</h1><h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><ul>
+<li>vim 启动默认进入命令模式</li>
+<li>命令模式功能：选择、复制、粘贴、撤销</li>
+<li>其他模式通过<code>esc</code>可以进入<strong>命令模式</strong></li>
+<li>命令模式按<code>i</code>进入<strong>插入模式</strong></li>
+<li>命令模式按<code>:</code>进入<strong>ex模式</strong></li>
+</ul>
+<p><strong>ex模式</strong>→<code>esc</code>→<strong>命令模式</strong>←<code>esc</code>←<strong>插入模式</strong></p>
+<p><strong>ex模式</strong>←<code>：</code>←<strong>命令模式</strong>→<code>i</code>→<strong>插入模式</strong></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td>进入插入模式，在光标处插入</td>
+</tr>
+<tr>
+<td>o</td>
+<td>进入插入模式，在当前行的下面插入新行</td>
+</tr>
+<tr>
+<td>dd</td>
+<td><strong>删除</strong>整行</td>
+</tr>
+<tr>
+<td>u</td>
+<td><strong>撤销</strong></td>
+</tr>
+<tr>
+<td>yy</td>
+<td><strong>复制</strong>当前行</td>
+</tr>
+</tbody>
+</table>
+<h2 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h2><ul>
+<li><code>esc</code>回到命令模式</li>
+<li>编辑文本</li>
+</ul>
+<h2 id="ex模式"><a href="#ex模式" class="headerlink" title="ex模式"></a>ex模式</h2><ul>
+<li>ex模式功能：保存、退出</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:w</td>
+<td><strong>保存</strong>修改</td>
+</tr>
+<tr>
+<td>:q</td>
+<td><strong>退出</strong></td>
+</tr>
+<tr>
+<td>:wq或:x</td>
+<td>保存并退出</td>
+</tr>
+<tr>
+<td>:q!</td>
+<td><strong>强制退出不保存</strong></td>
+</tr>
+<tr>
+<td>:set number</td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td>:sh</td>
+<td>切换到命令行界面；ctrl+d切回vim</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/06/16/Linux基本操作：vim编辑器/" data-title="Linux基本操作：vim编辑器" data-url="http://shengdeng.github.io/2016/06/16/Linux基本操作：vim编辑器/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
