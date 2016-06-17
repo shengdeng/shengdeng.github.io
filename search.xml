@@ -203,7 +203,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 openjdk version &quot;1.8.0_65&quot;
 OpenJDK Runtime Environment (build 1.8.0_65-b17)
 OpenJDK 64-Bit Server VM (build 25.65-b01, mixed mode)
-</code></pre><p>不需要删除这个版本，接下来安装的oracle的JDK的所有文件都在一个文件夹下，不会对系统rpm包安装的openJDK有影响，他们的安装位置不同，开源应用软件一般有关联JDK路径的设置，所以安装位置不同就不会冲突（详见RPM包安装软件的博文）。</p>
+</code></pre><p>不需要删除这个版本，接下来安装的oracle的JDK的所有文件都在一个文件夹下，不会对系统rpm包安装的openJDK有影响，他们的安装位置不同。</p>
+<p>以后使用开源软件，会有<strong>关联JDK路径的设置</strong>，关联相应版本的JDK就行，所以<strong>安装位置不同就不会冲突</strong>（详见RPM包安装软件的博文）。本文安装的方法，可以让系统环境的Oracle JDK替换OpenJDK。</p>
 <blockquote>
 <p><strong>为什么系统自带openJDK？</strong></p>
 <p>系统很多应用软件需要JDK环境，众所周知，由于Oracle公司的JDK的版权问题，大多数Linux发行版在安装时都会附带开源的无版权问题的OpenJDK，以支持某些java程序软件。但是如果我们在Linux下做一些java语言的开发，很可能还是需要安装和使用Oracle公司的原版JDK（以下简称“JDK”）。</p>
