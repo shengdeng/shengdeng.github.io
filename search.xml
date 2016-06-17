@@ -176,10 +176,11 @@ user1 ALL=/usr/bin/passwd    #授予普通用户以root用户身份修改其他�
     </entry>
     
     <entry>
-      <title><![CDATA[JDK安装配置]]></title>
+      <title><![CDATA[centOS安装Oracle JDK替换OpenJDK详解]]></title>
       <url>http://shengdeng.github.io/2016/06/16/JDK%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
       <content type="html"><![CDATA[<p><strong>主要内容：</strong></p>
-<p>在不卸载openJDK的情况下，centOS上解决oracle和openJDK的Java命令冲突的安装方法。以及openJDK为什么不能卸载？因为系统应用会依赖它。</p>
+<p>在<strong>不卸载openJDK</strong>的情况下，centOS上解决oracle和openJDK的Java命令冲突的安装方法。以及openJDK为什么不能卸载？因为系统应用会依赖它。</p>
+<a id="more"></a>
 <h1 id="1-在centOS上安装JDK"><a href="#1-在centOS上安装JDK" class="headerlink" title="1. 在centOS上安装JDK"></a>1. 在centOS上安装JDK</h1><h2 id="1-1-快速步骤"><a href="#1-1-快速步骤" class="headerlink" title="1.1 快速步骤"></a>1.1 快速步骤</h2><p>centOS上按照以下步骤安装即可</p>
 <p>第一步：到oracle官网下载tar包</p>
 <p>第二步：解压tar包</p>
