@@ -270,7 +270,30 @@ java: /usr/bin/java /usr/lib/java /etc/java /usr/share/java /opt/jdk1.8.0_91/bin
     <entry>
       <title><![CDATA[scala安装配置]]></title>
       <url>http://shengdeng.github.io/2016/06/16/scala%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
-      <content type="html"></content>
+      <content type="html"><![CDATA[<h1 id="在centOS上安装scala"><a href="#在centOS上安装scala" class="headerlink" title="在centOS上安装scala"></a>在centOS上安装scala</h1><p>先到scala官网下载scala的安装包</p>
+<h2 id="第一步：解压tar包"><a href="#第一步：解压tar包" class="headerlink" title="第一步：解压tar包"></a>第一步：解压tar包</h2><pre><code>[stefan@localhost 下载]$ sudo tar -zxvf scala-2.10.6.tgz -C /opt/
+</code></pre><h2 id="第二步：配置环境变量"><a href="#第二步：配置环境变量" class="headerlink" title="第二步：配置环境变量"></a>第二步：配置环境变量</h2><pre><code>[stefan@localhost 下载]$ sudo vim /etc/profile
+</code></pre><p>添加下面两行：</p>
+<pre><code>export SCALA_HOME=/opt/scala-2.10.6
+export PATH=$SCALA_HOME/bin:$PATH
+</code></pre><h2 id="第三步：生效"><a href="#第三步：生效" class="headerlink" title="第三步：生效"></a>第三步：生效</h2><pre><code>[stefan@localhost ~]$ source /etc/profile
+[stefan@localhost ~]$ scala -version
+Scala code runner version 2.10.6 -- Copyright 2002-2013, LAMP/EPFL
+</code></pre><h1 id="使用Scala解释器"><a href="#使用Scala解释器" class="headerlink" title="使用Scala解释器"></a>使用Scala解释器</h1><p>Read-Eval-Print-Loop，REPL，读取－计算－打印－循环在控制台输入scala进入scala解释器，</p>
+<pre><code>[stefan@localhost ~]$ scala
+Welcome to Scala version 2.10.6 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_91).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala&gt; 
+</code></pre><p>退出scala解释器输入 <code>:q</code></p>
+<ul>
+<li>可以使用tab进行提示</li>
+<li>使用上、下箭头查看历史命令</li>
+<li>使用左右箭头和DEL进行修改；</li>
+<li>REPL中以行为单位，如果想写多行代码可以输入:paste，然后粘贴代码，最后按Ctrl + D执行。</li>
+</ul>
+]]></content>
     </entry>
     
     <entry>
