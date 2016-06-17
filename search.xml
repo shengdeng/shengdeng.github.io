@@ -4,6 +4,95 @@
   
     
     <entry>
+      <title><![CDATA[centOS上编译和使用lantern科学上网]]></title>
+      <url>http://shengdeng.github.io/2016/06/17/centOS%E4%B8%8A%E7%BC%96%E8%AF%91%E5%92%8C%E4%BD%BF%E7%94%A8lantern/</url>
+      <content type="html"><![CDATA[<h1 id="1-编译环境准备"><a href="#1-编译环境准备" class="headerlink" title="1.编译环境准备"></a>1.编译环境准备</h1><p>需要预先安装的编译环境</p>
+<ul>
+<li>Git - brew install git, apt-get install git, etc</li>
+<li>Go 1.6 or higher.</li>
+<li>GNU Make</li>
+<li>Nodejs &amp; NPM</li>
+<li>GNU C Library (linux only) - apt-get install libc6-dev-i386, etc</li>
+<li>Gulp <code>npm i gulp-cli -g</code></li>
+</ul>
+<h2 id="1-1-安装git"><a href="#1-1-安装git" class="headerlink" title="1.1 安装git"></a>1.1 安装git</h2><pre><code>[stefan@localhost conf]$ sudo yum install git
+</code></pre><h2 id="1-2-安装Go-1-6"><a href="#1-2-安装Go-1-6" class="headerlink" title="1.2 安装Go 1.6"></a>1.2 安装Go 1.6</h2><p>下载Go的二进制安装包，然后解压到安装目录</p>
+<p>修改配置文件</p>
+<h2 id="1-3-安装make"><a href="#1-3-安装make" class="headerlink" title="1.3 安装make"></a>1.3 安装make</h2><p>可以使用yum安装，但make命令系统安装时已经装好了，可以检查一下</p>
+<pre><code>[root@localhost opt]# rpm -q make
+make-3.82-21.el7.x86_64
+</code></pre><h2 id="1-4-安装-Nodejs-amp-NPM"><a href="#1-4-安装-Nodejs-amp-NPM" class="headerlink" title="1.4 安装 Nodejs &amp; NPM"></a>1.4 安装 Nodejs &amp; NPM</h2><p>一定要切换到root用户执行：</p>
+<pre><code>[root@localhost opt]# curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+</code></pre><p>然后用yum安装</p>
+<pre><code>[root@localhost opt]# yum -y install nodejs
+</code></pre><p>检查是否安装成功</p>
+<pre><code>[root@localhost opt]# node --version
+v6.2.1
+</code></pre><p>由于新版的nodejs已经集成了npm，所以之前npm也一并安装好了。同样可以通过输入 “npm -v” 来测试是否成功安装</p>
+<pre><code>[root@localhost opt]# npm -v
+3.9.3
+</code></pre><h2 id="1-5-安装GNU-C-Library"><a href="#1-5-安装GNU-C-Library" class="headerlink" title="1.5 安装GNU C Library"></a>1.5 安装GNU C Library</h2><h2 id="1-6-安装Gulp"><a href="#1-6-安装Gulp" class="headerlink" title="1.6 安装Gulp"></a>1.6 安装Gulp</h2><p>gulp 是基于 node 实现的，那么我们就需要先安装 node，npm 是 node 的包管理工具，可以利用它安装 gulp 所需的包，执行</p>
+<pre><code>[root@localhost opt]# npm i gulp-cli -g
+</code></pre><p>运行时注意查看命令行有没有错误信息，安装完成后，你可以使用下面的命令查看gulp的版本号以确保gulp已经被正确安装。</p>
+<pre><code>[root@localhost opt]# gulp -v
+[21:58:10] CLI version 1.2.1
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[centOS下安装maven并配置免翻墙镜像]]></title>
+      <url>http://shengdeng.github.io/2016/06/17/centOS%E4%B8%8B%E5%AE%89%E8%A3%85maven%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%85%8D%E7%BF%BB%E5%A2%99%E9%95%9C%E5%83%8F/</url>
+      <content type="html"><![CDATA[<h1 id="下载与安装maven"><a href="#下载与安装maven" class="headerlink" title="下载与安装maven"></a>下载与安装maven</h1><p>maven是一个基于java的工具，所以要做的第一件事就是安装oracle JDK，再进行maven安装。</p>
+<h3 id="第一步：下载maven3-3-3的二进制安装包"><a href="#第一步：下载maven3-3-3的二进制安装包" class="headerlink" title="第一步：下载maven3.3.3的二进制安装包"></a>第一步：下载maven3.3.3的二进制安装包</h3><p>下载地址为<br><a href="http://mirror.bit.edu.cn/apache//maven/maven-3/3.3.3/binaries/" target="_blank" rel="external">http://mirror.bit.edu.cn/apache//maven/maven-3/3.3.3/binaries/</a></p>
+<p>Ps:编译spark1.6.1需要maven3.3.3版本</p>
+<h3 id="第二步：解压tar包到安装路径"><a href="#第二步：解压tar包到安装路径" class="headerlink" title="第二步：解压tar包到安装路径"></a>第二步：解压tar包到安装路径</h3><pre><code>[stefan@localhost 下载]$ sudo tar -zxvf apache-maven-3.3.3-bin.tar.gz -C /opt/
+</code></pre><h3 id="第三步：配置环境变量"><a href="#第三步：配置环境变量" class="headerlink" title="第三步：配置环境变量"></a>第三步：配置环境变量</h3><pre><code>[stefan@localhost opt]$ sudo vim /etc/profile
+</code></pre><p>在配置文件最后添加两行</p>
+<pre><code>export MAVEN_HOME=/opt/apache-maven-3.3.3
+export PATH=$MAVEN_HOME/bin:$PATH
+</code></pre><h3 id="第四步：生效"><a href="#第四步：生效" class="headerlink" title="第四步：生效"></a>第四步：生效</h3><pre><code>[stefan@localhost opt]$ source /etc/profile
+</code></pre><p>检查maven是否安装成功</p>
+<pre><code>[stefan@localhost opt]$ mvn -v
+Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)
+Maven home: /opt/apache-maven-3.3.3
+Java version: 1.8.0_91, vendor: Oracle Corporation
+Java home: /opt/jdk1.8.0_91/jre
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: &quot;linux&quot;, version: &quot;3.10.0-327.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;
+</code></pre><h1 id="配置maven镜像"><a href="#配置maven镜像" class="headerlink" title="配置maven镜像"></a>配置maven镜像</h1><p>maven编译需要下载很多包，必须翻墙才能成功下载，如果无法翻墙，也可以给maven配置一个镜像。使用maven镜像仓库及其重要，特别是国内的镜像，可以有效缓解被墙疼痛。</p>
+<h2 id="国内镜像"><a href="#国内镜像" class="headerlink" title="国内镜像"></a>国内镜像</h2><p>开源中国的maven镜像：</p>
+<pre><code>&lt;mirror&gt;
+    &lt;id&gt;nexus-osc&lt;/id&gt;
+    &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;name&gt;Nexus osc&lt;/name&gt;
+    &lt;url&gt;http://maven.oschina.net/content/groups/public/&lt;/url&gt;
+&lt;/mirror&gt;
+</code></pre><p>net.cn</p>
+<pre><code>&lt;mirror&gt;
+    &lt;id&gt;net-cn&lt;/id&gt;
+    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;
+    &lt;url&gt;http://maven.net.cn/content/groups/public/&lt;/url&gt;   
+ &lt;/mirror&gt;
+</code></pre><h2 id="配置镜像"><a href="#配置镜像" class="headerlink" title="配置镜像"></a>配置镜像</h2><p>下文以oschina.net的镜像为例子</p>
+<p>Maven 的安装目录下的/opt/apache-maven-3.3.3/conf文件夹下有个<code>settings.xml</code> 文件,编辑该文件</p>
+<pre><code>[stefan@localhost conf]$ sudo vim settings.xml
+</code></pre><p>在<code>&lt;mirrors&gt;</code>中插入:</p>
+<pre><code>&lt;mirror&gt;
+    &lt;id&gt;nexus-osc&lt;/id&gt;
+    &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;name&gt;Nexus osc&lt;/name&gt;
+    &lt;url&gt;http://maven.oschina.net/content/groups/public/&lt;/url&gt;
+&lt;/mirror&gt;
+</code></pre><h1 id="添加google的NDS域名解析"><a href="#添加google的NDS域名解析" class="headerlink" title="添加google的NDS域名解析"></a>添加google的NDS域名解析</h1><p>使用maven编译国外开源软件，还需添加google的DNS域名解析</p>
+<pre><code>[stefan@localhost opt]$ sudo vim /etc/resolv.conf
+</code></pre><p>添加两行</p>
+<pre><code>nameserver 8.8.8.8
+nameserver 8.8.4.4
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux基本操作：vim编辑器]]></title>
       <url>http://shengdeng.github.io/2016/06/16/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%EF%BC%9Avim%E7%BC%96%E8%BE%91%E5%99%A8/</url>
       <content type="html"><![CDATA[<a id="more"></a>
@@ -1046,13 +1135,14 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 </li>
 </ul>
 <h1 id="3-编译官方指导"><a href="#3-编译官方指导" class="headerlink" title="3. 编译官方指导"></a>3. 编译官方指导</h1><h2 id="2-1-编译环境的准备"><a href="#2-1-编译环境的准备" class="headerlink" title="2.1 编译环境的准备"></a>2.1 编译环境的准备</h2><ol>
-<li>Linux上安装好JDK</li>
+<li>Linux上<a href="http://shengdeng.github.io/2016/06/16/JDK%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">安装好JDK</a></li>
 <li>Linux上安装好maven</li>
-<li>Linux上安装Scala 2.10<br>注意<a href="http://spark.apache.org/docs/latest/building-spark.html" target="_blank" rel="external">官方指导</a>中建议的JDK和maven的版本<blockquote>
+<li>Linux上<a href="http://shengdeng.github.io/2016/06/16/scala%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/">安装Scala 2.10</a></li>
+</ol>
+<p>注意<a href="http://spark.apache.org/docs/latest/building-spark.html" target="_blank" rel="external">官方指导</a>中建议的JDK和maven的版本：</p>
+<blockquote>
 <p>Building Spark using Maven requires <strong>Maven 3.3.3</strong> or newer and <strong>Java 7+</strong>. The Spark build can supply a suitable Maven binary; see below.</p>
 </blockquote>
-</li>
-</ol>
 <p>scala推荐2.10版本，2.11版本需要自行编译Spark参见官方指导的<strong>Building for Scala 2.11</strong></p>
 <pre><code>./dev/change-scala-version.sh 2.11
 mvn -Pyarn -Phadoop-2.4 -Dscala-2.11 -DskipTests clean package
