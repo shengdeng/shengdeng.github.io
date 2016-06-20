@@ -4,6 +4,159 @@
   
     
     <entry>
+      <title><![CDATA[Linux常用命令总结]]></title>
+      <url>http://shengdeng.github.io/2016/06/20/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<h1 id="1-Bash使用技巧"><a href="#1-Bash使用技巧" class="headerlink" title="1.Bash使用技巧"></a>1.Bash使用技巧</h1><h2 id="1-1-Bash的历史命令查询"><a href="#1-1-Bash的历史命令查询" class="headerlink" title="1.1 Bash的历史命令查询"></a>1.1 Bash的历史命令查询</h2><ol>
+<li>$history：按序号返回历史命令</li>
+<li>$!+字符：以’字符’开头的命令</li>
+<li>$!+序号：历史纪录序号的命令</li>
+<li>$!?+字符串：包含“字符串”的命令<ul>
+<li>例如，<code>$!? ea</code> 返回历史命令中的clean</li>
+</ul>
+</li>
+</ol>
+<h2 id="1-2-Bsah支持的通配符"><a href="#1-2-Bsah支持的通配符" class="headerlink" title="1.2 Bsah支持的通配符"></a>1.2 Bsah支持的通配符</h2><ul>
+<li><ul>
+<li>匹配<strong>&gt;=0</strong>个</li>
+</ul>
+</li>
+</ul>
+<p>以下只能匹配一个：</p>
+<ul>
+<li>？ 匹配任<strong>1</strong>个字符</li>
+<li>[0-9] 匹配<strong>1</strong>个数字</li>
+<li>[a-b] 匹配任<strong>1</strong>个字符</li>
+<li>[^a-b] ^取反，除列表之外的<strong>1</strong>个字符</li>
+</ul>
+<p>例如</p>
+<pre><code>$ls Do*
+$ls Do?
+</code></pre><h2 id="1-3-Bash作业管理"><a href="#1-3-Bash作业管理" class="headerlink" title="1.3 Bash作业管理"></a>1.3 Bash作业管理</h2><ul>
+<li>后台运行命令，命令加一个&amp;<ul>
+<li>例如 <code>$firefox &amp;</code></li>
+</ul>
+</li>
+<li>管理后台作业<ul>
+<li><code>$jobs</code> ：查看后台的所有作业<ul>
+<li>[1] running firefox : 编号 状态 进程</li>
+</ul>
+</li>
+<li><code>$bg 编号</code>：控制程序继续在后台运行</li>
+<li><code>$fg 编号</code>：把程序拉到前台运行</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-文件、文件夹-目录-基本操作"><a href="#2-文件、文件夹-目录-基本操作" class="headerlink" title="2. 文件、文件夹(目录)基本操作"></a>2. 文件、文件夹(目录)基本操作</h1><h3 id="复制文件或目录-cp"><a href="#复制文件或目录-cp" class="headerlink" title="复制文件或目录 cp"></a>复制文件或目录 cp</h3><ul>
+<li><code>cp 源文件(目录) 目标文件或者位置</code><ul>
+<li>-r：递归复制整个目录树</li>
+<li>-v：显示详细信息</li>
+</ul>
+</li>
+</ul>
+<p>可以用于文件的<strong>备份</strong>：<strong>修改配置文件</strong>时，为了保存原来的版本，可以使用cp</p>
+<pre><code>cp spark.conf spark-orignal.conf
+</code></pre><p>然后修改spark.conf即可。</p>
+<h3 id="移动、重命名-文件或目录-慎用！-mv"><a href="#移动、重命名-文件或目录-慎用！-mv" class="headerlink" title="移动、重命名 文件或目录 慎用！ mv"></a>移动、重命名 文件或目录 慎用！ mv</h3><ul>
+<li><code>mv 文件 目标目录</code> 移动文件（代替删除rm/rmdir）</li>
+<li><code>mv 文件 文件2</code> 重命名文件</li>
+</ul>
+<p>服务器上慎用！参数与cp一致</p>
+<p>注意：/usr/local/表示local文件夹下；/usr/local表示local文件！！</p>
+<h3 id="创建文件-touch"><a href="#创建文件-touch" class="headerlink" title="创建文件 touch"></a>创建文件 touch</h3><h3 id="删除文件-慎用！-rm"><a href="#删除文件-慎用！-rm" class="headerlink" title="删除文件 慎用！ rm"></a>删除文件 慎用！ rm</h3><p>linux的文件删除后无法找回，服务器上慎用删除！可以设定一个文件夹，然后mv。</p>
+<ul>
+<li>rm 文件名<ul>
+<li>-r 删除文件夹下所有东西</li>
+<li>-i 交互，删前询问</li>
+<li>-f 强制删除</li>
+</ul>
+</li>
+</ul>
+<h3 id="创建目录-慎用-mrdir"><a href="#创建目录-慎用-mrdir" class="headerlink" title="创建目录 慎用 mrdir"></a>创建目录 慎用 mrdir</h3><h3 id="删除目录-慎用-rmdir"><a href="#删除目录-慎用-rmdir" class="headerlink" title="删除目录 慎用 rmdir"></a>删除目录 慎用 rmdir</h3><h1 id="3-系统常用命令"><a href="#3-系统常用命令" class="headerlink" title="3. 系统常用命令"></a>3. 系统常用命令</h1><h2 id="3-1-查看文件内容"><a href="#3-1-查看文件内容" class="headerlink" title="3.1 查看文件内容"></a>3.1 查看文件内容</h2><ul>
+<li>cat</li>
+<li>more 只能空格向下翻页显示</li>
+<li>less 上下翻页</li>
+<li>head -n 显示前n行，默认10行</li>
+<li>tail 显示末尾n行，默认10行<ul>
+<li>-n</li>
+<li>-f 追踪显示文件跟新</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-查看硬件信息"><a href="#3-2-查看硬件信息" class="headerlink" title="3.2 查看硬件信息"></a>3.2 查看硬件信息</h2><ul>
+<li>PCI设备:以太网、显卡、声卡等，相当于windows的设备管理器<ul>
+<li><h1 id="lspci"><a href="#lspci" class="headerlink" title="lspci"></a>lspci</h1></li>
+<li>-v 显示详细信息</li>
+</ul>
+</li>
+<li>USB设备<ul>
+<li><h1 id="lsusb"><a href="#lsusb" class="headerlink" title="lsusb"></a>lsusb</h1></li>
+</ul>
+</li>
+<li>加载的模块：相当于windous中的设备驱动<ul>
+<li><h1 id="lsmod"><a href="#lsmod" class="headerlink" title="lsmod"></a>lsmod</h1></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-1-系统信息总结"><a href="#3-1-系统信息总结" class="headerlink" title="3.1 系统信息总结"></a>3.1 系统信息总结</h2><h3 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h3><pre><code># uname -a   # 查看内核/操作系统/CPU信息
+# head -n 1 /etc/issue   # 查看操作系统版本
+# cat /proc/cpuinfo  # 查看CPU信息
+# hostname   # 查看计算机名
+# lspci -tv  # 列出所有PCI设备
+# lsusb -tv  # 列出所有USB设备
+# lsmod  # 列出加载的内核模块
+# env# 查看环境变量
+</code></pre><h3 id="查看系统资源"><a href="#查看系统资源" class="headerlink" title="查看系统资源"></a>查看系统资源</h3><pre><code># free -m# 查看内存使用量和交换区使用量
+# df -h  # 查看各分区使用情况
+# du -sh &lt;目录名&gt;# 查看指定目录的大小
+# grep MemTotal /proc/meminfo   # 查看内存总量
+# grep MemFree /proc/meminfo# 查看空闲内存量
+# uptime # 查看系统运行时间、用户数、负载
+# cat /proc/loadavg  # 查看系统负载
+</code></pre><h3 id="查看磁盘和分区"><a href="#查看磁盘和分区" class="headerlink" title="查看磁盘和分区"></a>查看磁盘和分区</h3><pre><code># mount | column -t  # 查看挂接的分区状态
+# fdisk -l   # 查看所有分区
+# swapon -s  # 查看所有交换分区
+# hdparm -i /dev/hda # 查看磁盘参数(仅适用于IDE设备)
+# dmesg | grep IDE   # 查看启动时IDE设备检测状况
+</code></pre><h3 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h3><pre><code># ifconfig   # 查看所有网络接口的属性
+# iptables -L# 查看防火墙设置
+# route -n   # 查看路由表
+# netstat -lntp  # 查看所有监听端口
+# netstat -antp  # 查看所有已经建立的连接
+# netstat -s # 查看网络统计信息
+</code></pre><h3 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h3><pre><code># ps -ef # 查看所有进程
+# top # 实时显示进程状态
+</code></pre><h3 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h3><pre><code># w  # 查看活动用户
+# id &lt;用户名&gt;# 查看指定用户信息
+# last   # 查看用户登录日志
+# cut -d: -f1 /etc/passwd   # 查看系统所有用户
+# cut -d: -f1 /etc/group# 查看系统所有组
+# crontab -l # 查看当前用户的计划任务
+</code></pre><h3 id="查看服务"><a href="#查看服务" class="headerlink" title="查看服务"></a>查看服务</h3><pre><code># chkconfig --list   # 列出所有系统服务
+# chkconfig --list | grep on# 列出所有启动的系统服务
+</code></pre><h3 id="查看CPU信息：从-proc-cpuinfo中读取"><a href="#查看CPU信息：从-proc-cpuinfo中读取" class="headerlink" title="查看CPU信息：从/proc/cpuinfo中读取"></a>查看CPU信息：从/proc/cpuinfo中读取</h3><pre><code># cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+  8  Intel(R) Xeon(R) CPUE5410   @ 2.33GHz 
+</code></pre><p>(看到有8个逻辑CPU, 也知道了CPU型号) </p>
+<pre><code># cat /proc/cpuinfo | grep physical | uniq -c 
+  4 physical id  : 0 
+  4 physical id  : 1 
+</code></pre><p>(说明实际上是两颗4核的CPU) </p>
+<pre><code># getconf LONG_BIT 
+   32 
+</code></pre><p>(说明当前CPU运行在32bit模式下, 但不代表CPU不支持64bit) </p>
+<pre><code># cat /proc/cpuinfo | grep flags | grep &apos; lm &apos; | wc -l 
+   8 
+</code></pre><p>(结果大于0, 说明支持64bit计算. lm指long mode, 支持lm则是64bit)  </p>
+<h3 id="查看内存信息"><a href="#查看内存信息" class="headerlink" title="查看内存信息"></a>查看内存信息</h3><pre><code># cat /proc/meminfo 
+</code></pre><h3 id="查看当前操作系统内核信息"><a href="#查看当前操作系统内核信息" class="headerlink" title="查看当前操作系统内核信息"></a>查看当前操作系统内核信息</h3><pre><code># uname -a 
+Linux euis1 2.6.9-55.ELsmp #1 SMP Fri Apr 20 17:03:35 EDT 2007 i686 i686 i386 GNU/Linux 
+</code></pre><h3 id="查看当前操作系统发行版信息"><a href="#查看当前操作系统发行版信息" class="headerlink" title="查看当前操作系统发行版信息"></a>查看当前操作系统发行版信息</h3><pre><code># cat /etc/issue | grep Linux 
+Red Hat Enterprise Linux AS release 4 (Nahant Update 5) 
+</code></pre><h3 id="查看机器型号"><a href="#查看机器型号" class="headerlink" title="查看机器型号"></a>查看机器型号</h3><pre><code># dmidecode | grep &quot;Product Name&quot; 
+</code></pre><h3 id="查看网卡信息"><a href="#查看网卡信息" class="headerlink" title="查看网卡信息"></a>查看网卡信息</h3><pre><code># dmesg | grep -i eth
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[centOS上编译和使用lantern科学上网]]></title>
       <url>http://shengdeng.github.io/2016/06/17/centOS%E4%B8%8A%E7%BC%96%E8%AF%91%E5%92%8C%E4%BD%BF%E7%94%A8lantern/</url>
       <content type="html"><![CDATA[<h1 id="1-编译环境准备"><a href="#1-编译环境准备" class="headerlink" title="1.编译环境准备"></a>1.编译环境准备</h1><p>需要预先安装的编译环境</p>
@@ -1234,7 +1387,134 @@ mvn -Pyarn -Phadoop-2.4 -Dhadoop.version=2.4.0 -Phive -Phive-thriftserver -Dskip
 <pre><code># cdh和hive都指定版本
 ./make-distribution.sh --name custom-spark --tgz -Pyarn -Psparkr -Phadoop-2.4 -Dhadoop.version=2.6.0-CDH5.4.0 -Phive-0.13.1 -Phive-thriftserver 
 </code></pre><p>注意：maven编译一定要翻墙，因为需要下载很多依赖包。出现几次错误是正常的。make-distribution.sh运行以后，半天才有反应很迟钝，这是因为make-distribution.sh会去进行很多操作，为了节省时间你可以进行一些修改129-138行注释掉（每一行都注释），这几行是解析spark、hadoop、hive的版本，我们输入命令时加上版本信息就行（草稿）</p>
-<h1 id="4-编译spark实战"><a href="#4-编译spark实战" class="headerlink" title="4.编译spark实战"></a>4.编译spark实战</h1>]]></content>
+<h1 id="4-编译spark1-6-1源码包实战"><a href="#4-编译spark1-6-1源码包实战" class="headerlink" title="4.编译spark1.6.1源码包实战"></a>4.编译spark1.6.1源码包实战</h1><p>检查编译环境：</p>
+<pre><code>[stefan@localhost ~]$ java -version
+java version &quot;1.8.0_91&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
+Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
+
+[stefan@localhost ~]$ scala -version
+Scala code runner version 2.10.6 -- Copyright 2002-2013, LAMP/EPFL
+
+[stefan@localhost ~]$ mvn -v
+Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)
+Maven home: /opt/apache-maven-3.3.3
+Java version: 1.8.0_91, vendor: Oracle Corporation
+Java home: /opt/jdk1.8.0_91/jre
+Default locale: zh_CN, platform encoding: UTF-8
+OS name: &quot;linux&quot;, version: &quot;3.10.0-327.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;
+</code></pre><p>解压源码包</p>
+<pre><code>[stefan@localhost 下载]$ sudo tar -zxvf spark-1.6.1.tgz -C /opt/
+</code></pre><p>最好修改源码包的名字</p>
+<pre><code>[stefan@localhost opt]$ sudo mv spark-1.6.1/ spark-1.6.1-scr
+</code></pre><p>进入源码包</p>
+<pre><code>[stefan@localhost opt]$ cd spark-1.6.1-scr/
+[stefan@localhost spark-1.6.1-scr]$ ls
+assembly  CHANGES.txt  data  docs  extraslicenses  NOTICE python sbin   streaming  unsafe
+bagel conf dev   ec2   graphx    make-distribution.sh  pom.xml   R  sbttags   yarn
+bin   CONTRIBUTING.md  dockerexamples  launcher  mllib project   README.md  scalastyle-config.xml  tools
+build core docker-integration-tests  external  LICENSE   network   pylintrc  repl   sqltox.ini
+</code></pre><p>其中，</p>
+<ul>
+<li>pom.xml用于maven编译</li>
+<li>make-distribution.sh是用于脚本编译的文件，里面也就是maven编译</li>
+<li>core、streaming、graphx、mllib可以看作spark的jar包，只要现在编译好了spark，这些类库就直接可以用，不需要另外安装。</li>
+</ul>
+<p>编译的时候需要指定参数，参考官方文档给的例子是：</p>
+<pre><code>#例子
+./make-distribution.sh --name custom-spark --tgz -Psparkr -Phadoop-2.4 -Phive -Phive-thriftserver -Pyarn
+</code></pre><p>其中hadoop在生产环境中一般用CDH的版本，所以我们可以在 <a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="external">http://archive.cloudera.com/cdh5/cdh/5/</a> 中找到CDH5的各个hadoop版本</p>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/343434.PNG" alt=""></p>
+<p>我们选择最近的版本hadoop-2.6.0-cdh5.7.0.tar.gz试试，填写的时候只要填2.6.0-cdh5.7.0；</p>
+<p>按照官方文档的例子，我们指定的参数为</p>
+<p>./make-distribution.sh –tgz -Psparkr -Phadoop-2.6 –Dhadoop.version=2.6.0-cdh5.7.0 -Phive-2.0.0 -Phive-thriftserver -Pyarn</p>
+<p>[stefan@localhost spark-1.6.1-scr]$ sudo ./make-distribution.sh –tgz -Psparkr -Phadoop-2.6 –Dhadoop.version=2.6.0-cdh5.7.0 -Phive-2.0.0 -Phive-thriftserver -Pyarn</p>
+<p>编译报错</p>
+<pre><code>+++ dirname ./make-distribution.sh
+++ cd .
+++ pwd
++ SPARK_HOME=/opt/spark-1.6.1-scr
++ DISTDIR=/opt/spark-1.6.1-scr/dist
++ SPARK_TACHYON=false
++ TACHYON_VERSION=0.8.2
++ TACHYON_TGZ=tachyon-0.8.2-bin.tar.gz
++ TACHYON_URL=http://tachyon-project.org/downloads/files/0.8.2/tachyon-0.8.2-bin.tar.gz
++ MAKE_TGZ=false
++ NAME=none
++ MVN=/opt/spark-1.6.1-scr/build/mvn
++ ((  7  ))
++ case $1 in
++ MAKE_TGZ=true
++ shift
++ ((  6  ))
++ case $1 in
++ break
++ &apos;[&apos; -z &apos;&apos; &apos;]&apos;
+++ command -v rpm
++ &apos;[&apos; /bin/rpm &apos;]&apos;
+++ rpm -E %java_home
++ RPM_JAVA_HOME=/usr/lib/jvm/jre
++ &apos;[&apos; /usr/lib/jvm/jre &apos;!=&apos; %java_home &apos;]&apos;
++ JAVA_HOME=/usr/lib/jvm/jre
++ echo &apos;No JAVA_HOME set, proceeding with &apos;\&apos;&apos;/usr/lib/jvm/jre&apos;\&apos;&apos; learned from rpm&apos;
+No JAVA_HOME set, proceeding with &apos;/usr/lib/jvm/jre&apos; learned from rpm
++ &apos;[&apos; -z /usr/lib/jvm/jre &apos;]&apos;
+++ command -v git
++ &apos;[&apos; /bin/git &apos;]&apos;
+++ git rev-parse --short HEAD
+++ :
++ GITREV=
++ &apos;[&apos; &apos;!&apos; -z &apos;&apos; &apos;]&apos;
++ unset GITREV
+++ command -v /opt/spark-1.6.1-scr/build/mvn
++ &apos;[&apos; &apos;!&apos; /opt/spark-1.6.1-scr/build/mvn &apos;]&apos;
+++ /opt/spark-1.6.1-scr/build/mvn help:evaluate -Dexpression=project.version -Psparkr -Phadoop-2.6 --Dhadoop.version=2.6.0-cdh5.7.0 -Phive-2.0.0 -Phive-thriftserver -Pyarn
+++ grep -v INFO
+++ tail -n 1
++ VERSION=&apos; -X,--debug Produce execution debug output&apos;
+</code></pre><p>以上内容是make-distribution.sh的执行过程，提示No JAVA_HOME set，现在修改make-distribution.sh</p>
+<pre><code>[stefan@localhost spark-1.6.1-scr]$ sudo cp make-distribution.sh make-distribution-original.sh
+
+
+VERSION=1.6.1
+SCALA_VERSION=2.10
+SPARK_HADOOP_VERSION=2.6.0-cdh5.7.0
+SPARK_HIVE=1
+
+#VERSION=$(&quot;$MVN&quot; help:evaluate -Dexpression=project.version $@ 2&gt;/dev/null | grep -v &quot;INFO&quot; | tail -n 1)
+#SCALA_VERSION=$(&quot;$MVN&quot; help:evaluate -Dexpression=scala.binary.version $@ 2&gt;/dev/null\
+#| grep -v &quot;INFO&quot;\
+#| tail -n 1)
+#SPARK_HADOOP_VERSION=$(&quot;$MVN&quot; help:evaluate -Dexpression=hadoop.version $@ 2&gt;/dev/null\
+#| grep -v &quot;INFO&quot;\
+#| tail -n 1)
+#SPARK_HIVE=$(&quot;$MVN&quot; help:evaluate -Dexpression=project.activeProfiles -pl sql/hive $@ 2&gt;/dev/null\
+#| grep -v &quot;INFO&quot;\
+#| fgrep --count &quot;&lt;id&gt;hive&lt;/id&gt;&quot;;\
+## Reset exit status to 0, otherwise the script stops here if the last grep finds nothing\
+## because we use &quot;set -o pipefail&quot;
+#echo -n)
+</code></pre><p>又报错，难道是要卸载openJDK？？所以系统要最小化安装，以免卸载不必要的软件</p>
+<pre><code>+ /opt/spark-1.6.1-scr/build/mvn clean package -DskipTests -Psparkr -Phadoop-2.6 --Dhadoop.version=2.6.0-cdh5.7.0 -Phive-2.0.0 -Phive-thriftserver -Pyarn
+Using `mvn` from path: /opt/spark-1.6.1-scr/build/apache-maven-3.3.3/bin/mvn
+which: no javac in (/sbin:/bin:/usr/sbin:/usr/bin)
+Warning: JAVA_HOME environment variable is not set.
+OpenJDK 64-Bit Server VM warning: ignoring option MaxPermSize=512M; support was removed in 8.0
+Unable to parse command line options: Unrecognized option: --Dhadoop.version=2.6.0-cdh5.7.0
+</code></pre><p>解决办法：删除openJDK</p>
+<pre><code>[stefan@localhost ~]$ rpm -qa | grep jdk
+java-1.7.0-openjdk-1.7.0.91-2.6.2.3.el7.x86_64
+java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64
+java-1.8.0-openjdk-1.8.0.65-3.b17.el7.x86_64
+java-1.7.0-openjdk-headless-1.7.0.91-2.6.2.3.el7.x86_64
+[stefan@localhost ~]$ sudo yum remove java
+</code></pre><p>执行完了之后发现openJDK还没删干净</p>
+<pre><code>[stefan@localhost spark-1.6.1-scr]$ rpm -qa |grep jdk 
+java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64
+java-1.7.0-openjdk-headless-1.7.0.91-2.6.2.3.el7.x86_64
+</code></pre><p>发现这两个依赖被libreoffice需要！<br>    [stefan@localhost spark-1.6.1-scr]$ sudo rpm -e java-1.8.0-openjdk-headless-1.8.0.65-3.b17.el7.x86_64 java-1.7.0-openjdk-headless-1.7.0.91-2.6.2.3.el7.x86_64<br>    错误：依赖检测失败：<br>        java-headless &gt;= 1:1.6 被 (已安裝) libreoffice-core-1:4.3.7.2-5.el7.x86_64 需要<br>        libjvm.so()(64bit) 被 (已安裝) libreoffice-ure-1:4.3.7.2-5.el7.x86_64 需要<br>        java-headless &gt;= 1:1.6 被 (已安裝) libreoffice-core-1:4.3.7.2-5.el7.x86_64 需要<br>        libjvm.so()(64bit) 被 (已安裝) libreoffice-ure-1:4.3.7.2-5.el7.x86_64 需要</p>
+<p>[stefan@localhost spark-1.6.1-scr]$ /opt/spark-1.6.1-scr/build/apache-maven-3.3.3/bin/mvn -version<br>Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)<br>Maven home: /opt/spark-1.6.1-scr/build/apache-maven-3.3.3<br>Java version: 1.8.0_91, vendor: Oracle Corporation<br>Java home: /opt/jdk1.8.0_91/jre<br>Default locale: zh_CN, platform encoding: UTF-8<br>OS name: “linux”, version: “3.10.0-327.el7.x86_64”, arch: “amd64”, family: “unix”</p>
+]]></content>
     </entry>
     
     <entry>

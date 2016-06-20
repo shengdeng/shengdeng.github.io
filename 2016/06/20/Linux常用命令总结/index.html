@@ -7,7 +7,7 @@
 
     
 
-    <title>java | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>Linux常用命令总结 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="Linux常用命令总结"/>
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -401,30 +401,234 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">当前位置（分类目录）</span>
         
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/学习笔记/">学习笔记</a>
+
 
         
-            <a class="breadcrumb" href="/categories/java/">java</a>
+
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux常用命令总结</h1>
+    
 
 
-    <div class="collection mt-0">
+            </div>
+            <time class="pink-link-context" datetime="2016-06-20T06:45:16.000Z"><a href="/2016/06/20/Linux常用命令总结/">2016-06-20</a></time>
+
+            
+    <div class="tags-row">
         
-            <a href="/2016/06/16/JDK安装配置/" class="collection-item indigo-text text-darken-1">
-                <time datetime="2016-06-16T02:35:50.000Z">2016-06-16</time>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                centOS安装Oracle JDK替换OpenJDK详解
-            </a>
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
         
     </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-Bash使用技巧"><span class="section table-of-contents-text">1.Bash使用技巧</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-1-Bash的历史命令查询"><span class="section table-of-contents-text">1.1 Bash的历史命令查询</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-2-Bsah支持的通配符"><span class="section table-of-contents-text">1.2 Bsah支持的通配符</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#1-3-Bash作业管理"><span class="section table-of-contents-text">1.3 Bash作业管理</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-文件、文件夹-目录-基本操作"><span class="section table-of-contents-text">2. 文件、文件夹(目录)基本操作</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#复制文件或目录-cp"><span class="section table-of-contents-text">复制文件或目录 cp</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#移动、重命名-文件或目录-慎用！-mv"><span class="section table-of-contents-text">移动、重命名 文件或目录 慎用！ mv</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#创建文件-touch"><span class="section table-of-contents-text">创建文件 touch</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#删除文件-慎用！-rm"><span class="section table-of-contents-text">删除文件 慎用！ rm</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#创建目录-慎用-mrdir"><span class="section table-of-contents-text">创建目录 慎用 mrdir</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#删除目录-慎用-rmdir"><span class="section table-of-contents-text">删除目录 慎用 rmdir</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-系统常用命令"><span class="section table-of-contents-text">3. 系统常用命令</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-1-查看文件内容"><span class="section table-of-contents-text">3.1 查看文件内容</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-2-查看硬件信息"><span class="section table-of-contents-text">3.2 查看硬件信息</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#lspci"><span class="section table-of-contents-text">lspci</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#lsusb"><span class="section table-of-contents-text">lsusb</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#lsmod"><span class="section table-of-contents-text">lsmod</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#3-1-系统信息总结"><span class="section table-of-contents-text">3.1 系统信息总结</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看系统信息"><span class="section table-of-contents-text">查看系统信息</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看系统资源"><span class="section table-of-contents-text">查看系统资源</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看磁盘和分区"><span class="section table-of-contents-text">查看磁盘和分区</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看网络"><span class="section table-of-contents-text">查看网络</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看进程"><span class="section table-of-contents-text">查看进程</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看用户"><span class="section table-of-contents-text">查看用户</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看服务"><span class="section table-of-contents-text">查看服务</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看CPU信息：从-proc-cpuinfo中读取"><span class="section table-of-contents-text">查看CPU信息：从/proc/cpuinfo中读取</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看内存信息"><span class="section table-of-contents-text">查看内存信息</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看当前操作系统内核信息"><span class="section table-of-contents-text">查看当前操作系统内核信息</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看当前操作系统发行版信息"><span class="section table-of-contents-text">查看当前操作系统发行版信息</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看机器型号"><span class="section table-of-contents-text">查看机器型号</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#查看网卡信息"><span class="section table-of-contents-text">查看网卡信息</span></a></li></ol></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="1-Bash使用技巧"><a href="#1-Bash使用技巧" class="headerlink" title="1.Bash使用技巧"></a>1.Bash使用技巧</h1><h2 id="1-1-Bash的历史命令查询"><a href="#1-1-Bash的历史命令查询" class="headerlink" title="1.1 Bash的历史命令查询"></a>1.1 Bash的历史命令查询</h2><ol>
+<li>$history：按序号返回历史命令</li>
+<li>$!+字符：以’字符’开头的命令</li>
+<li>$!+序号：历史纪录序号的命令</li>
+<li>$!?+字符串：包含“字符串”的命令<ul>
+<li>例如，<code>$!? ea</code> 返回历史命令中的clean</li>
+</ul>
+</li>
+</ol>
+<h2 id="1-2-Bsah支持的通配符"><a href="#1-2-Bsah支持的通配符" class="headerlink" title="1.2 Bsah支持的通配符"></a>1.2 Bsah支持的通配符</h2><ul>
+<li><ul>
+<li>匹配<strong>&gt;=0</strong>个</li>
+</ul>
+</li>
+</ul>
+<p>以下只能匹配一个：</p>
+<ul>
+<li>？ 匹配任<strong>1</strong>个字符</li>
+<li>[0-9] 匹配<strong>1</strong>个数字</li>
+<li>[a-b] 匹配任<strong>1</strong>个字符</li>
+<li>[^a-b] ^取反，除列表之外的<strong>1</strong>个字符</li>
+</ul>
+<p>例如</p>
+<pre><code>$ls Do*
+$ls Do?
+</code></pre><h2 id="1-3-Bash作业管理"><a href="#1-3-Bash作业管理" class="headerlink" title="1.3 Bash作业管理"></a>1.3 Bash作业管理</h2><ul>
+<li>后台运行命令，命令加一个&amp;<ul>
+<li>例如 <code>$firefox &amp;</code></li>
+</ul>
+</li>
+<li>管理后台作业<ul>
+<li><code>$jobs</code> ：查看后台的所有作业<ul>
+<li>[1] running firefox : 编号 状态 进程</li>
+</ul>
+</li>
+<li><code>$bg 编号</code>：控制程序继续在后台运行</li>
+<li><code>$fg 编号</code>：把程序拉到前台运行</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-文件、文件夹-目录-基本操作"><a href="#2-文件、文件夹-目录-基本操作" class="headerlink" title="2. 文件、文件夹(目录)基本操作"></a>2. 文件、文件夹(目录)基本操作</h1><h3 id="复制文件或目录-cp"><a href="#复制文件或目录-cp" class="headerlink" title="复制文件或目录 cp"></a>复制文件或目录 cp</h3><ul>
+<li><code>cp 源文件(目录) 目标文件或者位置</code><ul>
+<li>-r：递归复制整个目录树</li>
+<li>-v：显示详细信息</li>
+</ul>
+</li>
+</ul>
+<p>可以用于文件的<strong>备份</strong>：<strong>修改配置文件</strong>时，为了保存原来的版本，可以使用cp</p>
+<pre><code>cp spark.conf spark-orignal.conf
+</code></pre><p>然后修改spark.conf即可。</p>
+<h3 id="移动、重命名-文件或目录-慎用！-mv"><a href="#移动、重命名-文件或目录-慎用！-mv" class="headerlink" title="移动、重命名 文件或目录 慎用！ mv"></a>移动、重命名 文件或目录 慎用！ mv</h3><ul>
+<li><code>mv 文件 目标目录</code> 移动文件（代替删除rm/rmdir）</li>
+<li><code>mv 文件 文件2</code> 重命名文件</li>
+</ul>
+<p>服务器上慎用！参数与cp一致</p>
+<p>注意：/usr/local/表示local文件夹下；/usr/local表示local文件！！</p>
+<h3 id="创建文件-touch"><a href="#创建文件-touch" class="headerlink" title="创建文件 touch"></a>创建文件 touch</h3><h3 id="删除文件-慎用！-rm"><a href="#删除文件-慎用！-rm" class="headerlink" title="删除文件 慎用！ rm"></a>删除文件 慎用！ rm</h3><p>linux的文件删除后无法找回，服务器上慎用删除！可以设定一个文件夹，然后mv。</p>
+<ul>
+<li>rm 文件名<ul>
+<li>-r 删除文件夹下所有东西</li>
+<li>-i 交互，删前询问</li>
+<li>-f 强制删除</li>
+</ul>
+</li>
+</ul>
+<h3 id="创建目录-慎用-mrdir"><a href="#创建目录-慎用-mrdir" class="headerlink" title="创建目录 慎用 mrdir"></a>创建目录 慎用 mrdir</h3><h3 id="删除目录-慎用-rmdir"><a href="#删除目录-慎用-rmdir" class="headerlink" title="删除目录 慎用 rmdir"></a>删除目录 慎用 rmdir</h3><h1 id="3-系统常用命令"><a href="#3-系统常用命令" class="headerlink" title="3. 系统常用命令"></a>3. 系统常用命令</h1><h2 id="3-1-查看文件内容"><a href="#3-1-查看文件内容" class="headerlink" title="3.1 查看文件内容"></a>3.1 查看文件内容</h2><ul>
+<li>cat</li>
+<li>more 只能空格向下翻页显示</li>
+<li>less 上下翻页</li>
+<li>head -n 显示前n行，默认10行</li>
+<li>tail 显示末尾n行，默认10行<ul>
+<li>-n</li>
+<li>-f 追踪显示文件跟新</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-查看硬件信息"><a href="#3-2-查看硬件信息" class="headerlink" title="3.2 查看硬件信息"></a>3.2 查看硬件信息</h2><ul>
+<li>PCI设备:以太网、显卡、声卡等，相当于windows的设备管理器<ul>
+<li><h1 id="lspci"><a href="#lspci" class="headerlink" title="lspci"></a>lspci</h1></li>
+<li>-v 显示详细信息</li>
+</ul>
+</li>
+<li>USB设备<ul>
+<li><h1 id="lsusb"><a href="#lsusb" class="headerlink" title="lsusb"></a>lsusb</h1></li>
+</ul>
+</li>
+<li>加载的模块：相当于windous中的设备驱动<ul>
+<li><h1 id="lsmod"><a href="#lsmod" class="headerlink" title="lsmod"></a>lsmod</h1></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-1-系统信息总结"><a href="#3-1-系统信息总结" class="headerlink" title="3.1 系统信息总结"></a>3.1 系统信息总结</h2><h3 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h3><pre><code># uname -a   # 查看内核/操作系统/CPU信息
+# head -n 1 /etc/issue   # 查看操作系统版本
+# cat /proc/cpuinfo  # 查看CPU信息
+# hostname   # 查看计算机名
+# lspci -tv  # 列出所有PCI设备
+# lsusb -tv  # 列出所有USB设备
+# lsmod  # 列出加载的内核模块
+# env# 查看环境变量
+</code></pre><h3 id="查看系统资源"><a href="#查看系统资源" class="headerlink" title="查看系统资源"></a>查看系统资源</h3><pre><code># free -m# 查看内存使用量和交换区使用量
+# df -h  # 查看各分区使用情况
+# du -sh &lt;目录名&gt;# 查看指定目录的大小
+# grep MemTotal /proc/meminfo   # 查看内存总量
+# grep MemFree /proc/meminfo# 查看空闲内存量
+# uptime # 查看系统运行时间、用户数、负载
+# cat /proc/loadavg  # 查看系统负载
+</code></pre><h3 id="查看磁盘和分区"><a href="#查看磁盘和分区" class="headerlink" title="查看磁盘和分区"></a>查看磁盘和分区</h3><pre><code># mount | column -t  # 查看挂接的分区状态
+# fdisk -l   # 查看所有分区
+# swapon -s  # 查看所有交换分区
+# hdparm -i /dev/hda # 查看磁盘参数(仅适用于IDE设备)
+# dmesg | grep IDE   # 查看启动时IDE设备检测状况
+</code></pre><h3 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h3><pre><code># ifconfig   # 查看所有网络接口的属性
+# iptables -L# 查看防火墙设置
+# route -n   # 查看路由表
+# netstat -lntp  # 查看所有监听端口
+# netstat -antp  # 查看所有已经建立的连接
+# netstat -s # 查看网络统计信息
+</code></pre><h3 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h3><pre><code># ps -ef # 查看所有进程
+# top # 实时显示进程状态
+</code></pre><h3 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h3><pre><code># w  # 查看活动用户
+# id &lt;用户名&gt;# 查看指定用户信息
+# last   # 查看用户登录日志
+# cut -d: -f1 /etc/passwd   # 查看系统所有用户
+# cut -d: -f1 /etc/group# 查看系统所有组
+# crontab -l # 查看当前用户的计划任务
+</code></pre><h3 id="查看服务"><a href="#查看服务" class="headerlink" title="查看服务"></a>查看服务</h3><pre><code># chkconfig --list   # 列出所有系统服务
+# chkconfig --list | grep on# 列出所有启动的系统服务
+</code></pre><h3 id="查看CPU信息：从-proc-cpuinfo中读取"><a href="#查看CPU信息：从-proc-cpuinfo中读取" class="headerlink" title="查看CPU信息：从/proc/cpuinfo中读取"></a>查看CPU信息：从/proc/cpuinfo中读取</h3><pre><code># cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+  8  Intel(R) Xeon(R) CPUE5410   @ 2.33GHz 
+</code></pre><p>(看到有8个逻辑CPU, 也知道了CPU型号) </p>
+<pre><code># cat /proc/cpuinfo | grep physical | uniq -c 
+  4 physical id  : 0 
+  4 physical id  : 1 
+</code></pre><p>(说明实际上是两颗4核的CPU) </p>
+<pre><code># getconf LONG_BIT 
+   32 
+</code></pre><p>(说明当前CPU运行在32bit模式下, 但不代表CPU不支持64bit) </p>
+<pre><code># cat /proc/cpuinfo | grep flags | grep &apos; lm &apos; | wc -l 
+   8 
+</code></pre><p>(结果大于0, 说明支持64bit计算. lm指long mode, 支持lm则是64bit)  </p>
+<h3 id="查看内存信息"><a href="#查看内存信息" class="headerlink" title="查看内存信息"></a>查看内存信息</h3><pre><code># cat /proc/meminfo 
+</code></pre><h3 id="查看当前操作系统内核信息"><a href="#查看当前操作系统内核信息" class="headerlink" title="查看当前操作系统内核信息"></a>查看当前操作系统内核信息</h3><pre><code># uname -a 
+Linux euis1 2.6.9-55.ELsmp #1 SMP Fri Apr 20 17:03:35 EDT 2007 i686 i686 i386 GNU/Linux 
+</code></pre><h3 id="查看当前操作系统发行版信息"><a href="#查看当前操作系统发行版信息" class="headerlink" title="查看当前操作系统发行版信息"></a>查看当前操作系统发行版信息</h3><pre><code># cat /etc/issue | grep Linux 
+Red Hat Enterprise Linux AS release 4 (Nahant Update 5) 
+</code></pre><h3 id="查看机器型号"><a href="#查看机器型号" class="headerlink" title="查看机器型号"></a>查看机器型号</h3><pre><code># dmidecode | grep &quot;Product Name&quot; 
+</code></pre><h3 id="查看网卡信息"><a href="#查看网卡信息" class="headerlink" title="查看网卡信息"></a>查看网卡信息</h3><pre><code># dmesg | grep -i eth
+</code></pre>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/06/20/Linux常用命令总结/" data-title="Linux常用命令总结" data-url="http://shengdeng.github.io/2016/06/20/Linux常用命令总结/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
 
 
 </div>
