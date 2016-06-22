@@ -4,8 +4,8 @@
   
     
     <entry>
-      <title><![CDATA[Linux常用命令总结]]></title>
-      <url>http://shengdeng.github.io/2016/06/20/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
+      <title><![CDATA[Linux常用命令]]></title>
+      <url>http://shengdeng.github.io/2016/06/22/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h1 id="1-Bash使用技巧"><a href="#1-Bash使用技巧" class="headerlink" title="1.Bash使用技巧"></a>1.Bash使用技巧</h1><h2 id="1-1-Bash的历史命令查询"><a href="#1-1-Bash的历史命令查询" class="headerlink" title="1.1 Bash的历史命令查询"></a>1.1 Bash的历史命令查询</h2><ol>
 <li>$history：按序号返回历史命令</li>
 <li>$!+字符：以’字符’开头的命令</li>
@@ -71,7 +71,7 @@ $ls Do?
 </ul>
 </li>
 </ul>
-<h3 id="创建目录-慎用-mrdir"><a href="#创建目录-慎用-mrdir" class="headerlink" title="创建目录 慎用 mrdir"></a>创建目录 慎用 mrdir</h3><h3 id="删除目录-慎用-rmdir"><a href="#删除目录-慎用-rmdir" class="headerlink" title="删除目录 慎用 rmdir"></a>删除目录 慎用 rmdir</h3><h1 id="3-系统常用命令"><a href="#3-系统常用命令" class="headerlink" title="3. 系统常用命令"></a>3. 系统常用命令</h1><h2 id="3-1-查看文件内容"><a href="#3-1-查看文件内容" class="headerlink" title="3.1 查看文件内容"></a>3.1 查看文件内容</h2><ul>
+<h3 id="创建目录-慎用-mrdir"><a href="#创建目录-慎用-mrdir" class="headerlink" title="创建目录 慎用 mrdir"></a>创建目录 慎用 mrdir</h3><h3 id="删除目录-慎用-rmdir"><a href="#删除目录-慎用-rmdir" class="headerlink" title="删除目录 慎用 rmdir"></a>删除目录 慎用 rmdir</h3><h1 id="3-查看文件内容"><a href="#3-查看文件内容" class="headerlink" title="3 查看文件内容"></a>3 查看文件内容</h1><ul>
 <li>cat</li>
 <li>more 只能空格向下翻页显示</li>
 <li>less 上下翻页</li>
@@ -82,22 +82,71 @@ $ls Do?
 </ul>
 </li>
 </ul>
-<h2 id="3-2-查看硬件信息"><a href="#3-2-查看硬件信息" class="headerlink" title="3.2 查看硬件信息"></a>3.2 查看硬件信息</h2><ul>
-<li>PCI设备:以太网、显卡、声卡等，相当于windows的设备管理器<ul>
-<li><h1 id="lspci"><a href="#lspci" class="headerlink" title="lspci"></a>lspci</h1></li>
-<li>-v 显示详细信息</li>
+<h1 id="4-归档、压缩"><a href="#4-归档、压缩" class="headerlink" title="4 归档、压缩"></a>4 归档、压缩</h1><p>归档：</p>
+<ul>
+<li>tar -cvf out.tar(归档的名字) 要归档的文件或目录</li>
+</ul>
+<p>释放.tar归档：</p>
+<ul>
+<li>tar -xvf in.tar -C 释放的位置</li>
+</ul>
+<p>释放并解压tar.gz：</p>
+<ul>
+<li>tar -xvzf in.tar.gz -C 解压的位置</li>
+</ul>
+<h1 id="5-关机、重启"><a href="#5-关机、重启" class="headerlink" title="5 关机、重启"></a>5 关机、重启</h1><ul>
+<li>shutdown 选项 时间<ul>
+<li>h 关机</li>
+<li>r 重启</li>
 </ul>
 </li>
-<li>USB设备<ul>
-<li><h1 id="lsusb"><a href="#lsusb" class="headerlink" title="lsusb"></a>lsusb</h1></li>
+</ul>
+<p>例如</p>
+<pre><code>shutdown -h now
+shutdown -h +10  #10min后关机
+shutdown -h 23:30 
+shutdown -r now
+# 快捷命令
+poewroff #立即关机
+reboot #立即重启
+</code></pre><h1 id="6-查找"><a href="#6-查找" class="headerlink" title="6 查找"></a>6 查找</h1><h2 id="快速查找文件或文件夹-local"><a href="#快速查找文件或文件夹-local" class="headerlink" title="快速查找文件或文件夹 local"></a>快速查找文件或文件夹 local</h2><ul>
+<li>此命令需要预先建立数据库，数据库默认每天更新一次<ul>
+<li>可以用updatedb命令手动更新数据库</li>
+<li>优点：快速</li>
+<li>缺点：新加入的文件没有进入数据库，无法查找到</li>
 </ul>
 </li>
-<li>加载的模块：相当于windous中的设备驱动<ul>
-<li><h1 id="lsmod"><a href="#lsmod" class="headerlink" title="lsmod"></a>lsmod</h1></li>
+</ul>
+<p>命令:</p>
+<pre><code>local keyword #返回带有keyword的文件和文件夹
+updatedb #更新数据库
+</code></pre><h2 id="高级查找文件或文件夹-find"><a href="#高级查找文件或文件夹-find" class="headerlink" title="高级查找文件或文件夹 find"></a>高级查找文件或文件夹 find</h2><pre><code>find  查找哪个目录  查找条件
+</code></pre><p>查找条件</p>
+<ul>
+<li>根据文件名：<code>-name 文件名</code></li>
+<li>根据权限<ul>
+<li><code>-perm 权限</code></li>
+<li><code>-user 属于某个用户的文件</code></li>
+<li><code>-group 属于某个组的文件</code></li>
 </ul>
 </li>
+<li>根据类型：<code>-type 文件类型</code></li>
+<li>根据修改时间：<code>-ctime 时间</code></li>
+<li>根据大小： <code>-size 大小</code></li>
 </ul>
-<h2 id="3-1-系统信息总结"><a href="#3-1-系统信息总结" class="headerlink" title="3.1 系统信息总结"></a>3.1 系统信息总结</h2><h3 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h3><pre><code># uname -a   # 查看内核/操作系统/CPU信息
+<p>例子</p>
+<pre><code>$find . -name *linux* #当前目录下含linux的文件，可以用通配符
+$find / -name *.conf
+$find / -type d #返回目录类型文件
+$find . -prem 777 #返回权限是777的文件
+$find . -name *linux*
+</code></pre>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux查看系统信息命令]]></title>
+      <url>http://shengdeng.github.io/2016/06/20/Linux%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E5%91%BD%E4%BB%A4/</url>
+      <content type="html"><![CDATA[<h1 id="系统信息总结"><a href="#系统信息总结" class="headerlink" title="系统信息总结"></a>系统信息总结</h1><h2 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h2><pre><code># uname -a   # 查看内核/操作系统/CPU信息
 # head -n 1 /etc/issue   # 查看操作系统版本
 # cat /proc/cpuinfo  # 查看CPU信息
 # hostname   # 查看计算机名
@@ -105,35 +154,35 @@ $ls Do?
 # lsusb -tv  # 列出所有USB设备
 # lsmod  # 列出加载的内核模块
 # env# 查看环境变量
-</code></pre><h3 id="查看系统资源"><a href="#查看系统资源" class="headerlink" title="查看系统资源"></a>查看系统资源</h3><pre><code># free -m# 查看内存使用量和交换区使用量
+</code></pre><h2 id="查看系统资源"><a href="#查看系统资源" class="headerlink" title="查看系统资源"></a>查看系统资源</h2><pre><code># free -m# 查看内存使用量和交换区使用量
 # df -h  # 查看各分区使用情况
 # du -sh &lt;目录名&gt;# 查看指定目录的大小
 # grep MemTotal /proc/meminfo   # 查看内存总量
 # grep MemFree /proc/meminfo# 查看空闲内存量
 # uptime # 查看系统运行时间、用户数、负载
 # cat /proc/loadavg  # 查看系统负载
-</code></pre><h3 id="查看磁盘和分区"><a href="#查看磁盘和分区" class="headerlink" title="查看磁盘和分区"></a>查看磁盘和分区</h3><pre><code># mount | column -t  # 查看挂接的分区状态
+</code></pre><h2 id="查看磁盘和分区"><a href="#查看磁盘和分区" class="headerlink" title="查看磁盘和分区"></a>查看磁盘和分区</h2><pre><code># mount | column -t  # 查看挂接的分区状态
 # fdisk -l   # 查看所有分区
 # swapon -s  # 查看所有交换分区
 # hdparm -i /dev/hda # 查看磁盘参数(仅适用于IDE设备)
 # dmesg | grep IDE   # 查看启动时IDE设备检测状况
-</code></pre><h3 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h3><pre><code># ifconfig   # 查看所有网络接口的属性
+</code></pre><h2 id="查看网络"><a href="#查看网络" class="headerlink" title="查看网络"></a>查看网络</h2><pre><code># ifconfig   # 查看所有网络接口的属性
 # iptables -L# 查看防火墙设置
 # route -n   # 查看路由表
 # netstat -lntp  # 查看所有监听端口
 # netstat -antp  # 查看所有已经建立的连接
 # netstat -s # 查看网络统计信息
-</code></pre><h3 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h3><pre><code># ps -ef # 查看所有进程
+</code></pre><h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><pre><code># ps -ef # 查看所有进程
 # top # 实时显示进程状态
-</code></pre><h3 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h3><pre><code># w  # 查看活动用户
+</code></pre><h2 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h2><pre><code># w  # 查看活动用户
 # id &lt;用户名&gt;# 查看指定用户信息
 # last   # 查看用户登录日志
 # cut -d: -f1 /etc/passwd   # 查看系统所有用户
 # cut -d: -f1 /etc/group# 查看系统所有组
 # crontab -l # 查看当前用户的计划任务
-</code></pre><h3 id="查看服务"><a href="#查看服务" class="headerlink" title="查看服务"></a>查看服务</h3><pre><code># chkconfig --list   # 列出所有系统服务
+</code></pre><h2 id="查看服务"><a href="#查看服务" class="headerlink" title="查看服务"></a>查看服务</h2><pre><code># chkconfig --list   # 列出所有系统服务
 # chkconfig --list | grep on# 列出所有启动的系统服务
-</code></pre><h3 id="查看CPU信息：从-proc-cpuinfo中读取"><a href="#查看CPU信息：从-proc-cpuinfo中读取" class="headerlink" title="查看CPU信息：从/proc/cpuinfo中读取"></a>查看CPU信息：从/proc/cpuinfo中读取</h3><pre><code># cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
+</code></pre><h2 id="查看CPU信息：从-proc-cpuinfo中读取"><a href="#查看CPU信息：从-proc-cpuinfo中读取" class="headerlink" title="查看CPU信息：从/proc/cpuinfo中读取"></a>查看CPU信息：从/proc/cpuinfo中读取</h2><pre><code># cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c 
   8  Intel(R) Xeon(R) CPUE5410   @ 2.33GHz 
 </code></pre><p>(看到有8个逻辑CPU, 也知道了CPU型号) </p>
 <pre><code># cat /proc/cpuinfo | grep physical | uniq -c 
@@ -146,13 +195,13 @@ $ls Do?
 <pre><code># cat /proc/cpuinfo | grep flags | grep &apos; lm &apos; | wc -l 
    8 
 </code></pre><p>(结果大于0, 说明支持64bit计算. lm指long mode, 支持lm则是64bit)  </p>
-<h3 id="查看内存信息"><a href="#查看内存信息" class="headerlink" title="查看内存信息"></a>查看内存信息</h3><pre><code># cat /proc/meminfo 
-</code></pre><h3 id="查看当前操作系统内核信息"><a href="#查看当前操作系统内核信息" class="headerlink" title="查看当前操作系统内核信息"></a>查看当前操作系统内核信息</h3><pre><code># uname -a 
+<h2 id="查看内存信息"><a href="#查看内存信息" class="headerlink" title="查看内存信息"></a>查看内存信息</h2><pre><code># cat /proc/meminfo 
+</code></pre><h2 id="查看当前操作系统内核信息"><a href="#查看当前操作系统内核信息" class="headerlink" title="查看当前操作系统内核信息"></a>查看当前操作系统内核信息</h2><pre><code># uname -a 
 Linux euis1 2.6.9-55.ELsmp #1 SMP Fri Apr 20 17:03:35 EDT 2007 i686 i686 i386 GNU/Linux 
-</code></pre><h3 id="查看当前操作系统发行版信息"><a href="#查看当前操作系统发行版信息" class="headerlink" title="查看当前操作系统发行版信息"></a>查看当前操作系统发行版信息</h3><pre><code># cat /etc/issue | grep Linux 
+</code></pre><h2 id="查看当前操作系统发行版信息"><a href="#查看当前操作系统发行版信息" class="headerlink" title="查看当前操作系统发行版信息"></a>查看当前操作系统发行版信息</h2><pre><code># cat /etc/issue | grep Linux 
 Red Hat Enterprise Linux AS release 4 (Nahant Update 5) 
-</code></pre><h3 id="查看机器型号"><a href="#查看机器型号" class="headerlink" title="查看机器型号"></a>查看机器型号</h3><pre><code># dmidecode | grep &quot;Product Name&quot; 
-</code></pre><h3 id="查看网卡信息"><a href="#查看网卡信息" class="headerlink" title="查看网卡信息"></a>查看网卡信息</h3><pre><code># dmesg | grep -i eth
+</code></pre><h2 id="查看机器型号"><a href="#查看机器型号" class="headerlink" title="查看机器型号"></a>查看机器型号</h2><pre><code># dmidecode | grep &quot;Product Name&quot; 
+</code></pre><h2 id="查看网卡信息"><a href="#查看网卡信息" class="headerlink" title="查看网卡信息"></a>查看网卡信息</h2><pre><code># dmesg | grep -i eth
 </code></pre>]]></content>
     </entry>
     
