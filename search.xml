@@ -4,6 +4,76 @@
   
     
     <entry>
+      <title><![CDATA[Linux网络配置]]></title>
+      <url>http://shengdeng.github.io/2016/06/23/linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<h1 id="1-网络原理的基本概念"><a href="#1-网络原理的基本概念" class="headerlink" title="1.网络原理的基本概念"></a>1.网络原理的基本概念</h1><h2 id="网络编址"><a href="#网络编址" class="headerlink" title="网络编址"></a>网络编址</h2><p>所有计算机、服务器通过网络相连，分布在不同地方，必须要有一个方式判断到底访问哪一台服务器，这样的唯一标识称之为网络编址，互联网中唯一的定位一台设备。</p>
+<p>网络编址有很多，现代使用广泛的是IP(internet protocol)编址技术。</p>
+<h3 id="IP编址"><a href="#IP编址" class="headerlink" title="IP编址"></a>IP编址</h3><ul>
+<li>IP编址是一个双层编址方案，一个IP地址标识一台主机(严格讲是一个<strong>网卡</strong>的接口，网卡信息可以用ifconfig查到的eth0，一台主机可以有多个网卡，就有多个IP地址)</li>
+<li>应用最广的是IPV4，但是地址不够用了，逐渐向IPV6编址切换，V即version</li>
+<li>IPV4编址<ul>
+<li>32位长，二进制表示：bbbb bbbb.bbbb bbbb.bbbb bbbb.bbbb bbbb；分为四个部分：X.X.X.X；每部分8位，每部分范围0-255</li>
+<li>功能上分为两个部分，并不是固定长度，靠子网掩码判断<ul>
+<li>网络部分：标识所属区域</li>
+<li>主机部分：标识所属主机</li>
+<li>所以说IP编址是双层结构</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IPV6编址：128位长</li>
+</ul>
+<h3 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h3><ul>
+<li>用于判断IPV4中网络部分和主机部分的长度</li>
+<li>与IP的每一位对应，也有32位</li>
+<li>子网掩码与IP成对出现</li>
+</ul>
+<p>例如，子网掩码的前24位为1，所以前24位为网络部分</p>
+<pre><code>IP: 192.168.1.1
+1100 0000.1010 1000.0000 0001.0000 0001
+子网掩码： 255.255.255.0
+1111 1111.1111 1111.1111 1111.1111 1111
+</code></pre><h3 id="同一网络主机之间通信"><a href="#同一网络主机之间通信" class="headerlink" title="同一网络主机之间通信"></a>同一网络主机之间通信</h3><ul>
+<li>网络部分相同的ip在<strong>同一网段</strong></li>
+<li>同一网络之间的主机<strong>用MAC地址</strong>进行通信，MAC地址是网卡的硬件地址，很长，固定的不能修改</li>
+<li>同一网络内的主机都是通过<strong>交换机</strong>直连的</li>
+<li>同一网络之间通信简单，只要主机发现与目标地址处在同一网络即可</li>
+</ul>
+<h3 id="不同网络之间通信"><a href="#不同网络之间通信" class="headerlink" title="不同网络之间通信"></a>不同网络之间通信</h3><p>不同网络之间的通信需要设备，叫<strong>路由器</strong>或者叫<strong>网关</strong>，用于转发消息；主机上要配置网关的IP才能跨网络通信。</p>
+<p>路由：</p>
+<ul>
+<li>在不同网络之间传输数据的功能叫做路由</li>
+<li>路由有多个接口，连接到不同网络，因此每个接口对应了一个网段，记录在<strong>路由表</strong>中。</li>
+</ul>
+<h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><ul>
+<li>IP地址难以记忆，所以使用域名，域名分三部分<ul>
+<li>域名 域名称，域名大小写不敏感</li>
+<li>主机名 该域中的某台主机名，如www主机通常是网页服务器</li>
+<li>类型名 标识域名的类型，如.org.com.net等</li>
+</ul>
+</li>
+</ul>
+<p>如mall.126.com，上网时先查找126.com这个域名在哪，再去定位主机mall</p>
+<h3 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h3><p>每一个域名代表一个ip，一一对应的，DNS服务就是用来在IP与域名之间进行转换的。</p>
+<p>例如，qq能上，但网页打不开，可能原因是可以联网但DNS有问题：qq客户端保存了腾讯的ip无需DNS。</p>
+<h2 id="基本网络参数"><a href="#基本网络参数" class="headerlink" title="基本网络参数"></a>基本网络参数</h2><ul>
+<li>配置局域网通信计算机<ul>
+<li>ip地址</li>
+<li>子网掩码</li>
+</ul>
+</li>
+<li>配置跨网络通信的计算机<ul>
+<li>ip地址</li>
+<li>子网掩码</li>
+<li>网关地址</li>
+<li>DNS</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-Linux网络配置"><a href="#2-Linux网络配置" class="headerlink" title="2. Linux网络配置"></a>2. Linux网络配置</h1>]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux常用命令]]></title>
       <url>http://shengdeng.github.io/2016/06/22/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
       <content type="html"><![CDATA[<h1 id="1-Bash使用技巧"><a href="#1-Bash使用技巧" class="headerlink" title="1.Bash使用技巧"></a>1.Bash使用技巧</h1><h2 id="1-1-Bash的历史命令查询"><a href="#1-1-Bash的历史命令查询" class="headerlink" title="1.1 Bash的历史命令查询"></a>1.1 Bash的历史命令查询</h2><ol>

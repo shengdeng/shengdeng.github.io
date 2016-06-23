@@ -7,7 +7,7 @@
 
     
 
-    <title>Kafka1.0生态系统 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <title>基础知识 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
     <meta name="author" content="Sheng Deng">
     
     <meta name="description" content="Tec &amp; Life">
@@ -15,7 +15,7 @@
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta property="og:title" content="Kafka1.0生态系统"/>
+    
     <meta property="og:site_name" content="Stefan&#39;s blog"/>
 
     
@@ -409,187 +409,42 @@
 
     <main>
         <div class="container main-container">
-    <nav class="page-nav hide-on-small-only">
+    
+
+<nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper blue-grey darken-3">
         <span class="breadcrumb">Current page(Categories)</span>
         
-            
-    
-    
-    <a class="breadcrumb" href="/categories/Kafka/">Kafka</a><a class="breadcrumb" href="/categories/Kafka/学习笔记/">学习笔记</a>
-
 
         
-
+            <a class="breadcrumb" href="/categories/Linux/学习笔记/基础知识/">基础知识</a>
         
     </div>
 </nav>
 
-<article>
-    <div class="card">
-        <div class="card-content">
-            
-
-            <div class="article-title">
-                
-    
-        <h1>Kafka1.0生态系统</h1>
-    
 
 
-            </div>
-            <time class="pink-link-context" datetime="2016-06-02T03:36:41.000Z"><a href="/2016/06/02/Kafka生态系统系统/">2016-06-02</a></time>
-
-            
-    <div class="tags-row">
+    <div class="collection mt-0">
         
-            <a href="/tags/Kafka/" class="chip teal darken-1">Kafka</a>
+            <a href="/2016/06/23/linux网络配置/" class="collection-item indigo-text text-darken-1">
+                <time datetime="2016-06-23T01:15:18.000Z">2016-06-23</time>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                Linux网络配置
+            </a>
+        
+            <a href="/2016/06/22/Linux常用命令/" class="collection-item indigo-text text-darken-1">
+                <time datetime="2016-06-22T01:16:37.000Z">2016-06-22</time>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                Linux常用命令
+            </a>
+        
+            <a href="/2016/06/20/Linux查看系统信息命令/" class="collection-item indigo-text text-darken-1">
+                <time datetime="2016-06-20T06:45:16.000Z">2016-06-20</time>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                Linux查看系统信息命令
+            </a>
         
     </div>
-
-
-            <div class="toc pink-link-context hide-on-med-and-down">
-    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#0-Kafka-Streams"><span class="section table-of-contents-text">0.Kafka Streams</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#1-数据导入导出工具-Kafka-Connect"><span class="section table-of-contents-text">1.数据导入导出工具(Kafka Connect)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#2-商业平台的kafka集成包-Distributions-amp-Packaging"><span class="section table-of-contents-text">2.商业平台的kafka集成包(Distributions & Packaging)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#3-与流处理框架集成-Stream-Processing"><span class="section table-of-contents-text">3.与流处理框架集成(Stream Processing)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#4-与Hadoop集成-Integration"><span class="section table-of-contents-text">4.与Hadoop集成(Integration)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#5-与搜索查询系统集成-Search-and-Query"><span class="section table-of-contents-text">5.与搜索查询系统集成(Search and Query)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#6-kafka的监控管理-Management-Consoles"><span class="section table-of-contents-text">6.kafka的监控管理(Management Consoles)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#7-AWS-Integratio"><span class="section table-of-contents-text">7.AWS Integratio</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#8-Logging"><span class="section table-of-contents-text">8.Logging</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#9-Metrics"><span class="section table-of-contents-text">9.Metrics</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#10-打包和部署-Packing-and-Deployment"><span class="section table-of-contents-text">10.打包和部署(Packing and Deployment)</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#11-Kafka-Camel-Integration"><span class="section table-of-contents-text">11.Kafka Camel Integration</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#12-其他杂项-Misc"><span class="section table-of-contents-text">12.其他杂项(Misc.)</span></a></li></ol>
-</div>
-
-
-            <div class="entry pink-link-context">
-                <p>本文给出列出了<a href="https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem" target="_blank" rel="external">kafka官方wiki文档</a>中声称已经集成了kafka的各种工具，组成了kafka的生态系统。但是这些工具集成kafka效果如何本文未作评估。</p>
-<a id="more"></a>
-<hr>
-<h1 id="0-Kafka-Streams"><a href="#0-Kafka-Streams" class="headerlink" title="0.Kafka Streams"></a>0.Kafka Streams</h1><p><em>更新：2016年6月2日</em></p>
-<p>Kafka Streams在几个月前由<a href="http://www.confluent.io/" target="_blank" rel="external">Confluent Platform</a>首先在其平台的技术预览中行提出，目前已经<strong>在Apache Kafka 0.10.0.0上可用</strong>了。</p>
-<p>Kafka Streams其实是一套类库，它使得Apache Kafka可以<strong>拥有流处理的能力</strong>。Kafka Streams包含了一整套描述常见流操作的高级语言API（比如 joining, filtering以及aggregating records），这使得开发者可以快速开发强大的流处理应用程序。Kafka Streams提供了状态和无状态的处理能力，并且可以部署在很多系统之上： Kafka Streams应用程序可以运行在YARN、Mesos、Docker containers上，甚至直接嵌入到现有的Java应用程序中。</p>
-<hr>
-<p><em>官网最后更新：2016年4月</em></p>
-<h1 id="1-数据导入导出工具-Kafka-Connect"><a href="#1-数据导入导出工具-Kafka-Connect" class="headerlink" title="1.数据导入导出工具(Kafka Connect)"></a>1.数据导入导出工具(Kafka Connect)</h1><p>Kafka Connect是Kafka 0.9+的一个自带工具，通过connectors可以将大数据从其它系统导入到Kafka中，也可以从Kafka中导出到其它系统。 详情可以参考<a href="http://docs.confluent.io/2.0.0/connect/index.html" target="_blank" rel="external">Kafka Connect的官方文档</a>和我的文章。</p>
-<h1 id="2-商业平台的kafka集成包-Distributions-amp-Packaging"><a href="#2-商业平台的kafka集成包-Distributions-amp-Packaging" class="headerlink" title="2.商业平台的kafka集成包(Distributions &amp; Packaging)"></a>2.商业平台的kafka集成包(Distributions &amp; Packaging)</h1><ul>
-<li><strong>Confluent Platform</strong> 是首个以kafka为基础的流式数据平台- <a href="http://confluent.io/product/" target="_blank" rel="external">http://confluent.io/product/</a>. Downloads - <a href="http://confluent.io/downloads/" target="_blank" rel="external">http://confluent.io/downloads/</a>.</li>
-<li><strong>Cloudera Kafka source</strong> <a href="https://github.com/cloudera-labs/kafka/tree/cdh5-0.8.2_1.1.0" target="_blank" rel="external">https://github.com/cloudera-labs/kafka/tree/cdh5-0.8.2_1.1.0</a> and release <a href="http://www.cloudera.com/content/cloudera/en/developers/home/cloudera-labs/apache-kafka.html" target="_blank" rel="external">http://www.cloudera.com/content/cloudera/en/developers/home/cloudera-labs/apache-kafka.html</a></li>
-<li><strong>Hortonworks Kafka source and release</strong> <a href="http://hortonworks.com/hadoop/kafka/" target="_blank" rel="external">http://hortonworks.com/hadoop/kafka/</a><br>Stratio Kafka source for ubuntu <a href="http://repository.stratio.com/sds/1.1/ubuntu/13.10/binary/" target="_blank" rel="external">http://repository.stratio.com/sds/1.1/ubuntu/13.10/binary/</a> and for RHEL <a href="http://repository.stratio.com/sds/1.1/RHEL/" target="_blank" rel="external">http://repository.stratio.com/sds/1.1/RHEL/</a></li>
-<li><strong>IBM Message Hub</strong> - <a href="https://developer.ibm.com/messaging/message-hub/" target="_blank" rel="external">https://developer.ibm.com/messaging/message-hub/</a> - Kafka as-a-service in a IBM’s Bluemix PaaS</li>
-</ul>
-<h1 id="3-与流处理框架集成-Stream-Processing"><a href="#3-与流处理框架集成-Stream-Processing" class="headerlink" title="3.与流处理框架集成(Stream Processing)"></a>3.与流处理框架集成(Stream Processing)</h1><ul>
-<li><strong>Kafka Streams</strong> Built-in library as part of the Kafka project.</li>
-<li><strong>Storm</strong> A stream-processing framework.</li>
-<li><strong>Samza</strong> A YARN-based stream processing framework.</li>
-<li><strong>Storm Spout</strong> Consume messages from Kafka and emit as Storm tuples</li>
-<li><strong>Kafka-Storm</strong> Kafka 0.8, Storm 0.9, Avro integration</li>
-<li><strong>SparkStreaming</strong> Kafka receiver supports Kafka 0.8 and above</li>
-<li><strong>Flink</strong> Apache Flink has an integration with Kafka</li>
-<li><strong>IBM Streams</strong> A stream processing framework with Kafka source and sink to consume and produce Kafka messages </li>
-</ul>
-<h1 id="4-与Hadoop集成-Integration"><a href="#4-与Hadoop集成-Integration" class="headerlink" title="4.与Hadoop集成(Integration)"></a>4.与Hadoop集成(Integration)</h1><ul>
-<li><strong>Kafka Connect sink</strong> A sink for Kafka’s connector framework.</li>
-<li><strong>Camus</strong> LinkedIn’s Kafka=&gt;HDFS pipeline. This one is used for all data at LinkedIn, and works great.</li>
-<li><strong>Kafka Hadoop Loader</strong> A different take on Hadoop loading functionality from what is included in the main distribution.</li>
-<li><strong>Flume</strong> Contains Kafka Source (consumer) and Sink (producer)</li>
-<li><strong>KaBoom</strong> A high-performance HDFS data loader</li>
-</ul>
-<h1 id="5-与搜索查询系统集成-Search-and-Query"><a href="#5-与搜索查询系统集成-Search-and-Query" class="headerlink" title="5.与搜索查询系统集成(Search and Query)"></a>5.与搜索查询系统集成(Search and Query)</h1><ul>
-<li><strong>ElasticSearch</strong> - This project, Kafka Standalone Consumer will read the messages from Kafka, processes and index them in ElasticSearch. There are also several Kafka Connect connectors for ElasticSeach.<br><strong>Presto</strong> The Presto Kafka connector allows you to query Kafka in SQL using Presto.<br><strong>Hive</strong> Hive SerDe that allows querying Kafka (Avro only for now) using Hive SQL</li>
-</ul>
-<h1 id="6-kafka的监控管理-Management-Consoles"><a href="#6-kafka的监控管理-Management-Consoles" class="headerlink" title="6.kafka的监控管理(Management Consoles)"></a>6.kafka的监控管理(Management Consoles)</h1><ul>
-<li><strong>Kafka Manager</strong> - A tool for managing Apache Kafka.</li>
-<li><strong>kafkat</strong> - Simplified command-line administration for Kafka brokers.</li>
-<li><strong>Kafka Web Console</strong>- Displays information about your Kafka cluster including which nodes are up and what topics they host data for.</li>
-<li><strong>Kafka Offset Monitor</strong> - Displays the state of all consumers and how far behind the head of the stream they are.</li>
-<li><strong>Capillary</strong> – Displays the state and deltas of Kafka-based Apache Storm topologies. Supports Kafka &gt;= 0.8. It also provides an API for fetching this information for monitoring purposes.</li>
-</ul>
-<h1 id="7-AWS-Integratio"><a href="#7-AWS-Integratio" class="headerlink" title="7.AWS Integratio"></a>7.AWS Integratio</h1><ul>
-<li>Automated AWS deployment</li>
-<li>Kafka -&gt; S3 Mirroring tool from Pinterest.</li>
-<li>Alternative Kafka-&gt;S3 Mirroring tool</li>
-</ul>
-<h1 id="8-Logging"><a href="#8-Logging" class="headerlink" title="8.Logging"></a>8.Logging</h1><ul>
-<li>syslog (1M)</li>
-<li>syslog producer : A producer that supports both raw data and protobuf with meta data for - deep analytics usage. </li>
-<li>syslog-ng (<a href="https://syslog-ng.org/" target="_blank" rel="external">https://syslog-ng.org/</a>) is one of the most widely used open source log  collection tools, capable of filtering, classifying, parsing log data and forwarding it to a wide variety of destinations. Kafka is a first-class destination in the syslog-ng tool; details on the integration can be found at <a href="https://czanik.blogs.balabit.com/2015/11/kafka-and-syslog-ng/" target="_blank" rel="external">https://czanik.blogs.balabit.com/2015/11/kafka-and-syslog-ng/</a> .</li>
-<li>klogd A python syslog publisher</li>
-<li>klogd2 A java syslog publisher</li>
-<li>Tail2Kafka A simple log tailing utility</li>
-<li>Fluentd plugin Integration with Fluentd</li>
-<li>Remote log viewer</li>
-<li>LogStash integration Integration with LogStash and Fluentd</li>
-<li>Syslog Collector written in Go</li>
-<li>Klogger A simple proxy service for Kafka.</li>
-<li>fuse-kafka: A file system logging agent based on Kafka</li>
-<li>omkafka: Another syslog integration, this one in C and uses librdkafka library</li>
-<li><p>logkafka Collect logs and send lines to Apache Kafka</p>
-</li>
-<li><p>Flume - Kafka plugins</p>
-<ul>
-<li>Flume Kafka Plugin - Integration with Flume</li>
-<li>Kafka as a sink and source in Flume - Integration with Flume</li>
-</ul>
-</li>
-</ul>
-<h1 id="9-Metrics"><a href="#9-Metrics" class="headerlink" title="9.Metrics"></a>9.Metrics</h1><ul>
-<li>Mozilla Metrics Service - A Kafka and Protocol Buffers based metrics and logging system</li>
-<li>Ganglia Integration</li>
-<li>SPM for Kafka</li>
-<li>Coda Hale Metric Reporter to Kafka</li>
-</ul>
-<h1 id="10-打包和部署-Packing-and-Deployment"><a href="#10-打包和部署-Packing-and-Deployment" class="headerlink" title="10.打包和部署(Packing and Deployment)"></a>10.打包和部署(Packing and Deployment)</h1><ul>
-<li>RPM packaging</li>
-<li>Debian packaging<a href="https://github.com/tomdz/kafka-deb-packaging" target="_blank" rel="external">https://github.com/tomdz/kafka-deb-packaging</a></li>
-<li>Puppet Integration<ul>
-<li><a href="https://github.com/miguno/puppet-kafka" target="_blank" rel="external">https://github.com/miguno/puppet-kafka</a></li>
-<li><a href="https://github.com/whisklabs/puppet-kafka" target="_blank" rel="external">https://github.com/whisklabs/puppet-kafka</a></li>
-</ul>
-</li>
-<li>Dropwizard packaging</li>
-</ul>
-<h1 id="11-Kafka-Camel-Integration"><a href="#11-Kafka-Camel-Integration" class="headerlink" title="11.Kafka Camel Integration"></a>11.Kafka Camel Integration</h1><ul>
-<li><a href="https://github.com/ipolyzos/camel-kafka" target="_blank" rel="external">https://github.com/ipolyzos/camel-kafka</a></li>
-<li><a href="https://github.com/BreizhBeans/camel-kafka" target="_blank" rel="external">https://github.com/BreizhBeans/camel-kafka</a></li>
-</ul>
-<h1 id="12-其他杂项-Misc"><a href="#12-其他杂项-Misc" class="headerlink" title="12.其他杂项(Misc.)"></a>12.其他杂项(Misc.)</h1><ul>
-<li>Kafka Websocket - A proxy that interoperates with websockets for delivering Kafka data to browsers.</li>
-<li>KafkaCat - A native, command line producer and consumer.</li>
-<li>Kafka Mirror - An alternative to the built-in mirroring tool</li>
-<li>Ruby Demo App </li>
-<li>Apache Camel Integration</li>
-<li>Infobright integration</li>
-<li>Riemann Consumer of Metrics</li>
-<li>stormkafkamom – curses-based tool which displays state of Apache Storm based Kafka consumers (Kafka 0.7 only).</li>
-</ul>
-
-            </div>
-        </div>
-    </div>
-</article>
-
-
-
-
-    <section id="comment">
-        <div class="card">
-            <div class="card-content">
-                <!-- Duoshuo Comment BEGIN -->
-                <div class="ds-thread" data-thread-key="2016/06/02/Kafka生态系统系统/" data-title="Kafka1.0生态系统" data-url="http://shengdeng.github.io/2016/06/02/Kafka生态系统系统/"></div>
-
-                <script type="text/javascript">
-                    console.log(document.querySelector('.ds-thread'));
-                    var duoshuoQuery = {
-                        short_name: 'shengdeng'
-                    };
-                    (function() {
-                        var ds = document.createElement('script');
-                        ds.type = 'text/javascript';
-                        ds.async = true;
-                        ds.src = (document.location.protocol == 'https:'
-                            ? 'https:'
-                            : 'http:') + '//static.duoshuo.com/embed.js';
-                        ds.charset = 'UTF-8';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-                    })();
-                </script>
-                <!-- Duoshuo Comment END -->
-            </div>
-        </div>
-    </section>
-
 
 
 </div>
