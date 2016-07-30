@@ -4,6 +4,101 @@
   
     
     <entry>
+      <title><![CDATA[Execl使用技巧总结]]></title>
+      <url>http://shengdeng.github.io/2016/07/30/Execl%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>本文总结了比较实用的excel技巧，工作中用上他们表格瞬间高大上！持续更新中…</p>
+<a id="more"></a>
+<p>excel三大功能：</p>
+<ol>
+<li>做表格</li>
+<li>处理数据</li>
+<li>作图</li>
+</ol>
+<h1 id="一、做表格技巧"><a href="#一、做表格技巧" class="headerlink" title="一、做表格技巧"></a>一、做表格技巧</h1><p>介绍一些比ctrl+c、ctrl+v高级的技巧</p>
+<h2 id="拖动单元格根据规则-自动填表"><a href="#拖动单元格根据规则-自动填表" class="headerlink" title="拖动单元格根据规则 自动填表"></a>拖动单元格根据规则 自动填表</h2><p>文件→选项→高级→编辑自定义列表</p>
+<p>里面有 <code>日、一、二、...</code> 等常规序列，也可以在自定义框中自定义输入序列：</p>
+<pre><code>张三
+李四
+王二
+</code></pre><p>注意：一个词条结束要回车。完成自定义规则以后，在表格中输入张三，然后拖动相邻的单元，就会按照规则自动填表。这样，你就不用每次手工输入部门人员的名字等固定信息。</p>
+<h2 id="自动填写相同的信息"><a href="#自动填写相同的信息" class="headerlink" title="自动填写相同的信息"></a>自动填写相同的信息</h2><p>拖动单元格自动填写内容是常用的技巧，但是每个单元格数值会+1。有时候想<strong>填写相同的内容</strong>，快捷的做法是：</p>
+<ul>
+<li>第一步：选中一格（要填的信息），<strong>按shift</strong>，再选中最后一格（即选中连续的单元格）</li>
+<li>第二步：<strong>ctrl+d</strong>（被选中的单元格会自动填相同的内容）</li>
+</ul>
+<h2 id="单元格内换行"><a href="#单元格内换行" class="headerlink" title="单元格内换行"></a>单元格内换行</h2><p>alt+回车</p>
+<h2 id="移动整行、整列"><a href="#移动整行、整列" class="headerlink" title="移动整行、整列"></a>移动整行、整列</h2><ul>
+<li>选中整行，鼠标放在左上角，鼠标变成十字花</li>
+<li>再按住shift，按住鼠标上下拖动调 整行，左右拖动调整列的位置</li>
+</ul>
+<h2 id="设计表格下拉选项"><a href="#设计表格下拉选项" class="headerlink" title="设计表格下拉选项"></a>设计表格下拉选项</h2><p>让别人填表又不希望别人乱填，可以为表格设计下拉选项。</p>
+<p>选中要设计选项的单元格→数据→数据验证</p>
+<ul>
+<li>设置<ul>
+<li>允许：序列</li>
+<li>来源：填写设计的选项，例如填 <code>男,女</code> 注意：要用英文的逗号隔开选项</li>
+</ul>
+</li>
+<li>输入信息：填写输入内容的提示说明（选填）</li>
+<li>出错警告（选填）</li>
+</ul>
+<h2 id="整列设置成文本：填身份证、手机号等数字串"><a href="#整列设置成文本：填身份证、手机号等数字串" class="headerlink" title="整列设置成文本：填身份证、手机号等数字串"></a>整列设置成文本：填身份证、手机号等数字串</h2><p>填写手机号时，如果不转成文本将会科学记数法显示，填写时在数字串前加英文的单引号<code>&#39;</code>，显示时单元格左上角会有绿色的三角形。</p>
+<p>最好制表者就设计某一列为文本格式：</p>
+<ul>
+<li>选中要设置的区域</li>
+<li>右键，设置单元格格式</li>
+<li>数字选项卡，分类中选文本，即可</li>
+</ul>
+<h2 id="根据内容自动添加背景色：条件格式"><a href="#根据内容自动添加背景色：条件格式" class="headerlink" title="根据内容自动添加背景色：条件格式"></a>根据内容自动添加背景色：条件格式</h2><p>将大于1000的数据用红色背景可以起到突出效果、将某类信息用同样的背景色可以直观的看到信息在表格中的分布情况等等，增加了关键数据的背景色，可以提高一个庞大表格的可读性。</p>
+<p>根据内容自动添加背景色用条件格式实现，设置比较简单，但有几个值得注意的关键点：</p>
+<ul>
+<li>条件格式→新建规则 按照提示设置即可</li>
+<li>注意设计的<strong>规则应避免冲突</strong>：<ul>
+<li>设置文本包含SB填蓝色；设置文本包含SBS填红色。由于SBS也包含了SB，所以填表时不管SB还是SBS都会填蓝色</li>
+<li>解决：灵活选择 <code>包含、不包含、始于、止于</code> 的条件以避免规则冲突。以上可以设置为：设置文本<strong>止于</strong>SB填蓝色；设置文本<strong>止于</strong>SBS填红色。这样就避免了规则冲突。</li>
+</ul>
+</li>
+<li><strong>规则的应用范围</strong>问题<ul>
+<li>规则<strong>应用于</strong>可在条件<strong>规则管理</strong>中修改，例如，应用于某列为$D:$D，$D:$J</li>
+<li>要想将 <strong>本工作表规则</strong> 应用于<strong>其他工作表</strong>中怎么办？唯一的办法是<ul>
+<li>第一步：将本工作表中，应用了这个规则的单元格复制到另一个工作表中，这样规则就一起复制过去了；</li>
+<li>第二步：在另一工作表中，选中那个复制过来的单元格，用<strong>规则管理</strong>修改规则在这个表中的<strong>应用范围</strong>即可。然后那个复制过来的单元格就可以删了。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用VLOOKUP函数：自动查找内容并填表"><a href="#使用VLOOKUP函数：自动查找内容并填表" class="headerlink" title="使用VLOOKUP函数：自动查找内容并填表"></a>使用VLOOKUP函数：自动查找内容并填表</h2><p>一个庞大的表中，常常又包含多个sheet或多个表格，如果其中<strong>一个sheet的内容与另一sheet的内容相同</strong>，low的办法是ctrl+c、ctrl+v，这样做可能会导致一个麻烦，就是一处修改处处修改。VLOOKUP函数可以解决这个问题，使相同内容的单元格是映射关系，这样每次只要修改一处即可，其他的会自动改变。</p>
+<p>VLOOKUP函数的功能像查电话，实现了根据姓名在特定的范围查到电话号码，即 <code>电话号码=f（姓名，电话簿的查找范围）</code>。所以需要一个查找标识，一个查找范围。</p>
+<p>在<strong>该单元格</strong>中填写以下语法：</p>
+<pre><code>= VLOOKUP(lookup_value,table_array,col_index_num,range_lookup)
+</code></pre><ul>
+<li><strong>table_array参数</strong>：要查找的区域，该区域的单元格包含了要查的标识和相应内容。</li>
+<li><strong>lookup_value参数</strong>：填查找的标识，根据这个标识，在第二个参数表示的区域中<strong>查找标识所在的行</strong>。<ul>
+<li>标识可以写死，是具体数值或者文本</li>
+<li>可以<strong>不写死</strong>，写引用，如$A，即<strong>该单元格所在行的A列上的那个单元格内容</strong>就是标识</li>
+<li>此参数用于找到：要返回的<strong>单元格行号</strong></li>
+</ul>
+</li>
+<li><strong>col_index_num参数</strong>：返回以上区域的第几列<ul>
+<li>区域中第一列为1，第二列为2；可能一个标识所在的行有多个字段。</li>
+<li>此参数用于找到：要返回的<strong>单元格列号</strong></li>
+</ul>
+</li>
+<li><strong>range_lookup参数</strong>：查找时是精确匹配false或0，还是近似匹配。</li>
+</ul>
+<p>例如，</p>
+<pre><code>=VLOOKUP($A:$A,表A!$A:$AL,2,0)
+</code></pre><p>这个函数的含义是，该单元格的值可能是标识一个字段的值，</p>
+<ul>
+<li>该单元格的标识写在本表A列对应的位置上</li>
+<li><strong>在表A的列A-AL中查找</strong>标识，得到标识坐在行</li>
+<li>在表A查找区域中，该行的第二列即是要返回的值；也可巧用column()函数，返回本单元格的列号值。</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux网络配置]]></title>
       <url>http://shengdeng.github.io/2016/06/23/linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</url>
       <content type="html"><![CDATA[<h1 id="1-网络原理的基本概念"><a href="#1-网络原理的基本概念" class="headerlink" title="1.网络原理的基本概念"></a>1.网络原理的基本概念</h1><h2 id="网络编址"><a href="#网络编址" class="headerlink" title="网络编址"></a>网络编址</h2><p>所有计算机、服务器通过网络相连，分布在不同地方，必须要有一个方式判断到底访问哪一台服务器，这样的唯一标识称之为网络编址，互联网中唯一的定位一台设备。</p>
