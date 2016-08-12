@@ -1,0 +1,862 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Hbase从0到1：入门与架构详解 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <meta name="author" content="Sheng Deng">
+    
+    <meta name="description" content="Tec &amp; Life">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Hbase从0到1：入门与架构详解"/>
+    <meta property="og:site_name" content="Stefan&#39;s blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Stefan&#39;s blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/atelier-seaside-light.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="blue-grey darken-3">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Stefan&#39;s blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            Home
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            Archives
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            Reading
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            About
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            Search
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav cyan darken-4" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xtorv.com2.z0.glb.clouddn.com/IMG_20160417_172813.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">邓晟Stefan</p>
+                        <p class="desc">Spark/Kafka/Scala</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    Home
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    Archives
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    Categories
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    Reading
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    About
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    Search
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav cyan darken-4" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/实用软件/">
+                    实用软件 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/实用软件/excel/">
+                    excel <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/java/">
+                    java <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/java/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Kafka/">
+                    Kafka <span class="right">3</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/学习笔记/">
+                    学习笔记 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/专业英语/">
+                    专业英语 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/专业英语/单词/">
+                    单词 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
+                    词汇辨析 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Linux/">
+                    Linux <span class="right">15</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/安装笔记/">
+                    安装笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/学习笔记/">
+                    学习笔记 <span class="right">11</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/基本操作/">
+                    基本操作 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/服务管理/">
+                    服务管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/基础知识/">
+                    基础知识 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/权限管理/">
+                    权限管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/软件管理/">
+                    软件管理 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Spark/">
+                    Spark <span class="right">5</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/学习笔记/">
+                    学习笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/maven/">
+                    maven <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/maven/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/sacla/">
+                    sacla <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/sacla/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/行业发展/">
+                    行业发展 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/阅读笔记/">
+                    阅读笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/阅读笔记/自我管理/">
+                    自我管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">Search</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper blue-grey darken-3">
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Hbase从0到1：入门与架构详解</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-08-07T07:26:29.000Z"><a href="/2016/08/07/Hbase从0到1：入门与架构详解/">2016-08-07</a></time>
+
+            
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#Hbase架构"><span class="section table-of-contents-text">Hbase架构</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#hbase架构图"><span class="section table-of-contents-text">hbase架构图</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#客户端client的作用"><span class="section table-of-contents-text">客户端client的作用</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#程序协调服务zookeeper的作用"><span class="section table-of-contents-text">程序协调服务zookeeper的作用</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#主节点hmaster的作用"><span class="section table-of-contents-text">主节点hmaster的作用</span></a></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#hregionserver节点的作用"><span class="section table-of-contents-text">hregionserver节点的作用</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#hbase与zookeeper的关系"><span class="section table-of-contents-text">hbase与zookeeper的关系</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#hbase-region-定位"><span class="section table-of-contents-text">hbase region 定位</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#hbase的容错性"><span class="section table-of-contents-text">hbase的容错性</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#hbase的数据存储"><span class="section table-of-contents-text">hbase的数据存储</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#hregionserver-hbase的存储"><span class="section table-of-contents-text">hregionserver:hbase的存储</span></a></li></ol></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <h1 id="Hbase架构"><a href="#Hbase架构" class="headerlink" title="Hbase架构"></a>Hbase架构</h1><ul>
+<li>hbase组件的作用</li>
+<li>hbase region 定位的过程</li>
+<li>hbase的容错性</li>
+</ul>
+<h2 id="hbase架构图"><a href="#hbase架构图" class="headerlink" title="hbase架构图"></a>hbase架构图</h2><p>hbase是一个数据库，最主要的作用是存储海量结构化的数据，能够实现数据的实时查询。理解hbase的架构图对学习hbase很有帮助。</p>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/hbase-structure.jpg" alt=""></p>
+<p>首先，hbase是主从架构，有一个hmaster和多个hregionserver，需要一个写作服务叫zookeeper；底层hbase的数据是存在文件当中的，这些文件是存储在hdfs上的，所以有很多的datanode；想要操作hbase中的数据，可以通过client客户端进行，client客户端作用是存数据和取数据，需要与hbase集群进行一些交互，先与zookeeper进行交互，再与hregionserver进行交互，这与hdfs的架构很相似，hdfs中client要些数据，先与namenode交互，再向datanode中写数据。一般，对于表的操作client客户端不与hmaster进行交互，只有管理的时候才与hmaster交互，两者都分别与zookeeper交互。</p>
+<h3 id="客户端client的作用"><a href="#客户端client的作用" class="headerlink" title="客户端client的作用"></a>客户端client的作用</h3><ul>
+<li>client是整个集群的访问入口，对表的删除添加，也可以对集群进行一系列的管理操作</li>
+<li>client底层是通过RPC机制与hmaster和zookeeper通信</li>
+<li>client与hmaster通信进行<strong>管理类操作</strong></li>
+<li>client与hregionserver通信进行<strong>读写操作</strong></li>
+<li>client还包含访问hbase的接口，并维护cache缓存机制加快对hbase的访问，同时也会与hregion交互，client相当于程序的入口</li>
+</ul>
+<h3 id="程序协调服务zookeeper的作用"><a href="#程序协调服务zookeeper的作用" class="headerlink" title="程序协调服务zookeeper的作用"></a>程序协调服务zookeeper的作用</h3><ul>
+<li>保证任何时候，集群中只有一个hmaster,能够解决hbase的单节点故障，也即HA，当一个hmaster挂掉以后，zookeeper会自动把另一个hmaster激活，增加集群的可靠性</li>
+<li>存储所有region的寻址入口，客户端client往region中写数据时，通过与zookeeper交互得知写的地址</li>
+<li>实时监控region server的上线和下线信息，并通知给master；zookeeper与region server进行交互，region server告诉zookeeper我还活着，我还在线，如果region server宕机了，可以理解为下线，那么zookeeper通知master告诉他哪个region server挂掉了，region server管理了很多region信息，hbase会立马把这些region信息分配给其他的region server，如果添加了一个region server，那么hmaster会进行一系列的负载均衡，分配一些region给新上线的region server，减小集群的压力；</li>
+<li>存储hbase的schema和table元数据</li>
+</ul>
+<p>通过查看查看zookeeper</p>
+<p>首先进入hbase安装目录，可以查看到有一个zkcli的命令</p>
+<pre><code># bin/hbase
+返回hbase的所有命令
+zkcli    run the zookeeper shell
+</code></pre><p>进入zookeeper shell里面去查看zookeeper中到底存了哪些数据信息</p>
+<pre><code># bin/base zkcli
+[IP 0]help #可以查看这个shell的命令帮助
+[IP 1]ls / #查看根目录有哪些文件
+# 有两个文件夹，[hbase,zookeeper]
+[IP 2]ls /hbase #查看hbase下有什么东西
+返回很多文件夹，[meta-region-server,backup-masters,table,draining,region-in-transition,running,table-lock,master,namespace,hbaseid,...]
+[IP 3]ls /hbase/table
+[hbase:meta,t1,hbase:namespace]，里面有三条数据，meta表，t1和namespace表
+</code></pre><p>此时，可以另外开一个终端，查看hbase中有哪些表</p>
+<pre><code># 先进入hbase的安装目录
+# bin/hbase shell #进入hbase的shell中
+&gt;list #查看当前namespace命名空间中的表
+返回，有一张t1表，所以zookeeper中存了t1
+&gt;help #可以查看命令找到list_namespace_tables命令的用法
+&gt;list_namespace_tables &apos;hbase&apos; #查看另一个命名空间中的表,要指定命名空间hbase
+返回，有两张表，meta和namespace
+所以一共三张表和zookeeper中的一一对应
+</code></pre><p>再去zookeeper shell中看其他文件夹，通过这些文件夹的命名可以大致猜到里面存了啥，[meta-region-server,backup-masters,table,draining,region-in-transition,running,table-lock,master,namespace,hbaseid,…，rs]</p>
+<pre><code>[IP 8]ls /hbase
+[IP 9]get /hbase/master #查看master中存了啥
+有些乱码，也有些能看到的信息
+比如master主机名
+[IP 10]get /hbase/rs #查看region server文件夹
+</code></pre><h3 id="主节点hmaster的作用"><a href="#主节点hmaster的作用" class="headerlink" title="主节点hmaster的作用"></a>主节点hmaster的作用</h3><ul>
+<li>管理用户<strong>对table的增删改查操作</strong>，注意是对表table的管理，而不是对表中数据的管理，删除表，改变表的结构，而不是操作里面的数据</li>
+<li>管理hregionserver的<strong>负载均衡</strong>，调整region布局</li>
+<li>在region split后，负责新region的分配，即表的数据过大，会对region进行分割操作为了负载均衡也会进行新的region分配</li>
+<li>在hregionserver停机后，负责失效hregionserver上的迁移</li>
+<li>hmaster失效仅会导致所有元数据无法修改，表的数据读写还可以正常进行，因为<strong>client进行读写操作过程，不与hmaster交互</strong>；只有进行<strong>表的管理操作</strong>才会与hmaster交互</li>
+</ul>
+<h3 id="hregionserver节点的作用"><a href="#hregionserver节点的作用" class="headerlink" title="hregionserver节点的作用"></a>hregionserver节点的作用</h3><ul>
+<li>维护hregion并往hdfs中写数据</li>
+<li>当表的大小超过设置值的时候，split region</li>
+<li>在hregionserver停机后，负责失效hregionserver上的region迁移</li>
+</ul>
+<h2 id="hbase与zookeeper的关系"><a href="#hbase与zookeeper的关系" class="headerlink" title="hbase与zookeeper的关系"></a>hbase与zookeeper的关系</h2><ul>
+<li>hbase的元数据存储在zookeeper中</li>
+<li>默认情况下，hbase管理zookeeper实例，比如，启动或者停止zookeeper</li>
+<li>zookeeper解决hbase的单节点故障问题，选举机制</li>
+<li>hmaster与hregionserver启动时会向zookeeper注册</li>
+</ul>
+<p>zookeeper会与hbase所有组件进行交互，要搞清楚交互的目的都是什么。</p>
+<h2 id="hbase-region-定位"><a href="#hbase-region-定位" class="headerlink" title="hbase region 定位"></a>hbase region 定位</h2><ul>
+<li>首先，读取zookeeper中的文件，<strong>找到root表的位置</strong></li>
+<li>获取root表的信息，root表中存储了meta的信息，root表包含meta表所在的region列表，该表只会有一个region</li>
+<li>根据root表来访问meta表，meta表包含所有用户空间region列表，以及regionserver服务器地址</li>
+<li>通过meta表来进行表的操作</li>
+<li>client第一次操作以后，会将root表和meta表缓存到本地，不需要再访问zookeeper</li>
+</ul>
+<p>注意，root表在老版本0.96以前，在zookeeper中存储了root表信息，在0.96以后，zookeeper没有存储root表信息，直接存储meta表的信息，第二步就省略了，没有root表了，直接从meta表的信息获得表的信息</p>
+<h2 id="hbase的容错性"><a href="#hbase的容错性" class="headerlink" title="hbase的容错性"></a>hbase的容错性</h2><ul>
+<li>master容错：zookeeper重新选择一个新的master<ul>
+<li>无master过程中，数据读取仍正常</li>
+<li>无master过程中，region的切分、负载均衡无法进行</li>
+</ul>
+</li>
+<li>regionserver容错：定时向zookeeper会报心跳，<em>**</em>如果一段时间内未出现心跳，master将该regionser上的region重新分配到其他regionserver上，失效服务器上“预写”日志由主服务器进行分割并派送给新的regionserver</li>
+<li>zookeeper容错：<ul>
+<li>zookeeper可以配置多个，推荐奇数个</li>
+<li>zookeeper高可靠的服务，不存在单节点故障</li>
+</ul>
+</li>
+</ul>
+<h2 id="hbase的数据存储"><a href="#hbase的数据存储" class="headerlink" title="hbase的数据存储"></a>hbase的数据存储</h2><p>回顾架构图，在hbase中，如果插入一条数据，最主要的存储就是hlog文件和hfile文件，storefile相当于把hfile做了一个轻量级的封装。在hbase中如果插入一条数据，会写两部分文件，第一部分就是hlog，存储日志文件，还会存一个region文件，首先向内存中也即menstore写数据，当他达到一定大小的时候就会写为storefile文件，storefile中最主要的就是hfile文件。</p>
+<p>hbase中的所有数据文件都存储在hadoop HDFS文件系统上，格式主要有两种：</p>
+<ul>
+<li>hfile：hbase中keyvalue数据的存储格式，hfile是hadoop的<strong>二进制格式文件</strong>，实际上storefile就是对hfile做了轻量级包装，即storefile底层就是hfile。</li>
+<li>hlog file：hbase中WAL（write ahead log）的存储格式，物理上市hadoop的sequence file带项目符号的内容（写数据的时候首先会向内存中写数据，不会直接写入磁盘，如果这个时候停电了，内存中的数据就会消失，hbase就会通过WAL来恢复内存中的数据写入到HDFS中；sequence file这种文件在机器学习的迭代计算中非常的有优势）</li>
+</ul>
+<h3 id="hregionserver-hbase的存储"><a href="#hregionserver-hbase的存储" class="headerlink" title="hregionserver:hbase的存储"></a>hregionserver:hbase的存储</h3><p><img src="http://7xtorv.com1.z0.glb.clouddn.com/hbase-write-hlog-process.jpg" alt=""><br>一个客户端往hbase中写数据的过程，从左往右看，有一个客户端client，有对数据的操作put、delete、in</p>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/08/07/Hbase从0到1：入门与架构详解/" data-title="Hbase从0到1：入门与架构详解" data-url="http://shengdeng.github.io/2016/08/07/Hbase从0到1：入门与架构详解/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large blue lighten-1">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red lighten-2" title="Return to top"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse orange lighten-2"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer blue-grey darken-3 darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m3 s12">
+                <h5 class="white-text">Social</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+            </div>
+            
+
+            
+            <div class="col m9 s12">
+                <h5 class="white-text">Links</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Stafan 专注大数据分析</a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 http://shengdeng.github.io/, All rights reserved.
+            <p class="right" style="margin-top: 0;">Blog powered by <a href="https://hexo.io">Hexo</a> | Theme <a href="https://github.com/shengdeng/shengdeng.github.io">stefanForest</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery-2.1.1.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal();
+            var searchXml = "search.xml";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-77353762-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56016042" charset="UTF-8"></script>
+
+
+
+
+
+</body>
+</html>

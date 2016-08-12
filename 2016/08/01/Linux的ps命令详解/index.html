@@ -1,0 +1,922 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+
+    <title>Linux的ps命令详解 | 邓晟Stefan&#39;s Techblog：大数据、专业英语、读书笔记、启示录</title>
+    <meta name="author" content="Sheng Deng">
+    
+    <meta name="description" content="Tec &amp; Life">
+    
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:title" content="Linux的ps命令详解"/>
+    <meta property="og:site_name" content="Stefan&#39;s blog"/>
+
+    
+    <meta property="og:image" content="undefined"/>
+    
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Stefan&#39;s blog" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+
+    
+        <link rel="stylesheet" href="/css/lib/atelier-seaside-light.css" type="text/css">
+    
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body>
+    <img src="/weixin_favicon.png" style="position: absolute; left: -9999px; opacity: 0; filter: alpha(opacity=0);">
+
+    <nav class="blue-grey darken-3">
+    <div class="nav-wrapper">
+        <a href="#" data-activates="main-menu" class="button-collapse">
+            <i class="fa fa-navicon"></i>
+        </a>
+        <div class="">
+            <a href="/" class="brand-logo hide-on-med-and-down">Stefan&#39;s blog</a>
+            <ul class="right hide-on-med-and-down">
+                
+                    <li>
+                        <a class="menu-home " href="/" >
+                            <i class="fa fa-home "></i>
+                            
+                            Home
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-archive " href="/archives" >
+                            <i class="fa fa-archive "></i>
+                            
+                            Archives
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                            <i class="fa fa-bookmark "></i>
+                            
+                            Categories
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-reading " href="/reading" >
+                            <i class="fa fa-book "></i>
+                            
+                            Reading
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-about " href="/about" >
+                            <i class="fa fa-user "></i>
+                            
+                            About
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a class="menu-search modal-trigger " href="#search" >
+                            <i class="fa fa-search "></i>
+                            
+                            Search
+                        </a>
+                    </li>
+                
+            </ul>
+            <div>
+    <ul class="side-nav cyan darken-4" id="main-menu">
+        
+        <li class="side-user">
+            <div class="row">
+                <div class="col s4 no-padding">
+                    <img class="avatar-image circle responsive-img" src="http://7xtorv.com2.z0.glb.clouddn.com/IMG_20160417_172813.jpg" alt="User Avatar">
+                </div>
+                <div class="info col s8 valign-wrapper no-padding">
+                    <div class="valign">
+                        <p class="name">邓晟Stefan</p>
+                        <p class="desc">Spark/Kafka/Scala</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-home " href="/" >
+                    <i class="fa fa-home "></i>
+                    
+                    Home
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-archive " href="/archives" >
+                    <i class="fa fa-archive "></i>
+                    
+                    Archives
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-category category-menu" href="javascript:;" data-activates="category-menu" >
+                    <i class="fa fa-bookmark "></i>
+                    
+                    Categories
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-reading " href="/reading" >
+                    <i class="fa fa-book "></i>
+                    
+                    Reading
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-about " href="/about" >
+                    <i class="fa fa-user "></i>
+                    
+                    About
+                </a>
+            </li>
+        
+            <li class="no-padding">
+                <a class="waves-effect menu-search modal-trigger " href="#search" >
+                    <i class="fa fa-search "></i>
+                    
+                    Search
+                </a>
+            </li>
+        
+    </ul>
+
+    <ul class="side-nav cyan darken-4" id="category-menu">
+    
+
+            
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/实用软件/">
+                    实用软件 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/实用软件/excel/">
+                    excel <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/java/">
+                    java <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/java/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Kafka/">
+                    Kafka <span class="right">3</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/学习笔记/">
+                    学习笔记 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Kafka/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/专业英语/">
+                    专业英语 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/专业英语/单词/">
+                    单词 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/专业英语/单词/词汇辨析/">
+                    词汇辨析 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Linux/">
+                    Linux <span class="right">15</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/安装笔记/">
+                    安装笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Linux/学习笔记/">
+                    学习笔记 <span class="right">11</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/基本操作/">
+                    基本操作 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/服务管理/">
+                    服务管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/基础知识/">
+                    基础知识 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/权限管理/">
+                    权限管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-2" collapse-level="2">
+                <a class="no-padding" href="/categories/Linux/学习笔记/软件管理/">
+                    软件管理 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Spark/">
+                    Spark <span class="right">5</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/学习笔记/">
+                    学习笔记 <span class="right">4</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/Spark/官网翻译/">
+                    官网翻译 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/maven/">
+                    maven <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/maven/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/sacla/">
+                    sacla <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/sacla/学习笔记/">
+                    学习笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/行业发展/">
+                    行业发展 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/阅读笔记/">
+                    阅读笔记 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-1" collapse-level="1">
+                <a class="no-padding" href="/categories/阅读笔记/自我管理/">
+                    自我管理 <span class="right">1</span></a>
+                </a>
+            </li>
+
+        
+
+    </ul>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+<div id="search" class="modal search-modal">
+    <div class="row">
+        <div class="input-field col s12">
+              <input id="search-input" type="text">
+              <label for="search-input">Search</label>
+        </div>
+
+    </div>
+    <div id="search-result" class="search-result col s12">
+
+    </div>
+</div>
+
+
+    <main>
+        <div class="container main-container">
+    <nav class="page-nav hide-on-small-only">
+    <div class="nav-wrapper blue-grey darken-3">
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/Linux/">Linux</a><a class="breadcrumb" href="/categories/Linux/学习笔记/">学习笔记</a><a class="breadcrumb" href="/categories/Linux/学习笔记/基础知识/">基础知识</a>
+
+
+        
+
+        
+    </div>
+</nav>
+
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>Linux的ps命令详解</h1>
+    
+
+
+            </div>
+            <time class="pink-link-context" datetime="2016-08-01T06:56:28.000Z"><a href="/2016/08/01/Linux的ps命令详解/">2016-08-01</a></time>
+
+            
+    <div class="tags-row">
+        
+            <a href="/tags/Linux/" class="chip teal darken-1">Linux</a>
+        
+    </div>
+
+
+            <div class="toc pink-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#ps-的参数说明"><span class="section table-of-contents-text">ps 的参数说明</span></a></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#ps-aux-或-lax-命令输出的解释"><span class="section table-of-contents-text">ps aux 或 lax 命令输出的解释</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#进程STAT状态"><span class="section table-of-contents-text">进程STAT状态:</span></a></li></ol></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-1"><a class="section table-of-contents-link" href="#kill-终止进程"><span class="section table-of-contents-text">kill 终止进程</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#使用实例"><span class="section table-of-contents-text">使用实例</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry pink-link-context">
+                <p>要对系统中进程进行监测控制，查看状态，内存，CPU的使用情况，使用命令ps</p>
+<ul>
+<li>ps ：显示瞬间进程的状态，并不动态连续；</li>
+<li>top：如果想对进程运行实时监控，应该用 top 命令；</li>
+<li>kill：用于杀死进程或者给进程发送信号；</li>
+</ul>
+<p>ps的每项输出的含义，可以查看ps的man手册</p>
+<pre><code>$ man ps
+</code></pre><a id="more"></a>
+<h1 id="ps-的参数说明"><a href="#ps-的参数说明" class="headerlink" title="ps 的参数说明"></a>ps 的参数说明</h1><ul>
+<li>l 长格式输出；</li>
+<li>u 按用户名和启动时间的顺序来显示进程；</li>
+<li>j 用任务格式来显示进程；</li>
+<li>f 用树形格式来显示进程；</li>
+<li>a 显示所有用户的所有进程（包括其它用户）；</li>
+<li>x 显示无控制终端的进程；</li>
+<li>r 显示运行中的进程；</li>
+<li>ww 避免详细参数被截断；</li>
+<li>-A 列出所有的进程</li>
+<li>-w 显示加宽可以显示较多的资讯</li>
+<li>-au 显示较详细的资讯</li>
+<li>-aux 显示所有包含其他使用者的进程</li>
+<li>-e 显示所有进程,环境变量</li>
+<li>-f 全格式</li>
+<li>-h 不显示标题</li>
+<li>-l 长格式</li>
+<li>-w 宽输出</li>
+<li>a   显示终端上地所有进程,包括其他用户地进程</li>
+<li>r   只显示正在运行地进程</li>
+<li>x   显示没有控制终端地进程</li>
+</ul>
+<p>我们常用的选项是组合是: aux 或 lax，还有参数 f 的应用。</p>
+<p>pids 只列出进程标识符,之间运用逗号分隔.该进程列表必须在命令行参数地最后一个选项后面紧接着给出,中间不能插入空格.比如：ps -f1,4,5 显示的是进程ID为1,4,5的进程</p>
+<p>介绍长命令行选项,这些选项都运用“–”开头：</p>
+<p>–sort X[+|-] key [,[+|-] key [,…]] 从SORT KEYS段中选一个多字母键.“+”字符是可选地,因为默认地方向就是按数字升序或者词典顺序，“-”字符是逆序排序（即降序）.<br>比如： ps -jax -sort=uid,-ppid,+pid.</p>
+<p>–help 显示帮助信息.</p>
+<p>–version 显示该命令地版本信息.</p>
+<p>在前面地选项说明中提到了排序键,接下来对排序键作进一步说明.需要注意地是排序中运用地值是ps运用地内部值,并非仅用于某些输出格式地伪值.排序键列表见下表.</p>
+<pre><code>============排序键列表==========================
+c cmd   可执行地简单名称 
+C cmdline   完整命令行 
+f flags   长模式标志 
+g pgrp   进程地组ID 
+G tpgid   控制tty进程组ID 
+j cutime   累计用户时间 
+J cstime   累计系统时间 
+k utime   用户时间 
+K stime   系统时间 
+m min_flt   次要页错误地数量 
+M maj_flt   重点页错误地数量 
+n cmin_flt 累计次要页错误 
+N cmaj_flt 累计重点页错误 
+o session   对话ID 
+p pid   进程ID 
+P ppid   父进程ID 
+r rss   驻留大小 
+R resident 驻留页 
+s size   内存大小(千字节) 
+S share   共享页地数量 
+t tty   tty次要设备号 
+T start_time 进程启动地时间 
+U uid   UID
+u user   用户名
+v vsize   总地虚拟内存数量(字节) 
+y priority 内核调度优先级
+</code></pre><h1 id="ps-aux-或-lax-命令输出的解释"><a href="#ps-aux-或-lax-命令输出的解释" class="headerlink" title="ps aux 或 lax 命令输出的解释"></a>ps aux 或 lax 命令输出的解释</h1><p>ps aux 或 lax 输出的解释</p>
+<p>au(x) 输出格式 : </p>
+<pre><code>USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+</code></pre><ul>
+<li>USER: 进程所有者</li>
+<li>PID: 进程ID</li>
+<li>%CPU: 占用的 CPU 使用率</li>
+<li>%MEM: 占用的内存使用率</li>
+<li>VSZ: 占用的虚拟内存大小</li>
+<li>RSS: 占用的内存大小</li>
+<li>TTY: 终端的次要装置号码 (minor device number of tty)</li>
+<li>STAT: 进程状态</li>
+<li>START: 启动进程的时间</li>
+<li>TIME: 进程消耗CPU的时间</li>
+<li>COMMAND:命令的名称和参数</li>
+</ul>
+<h3 id="进程STAT状态"><a href="#进程STAT状态" class="headerlink" title="进程STAT状态:"></a>进程STAT状态:</h3><ul>
+<li>D 无法中断的休眠状态（通常 IO 的进程）； </li>
+<li>R 正在运行，在可中断队列中； </li>
+<li>S 处于休眠状态，静止状态； </li>
+<li>T 停止或被追踪，暂停执行； </li>
+<li>W 进入内存交换（从内核2.6开始无效）； </li>
+<li>X 死掉的进程； </li>
+<li>Z 僵尸进程不存在但暂时无法消除；</li>
+<li>W: 没有足够的记忆体分页可分配</li>
+<li>WCHAN 正在等待的进程资源；</li>
+<li>&lt;: 高优先级进程</li>
+<li>N: 低优先序进程</li>
+<li>L: 有记忆体分页分配并锁在记忆体内 (即时系统或捱A I/O)，即,有些页被锁进内存</li>
+</ul>
+<p>s 进程的领导者（在它之下有子进程）；<br>l 多进程的（使用 CLONE_THREAD, 类似 NPTL pthreads）； </p>
+<ul>
+<li>位于后台的进程组；</li>
+</ul>
+<h1 id="kill-终止进程"><a href="#kill-终止进程" class="headerlink" title="kill 终止进程"></a>kill 终止进程</h1><p>kill 终止进程<br>有十几种控制进程的方法，下面是一些常用的方法:</p>
+<ul>
+<li><code>kill -STOP [pid]</code> <ul>
+<li>发送SIGSTOP (17,19,23)停止一个进程，而并不消灭这个进程。</li>
+</ul>
+</li>
+<li><code>kill -CONT [pid]</code> <ul>
+<li>发送SIGCONT (19,18,25)重新开始一个停止的进程。</li>
+</ul>
+</li>
+<li><code>kill -KILL [pid]</code> <ul>
+<li>发送SIGKILL (9)强迫进程立即停止，并且不实施清理操作。</li>
+</ul>
+</li>
+<li><code>kill -9 -1</code> <ul>
+<li>终止你拥有的全部进程。</li>
+</ul>
+</li>
+<li>SIGKILL 和 SIGSTOP 信号不能被捕捉、封锁或者忽略，但是，其它的信号可以。所以这是你的终极武器。</li>
+</ul>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><pre><code>$ ps
+PID TTY TIME COMMAND
+5800 ttyp0 00:00:00 bash
+5835 ttyp0 00:00:00 ps
+</code></pre><p>可以看到,显示地项目共分为四项,依次为PID(进程ID)、TTY(终端名称)、TIME(进程执行时 间)、COMMAND(该进程地命令行输入).</p>
+<p>可以运用u选项来查看进程所有者及其他少许详细信息,如下所示：</p>
+<pre><code>$ ps u
+USER PID %CPU %MEM USZ RSS TTY STAT START TIME COMMAND
+test 5800 0.0 0.4 1892 1040 ttyp0 S Nov27 0:00 -bash
+test 5836 0.0 0.3 2528 856 ttyp0 R Nov27 0:00 ps u
+</code></pre><p>在bash进程前面有条横线,意味着该进程便是用户地登录shell,所以对于一个登录用户来说带短横线地进程只有一个.还可以看 到%CPU、%MEM两个选项,前者指该进程占用地CPU时间</p>
+<p>和总时间地百分比;后者指该进程占用地内存和总内存地百分比.</p>
+<p>在这种情况下看到了所有控制终端地进程;当然对于其他那些没有控制终端地进程 还是没有观察到,所以这时就需要运用x选项.运用x选项可以观察到所有地进程情况.</p>
+<ol>
+<li>ps a 显示现行终端机下的所有程序，包括其他用户的程序。</li>
+<li>ps -A 显示所有程序。</li>
+<li>ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。</li>
+<li>ps -e 此参数的效果和指定”A”参数相同。</li>
+<li>ps e 列出程序时，显示每个程序所使用的环境变量。</li>
+<li>ps f 用ASCII字符显示树状结构，表达程序间的相互关系。</li>
+<li>ps -H 显示树状结构，表示程序间的相互关系。</li>
+<li>ps -N 显示所有的程序，除了执行ps指令终端机下的程序之外。</li>
+<li>ps s 采用程序信号的格式显示程序状况。</li>
+<li>ps S 列出程序时，包括已中断的子程序资料。</li>
+<li>ps -t&lt;终端机编号&gt; 　指定终端机编号，并列出属于该终端机的程序的状况。</li>
+<li>ps u 　以用户为主的格式来显示程序状况。</li>
+<li>ps x 　显示所有程序，不以终端机来区分。<br>　最常用的方法是ps -aux,然后再用管道符号导向到grep去查找特定的进程,然后再对特定的进程进行操作。</li>
+</ol>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+    <section id="comment">
+        <div class="card">
+            <div class="card-content">
+                <!-- Duoshuo Comment BEGIN -->
+                <div class="ds-thread" data-thread-key="2016/08/01/Linux的ps命令详解/" data-title="Linux的ps命令详解" data-url="http://shengdeng.github.io/2016/08/01/Linux的ps命令详解/"></div>
+
+                <script type="text/javascript">
+                    console.log(document.querySelector('.ds-thread'));
+                    var duoshuoQuery = {
+                        short_name: 'shengdeng'
+                    };
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:'
+                            ? 'https:'
+                            : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- Duoshuo Comment END -->
+            </div>
+        </div>
+    </section>
+
+
+
+</div>
+
+        <div class="fixed-action-btn float-sitemap">
+    <a class="btn-floating btn-large blue lighten-1">
+      <i class="fa fa-caret-square-o-up"></i>
+    </a>
+    <ul>
+      <li><a class="btn-return-top btn-floating waves-effect red lighten-2" title="Return to top"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+      <li><a class="btn-floating waves-effect button-collapse orange lighten-2"  data-activates="main-menu" title="menu"><i class="fa fa-navicon"></i></a></li>
+    </ul>
+  </div>
+
+    </main>
+    <footer class="page-footer blue-grey darken-3 darken-1">
+    
+    <div class="container">
+        <div class="row">
+            
+            <div class="social-group col m3 s12">
+                <h5 class="white-text">Social</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-weibo"></i>
+                    </a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">
+                        <i class="fa fa-2x fa-github"></i>
+                    </a>
+                
+                    <a class="social-link" href="/atom.xml" target="_blank">
+                        <i class="fa fa-2x fa-rss"></i>
+                    </a>
+                
+            </div>
+            
+
+            
+            <div class="col m9 s12">
+                <h5 class="white-text">Links</h5>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Stafan 专注大数据分析</a>
+                
+                    <a class="social-link" href="https://github.com/shengdeng" target="_blank">Github地址</a>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <div class="footer-copyright pink-link-context">
+        <div class="container">
+            © 2016 http://shengdeng.github.io/, All rights reserved.
+            <p class="right" style="margin-top: 0;">Blog powered by <a href="https://hexo.io">Hexo</a> | Theme <a href="https://github.com/shengdeng/shengdeng.github.io">stefanForest</a></p>
+        </div>
+    </div>
+</footer>
+
+
+    <noscript>
+    <div class="noscript">
+        <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+    </div>
+</noscript>
+<div class="noscript">
+    <p class="center-align">当前网速较慢或者你使用的浏览器不支持博客特定功能，请尝试刷新或换用Chrome、Firefox等现代浏览器</p>
+</div>
+
+
+<script src="/js/jquery-2.1.1.min.js"></script>
+<script src="/js/materialize.min.js"></script>
+
+<script>
+    (function($) {
+        $(document).ready(function() {
+            // 隐藏禁用javascript（针对微信内置浏览器）的提示
+            $('.noscript').hide();
+
+            // 图片缩放效果
+            var $imgs = $('img').not('.slider-image').not('.avatar-image').not('.carousel-image').not('.card-cover-image').not('.qrcode');
+
+            // 给图片加上点击放大效果（materialbox插件）
+            $imgs.addClass('materialboxed').each(function(i, el) {
+                $(this).attr('data-caption', $(this).attr('alt') || ' ');
+            }).materialbox();
+
+            // 优化表格的显示
+            $('table').each(function() {
+                var $table = $(this);
+                // 除去多行代码的情况
+                if ($table.find('pre').length == 0) {
+                    $table.addClass('responsive-table striped bordered');
+                }
+            });
+
+            // 首页幻灯片
+            $('.slider').slider({indicators: true, full_width: true, interval: 8000});
+
+            $(".button-collapse").sideNav();
+            $(".category-menu").sideNav();
+
+            // 针对gallery post
+            $('.carousel').carousel({full_width: true});
+            $('.carousel-control.prev').click(function() {
+                $('.carousel').carousel('prev');
+            });
+            $('.carousel-control.next').click(function() {
+                $('.carousel').carousel('next');
+            });
+
+            // 文章目录
+            $('article').not('.simple-article').find('h1').add('h2').add('h3').add('h4').add('h5').add('h6').scrollSpy();
+            // 修正文章目录的left-border颜色
+            var color = $('.table-of-contents-text').css('color');
+            $('.table-of-contents-link').css('border-left-color', color);
+
+            // 针对移动端做的优化：FAB按钮点击一下收回
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.fixed-action-btn').addClass('click-to-toggle');
+            }
+            // 回到顶部
+            $('.btn-return-top').click(function() {
+                $('body, html').animate({
+                    scrollTop: 0
+                }, 500);
+            });
+
+            // 重置读书页面的Tab标签页的颜色
+            $('li.tab a').hover(function() {
+                $(this).toggleClass('text-lighten-4');
+            });
+            $('.indicator').addClass('pink lighten-2');
+
+            
+            // 添加new标签
+            $('').append('<span class="new badge pink"></span>');
+            
+
+            // 搜索功能
+            $('.modal-trigger').leanModal();
+            var searchXml = "search.xml";
+            if (searchXml.length == 0) {
+             	searchXml = "search.xml";
+            }
+            var searchPath = "/" + searchXml;
+            initSearch(searchPath, 'search-input', 'search-result');
+        });
+
+        // 初始化搜索与匹配函数
+        var initSearch = function(path, search_id, content_id) {
+            'use strict';
+            $.ajax({
+                url: path,
+                dataType: "xml",
+                success: function(xmlResponse) {
+                    // get the contents from search data
+                    var datas = $("entry", xmlResponse).map(function() {
+                        return {
+                            title: $("title", this).text(),
+                            content: $("content", this).text(),
+                            url: $("url", this).text()
+                        };
+                    }).get();
+                    var $input = document.getElementById(search_id);
+                    var $resultContent = document.getElementById(content_id);
+                    $input.addEventListener('input', function() {
+                        var str = '<ul class=\"search-result-list\">';
+                        var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                        $resultContent.innerHTML = "";
+                        if (this.value.trim().length <= 0) {
+                            return;
+                        }
+                        // perform local searching
+                        datas.forEach(function(data) {
+                            var isMatch = true;
+                            var content_index = [];
+                            var data_title = data.title.trim().toLowerCase();
+                            var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                            var data_url = data.url;
+                            var index_title = -1;
+                            var index_content = -1;
+                            var first_occur = -1;
+                            // only match artiles with not empty titles and contents
+                            if (data_title != '' && data_content != '') {
+                                keywords.forEach(function(keyword, i) {
+                                    index_title = data_title.indexOf(keyword);
+                                    index_content = data_content.indexOf(keyword);
+                                    if (index_title < 0 && index_content < 0) {
+                                        isMatch = false;
+                                    } else {
+                                        if (index_content < 0) {
+                                            index_content = 0;
+                                        }
+                                        if (i == 0) {
+                                            first_occur = index_content;
+                                        }
+                                    }
+                                });
+                            }
+                            // show search results
+                            if (isMatch) {
+                                keywords.forEach(function(keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    data_title = data_title.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                });
+
+                                str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                                var content = data.content.trim().replace(/<[^>]+>/g, "");
+                                if (first_occur >= 0) {
+                                    // cut out 100 characters
+                                    var start = first_occur - 20;
+                                    var end = first_occur + 80;
+                                    if (start < 0) {
+                                        start = 0;
+                                    }
+                                    if (start == 0) {
+                                        end = 100;
+                                    }
+                                    if (end > content.length) {
+                                        end = content.length;
+                                    }
+                                    var match_content = content.substring(start, end);
+                                    // highlight all keywords
+                                    keywords.forEach(function(keyword) {
+                                        var regS = new RegExp(keyword, "gi");
+                                        match_content = match_content.replace(regS, "<span class=\"search-keyword pink lighten-2\">" + keyword + "</span>");
+                                    });
+
+                                    str += "<p class=\"search-result\">..." + match_content + "...</p>"
+                                }
+                                str += "</li>";
+                            }
+                        });
+                        str += "</ul>";
+                        $resultContent.innerHTML = str;
+                    });
+                }
+            });
+        }
+    })(jQuery);
+</script>
+
+
+<script src="/js/prettify.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("pre").addClass("prettyprint");
+        prettyPrint();
+    });
+</script>
+
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-77353762-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=56016042" charset="UTF-8"></script>
+
+
+
+
+
+</body>
+</html>

@@ -4,6 +4,552 @@
   
     
     <entry>
+      <title><![CDATA[Cloudera发表的kudu论文详解]]></title>
+      <url>http://shengdeng.github.io/2016/08/08/Cloudera%E5%8F%91%E8%A1%A8%E7%9A%84kudu%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91/</url>
+      <content type="html"><![CDATA[<p><strong>Kudu: Storage for Fast Analytics on Fast Data</strong></p>
+<p><strong>kudu：为 快数据的快分析 而生的存储架构</strong></p>
+<p>近年来，Hadoop生态系统丰富的组件被很多公司采用来搭建大数据平台。</p>
+<p>在Hadoop生态系统中，结构化存储主要由两种实现方式：</p>
+<ul>
+<li>一种是以静态的数据集方式存储，典型的是数据以二进制数据格式，如Apache Avro或者ApacheParquet格式存储在HDFS上<ul>
+<li>优点：顺序读的吞吐性能好，</li>
+<li>缺点：它们很难支持单条记录的修改和高效的随机访问；</li>
+</ul>
+</li>
+<li>另一种是以可修改的数据集形式存储，典型的是以半结构化形式存储在Apache HBase或者ApacheCassandra中<ul>
+<li>优点：它们可以提供高效的单条记录读写操作，</li>
+<li>缺点：它们的顺序读吞吐性能大大落后于静态的数据集形式</li>
+</ul>
+</li>
+<li>顺序的读吞吐性能在很多SQL分析和机器学习应用中很重要</li>
+</ul>
+<p>HDFS上静态数据集可以很好的支持分析，HBase和Cassandra则有低延迟和行记录随机读写的能力；当一个应用同时需要这两种访问模式的时候，就需要开发一个新的复杂结构来弥补HDFS和HBase之间的缺陷（在Cloudera官方的博客上，对于Kudu的描述是：一个弥补HDFS和HBase之间的缺口的新型的存储，它能够更有效的利用现代硬件的CPU和IO资源，既能够支持分析，又能够支持更新、删除和实时查询）。</p>
+<p>很多Cloudera的客户都开发了这样的数据流水线，先将数据流收集到HDFS，并实时更新到Hbase，然后周期性的将表导出Parquet，后续进行分析。这样的架构具有以下缺陷：</p>
+<ol>
+<li>在两个系统之间，要写复杂的代码区管理数据流和数据同步</li>
+<li>管理员必须在多个系统之间保持一致性的备份、安全策略、监控</li>
+<li>这样的架构会导致<strong>非常大的延迟</strong>，between the arrival of new data into the HBase “staging area” and the time when the new data is available for analytics.</li>
+<li>这样的架构会<strong>浪费集群资源</strong>（HBase和HDFS多份存储、同时多个组件间数据导入导出会浪费计算资源）。</li>
+</ol>
+<p>新存储系统kudu的设计与实现就是为了彻底弥补高吞吐顺序读写系统HDFS和低延迟随机访问系统HBase之间的差距。当然，HDFS和HBase在特定的场景中任然具有优势，kudu只是提供了一种折中的可选方案来简化架构。特别是，kudu提供了</p>
+<ul>
+<li>简单的API用于行级的插入更新删除操作，快速的随机访问，满足查询的需求</li>
+<li>与Parquet相同的读吞吐性能，快速的数据scan一种静态文件常用的列式格式，来满足分析要求</li>
+</ul>
+<p>这篇文章主要介绍kudu的架构：</p>
+<ul>
+<li>第2部分从使用者的角度来描述kudu系统，介绍了数据模型，APIs，可视化操作构图；</li>
+<li>第3部分描述kudu的架构，包括如何分区，如何在节点间传递副本，故障恢复和一些常规的操作；</li>
+<li>第4部分解释kudu是如何在磁盘中存储数据来保证快速访问和高效分析性能的；</li>
+<li>第5部分讨论如何将kudu与hadoop其他组件集成。第6部分展示了kudu在测试工作量时的主要性能。</li>
+</ul>
+<h1 id="2-从上层看kudu（使用者角度）"><a href="#2-从上层看kudu（使用者角度）" class="headerlink" title="2 从上层看kudu（使用者角度）"></a>2 从上层看kudu（使用者角度）</h1><h1 id="2-1-创建一个表：Tables和schemas"><a href="#2-1-创建一个表：Tables和schemas" class="headerlink" title="2.1 创建一个表：Tables和schemas"></a>2.1 创建一个表：Tables和schemas</h1><p>从使用者的角度，kudu是以表的形式进行结构数据存储的存储系统：</p>
+<ul>
+<li>一个kudu集群有多个表，<strong>每个表都是由schema进行定义</strong>，由有限个列（属性）组成。</li>
+<li>每列有一个<strong>名字及类型</strong>(例如INT32或STRING)，并且可以选择是否支持空值。</li>
+<li>这些列的一些有序的列可以定义为<strong>表的主键</strong>，主键必须是唯一的(at most one row may have a given primary key tuple)，并且做为一行有效删除和更新的唯一索引。</li>
+</ul>
+<p>这些数据模型与传统的关系型数据库非常的相似，但是与Cassandra,mongodb,riak,bigtable等分布式数据存储却非常的不同。</p>
+<p>与使用关系型数据库一样，kudu的用户必须要先在创建    表时给定表的schema。</p>
+<ul>
+<li>如果插入没有事先定义过的列会报错，如果违反主键唯一性约束也会有相应的错误。</li>
+<li>用户可以通过alter table来增加或者删除列，但是主键列不能够被删除。</li>
+</ul>
+<p>我们决定<strong>为每列明确的指定类型</strong>，而与NoSQL的“一切都是byte”的形式明显不同，这样做的动机是</p>
+<ol>
+<li>显示指定类型这可以高效的使用类型相关的列编码方式，such as bit-packing for integers.</li>
+<li>显示指定类型可以向上层分析系统暴露SQL似的数据元信息，such as commonly used business intelligence or data exploration tools.</li>
+</ol>
+<p>虽然采用类似于关系型数据库的表设计，不过Kudu的设计不支持二级索引，这个限制和HBase是一样的。目前，kudu要求每个表必须定义一个主键列；将来的版本，我们期望kudu具有代理键自动生成特性。</p>
+<h2 id="2-2-写操作APIs"><a href="#2-2-写操作APIs" class="headerlink" title="2.2 写操作APIs"></a>2.2 写操作APIs</h2><p>创建了表以后，用户通过<strong>insert,update,delete 这三个APIs</strong>来修改这个表，即插入、修改和删除数据。以上三个API操作，用户都必须指定主键，predicate-based 删除或者修改必须使用更高级的访问机制（见第5部分）。deletions or updates must be handled by a higher-level access mechanism (see section 5).</p>
+<p>kudu提供java和C++的APIs，支持python的API处于试验阶段。The APIs allow precise control over batching and asynchronous error handling to amortize the cost of round trips when performing bulk data operations (such as data loads or large updates).目前，和HBase一样，kudu没有支持跨行级别事务的APIs：each mutation conceptually executes as its own transaction, despite being automatically batched with other mutations for better performance.Modifications within a single row are always executed atomically across columns.。</p>
+<h2 id="2-3-读操作"><a href="#2-3-读操作" class="headerlink" title="2.3 读操作"></a>2.3 读操作</h2><p>kudu只提供了一个scan操作来从表读取数据，不过用户可以给定一些条件来过滤结果。目前，kudu支持两种条件，一种是用一列和一个常量进行比较，另外一种是给定主键的范围。These predicates are interpreted both by the client API and the server to efficiently cull the amount of data transferred from the disk and over<br>the network.</p>
+<p>除了给定条件，用户还可以指定一个scan的projection，这个projection由要返回的部分列组成，即用户可以指定只返回部分列。因为Kudu的实际在磁盘上存储是列式的存储，指定返回列可以在分析场景中大幅度的提高性能。</p>
+<h2 id="2-4-其他APIs"><a href="#2-4-其他APIs" class="headerlink" title="2.4 其他APIs"></a>2.4 其他APIs</h2><p>除了以上data path APIs，kudu的client库还提供其他有用的功能。In particular, the Hadoop ecosystem gains much of its performance by scheduling for data locality. Kudu provides APIs for callers to determine the mapping of data ranges to particular servers to aid distributed execution frameworks such as Spark, MapReduce, or Impala in scheduling.</p>
+<h1 id="2-5-一致性模型"><a href="#2-5-一致性模型" class="headerlink" title="2.5 一致性模型"></a>2.5 一致性模型</h1><p>一致性模型，默认支持snapshot ，这个可以保证scan和单个客户端 read-you-writes一致性保证。更强的一致性保证，提供manually propagate timestamps between clients或者commit-wait。</p>
+<p>kudu为多个clients客户端提供了两种一致性模型的选择。默认的一致性模型是快照一致性。一个scan保证产生一个没有异常的快照，这个因果上可能有点说不通（目前处于测试版的kudu这种一致性支持还没有完全实现，然而，本文重在描述系统的架构和设计，尽管还存在一些与一致性有关的bugs）。同样地，这种模式也保证单个client的read-your-writes一致性。（主要是如何协调多个client端读写时的先后顺序以及加锁操作等）</p>
+<p>默认情况下，kudu不提供外部的一致性保证。这就是说，如果一个client客户端执行一个写操作，然后与另一个client通过外部的机制（即信息总线）进行通信，这个client也执行一个写操作，两次写操作之间的因果依赖关系不会被获取到。第三个阅读的客户端只会看到第二次写的快照，并没有第一次写的。</p>
+<p>根据我们（Cloudera）对其他系统的支持经验，比如HBase，也不提供外部一致性保证的，这在很多应用场景中已经是足够的了。然而，对于需要更强保证的用户，kudu提供了手工在多个客户端之间传递时间戳的选择：执行完一次写操作后，用户可向client library请求一个时间戳token。这个token将会通过外部信道传播给另一个client，另一方面将会传给kudu API，因此这个过程保留两个client写操作之间的因果关系。？？</p>
+<p>如果传递token太复杂了，kudu也可以选择采用像spanner的commit-wait的模式。。。。。</p>
+<h2 id="2-6-时间戳"><a href="#2-6-时间戳" class="headerlink" title="2.6 时间戳"></a>2.6 时间戳</h2><p> 和hbase反向设计，写不支持时间戳，避免用户乱用。读可以加时间戳读取过去一个时间的快照。这一点上感觉各有优劣吧，对读更加友好</p>
+<p>尽管kudu使用内部的时间戳去实现并发控制，kudu并不允许一次写操作的时间戳手工设定。这与HBase和Cassandr等系统的机制不同</p>
+<h1 id="3-架构"><a href="#3-架构" class="headerlink" title="3 架构"></a>3 架构</h1><h2 id="3-1-集群的角色"><a href="#3-1-集群的角色" class="headerlink" title="3.1 集群的角色"></a>3.1 集群的角色</h2><p>延续bigtable和GFS的设计主从架构（hbase和hdfs都采用这种开源架构），kudu也是一个<strong>master服务器</strong>负责元数据，多个<strong>tablet服务器</strong>负责数据。Master Server可以通过复制来是先容错和故障恢复。</p>
+<h2 id="3-2-分区"><a href="#3-2-分区" class="headerlink" title="3.2 分区"></a>3.2 分区</h2><p>像大多数分布式数据库系统，kudu中的表示水平分区的。kudu，就像bigtable，称这些水平分区为<strong>tablets</strong>。每一行都会根据它的主键唯一的映射到一个tablet上，这样保证了随机访问的操作如插入或更新只影响单个tablet。对于超大的表，吞吐量的要求是比较高的，我们推荐一个大表可以分为10到100个tablets，每个tablet差不多可以是10G大小。</p>
+<p>Kudu可以支持三种分片方式：横向切分、Hash分片、横向分片和Hash分片的组合。用户可以提供分片函数来指导Kudu对数据进行分片。但是在目前的实现中，Kudu要求用户在建表时就定义分片信息，不能对分片进行动态的分裂和拼接。</p>
+<p>不像bigtable只基于key-range的分区方式，不像Cassandra用类似基于hash的分区方式，kudu支持一个灵活的分区方案。当创建一个表的时候，用户为这个表指定分区的schema。这个分区的schema扮演一个从主键多元组到二进制分区键的映射函数。每个tablet都包含一个连续的分区键范围。因此，当执行一个读或者写操作时，客户端可以很容易的确定哪个tablet可以持有给定的key，然后将请求沿路发过去。</p>
+<p>这个partition schema是由0个或者多个hash分区规则以及一个可选的范围分区规则组成：</p>
+<ul>
+<li>hash分区规则由主键列的子集列和分区bucket数量构成，例如：用sql语言表达就是DISTRIBUTE BY HASH(hostname, ts) INTO 16 BUCKETS这些规则通过拼接指定列的值来转换键的多元组成为二进制键，然后计算以bucket数量为模产生的字符串的hash码。对桶数求余，然后生成一个32位的整形作为结果的分区key。</li>
+<li>范围分区规则是基于有序的主键列，将列的值按照能够保持顺序的编码进行处理，然后将数据进行相应的分区。</li>
+</ul>
+<p>相对于目前大部分的NoSQL系统来讲，Kudu的分区策略还是比较完善的，更像是传统的数据库或者MPP数据库。</p>
+<h2 id="3-3-备份"><a href="#3-3-备份" class="headerlink" title="3.3 备份"></a>3.3 备份</h2><p>为了保证在大规模商业集群上运行的高可靠性，kudu会在多台机器上备份所有的表数据。当创建一个表的时候，用户要指定备份数（replication factor），一般是3、或者5份，这个量取决于the application’s availability SLAs。master会管理这些备份，并努力确保备份的数量（见3.4.2）。</p>
+<p>kudu采用Raft一致性算法来复制这些tablets。尤其是，kudu用Raft算法去让每个tablet的操作（例insert/update/delete）日志达成一致。当客户端client想要去执行一个写操作，会先去找到leader replice（见3.4.3）同时发送一个写的RPC通信给这个replice。</p>
+<ul>
+<li>它会拒绝这个请求，client会让当前的信息失效，并且更新元数据缓存，然后再重新发送请求给新的leader。</li>
+<li>如果这个replica是leader，它会使用一个本地锁记录这个操作（it employs a local lock manager to serialize the operation），阻止其他的并行操作，通过MVCC时间戳机制来管理读写并发，leader会通过Raft将这个操作送到到followers。</li>
+<li>如果大多数replicas都接受了这个写操作，而且leader replica主备份机器上写完了wal（对于磁盘写“成功”，kudu提供两种模式供用户选择——写入buffer cache或者一定要调用fsync才算成功），这个写就可以被提交给其他备份。但是kudu并不是强制leader必须写一条操作到日志后再去提交commit这个操作，避免因为leader的磁盘慢导致整体性能问题。</li>
+<li>如果少数replica失败了，leader可以继续propose和commit操作到相应的tablet的replicated log。</li>
+<li>如果leader自己挂掉，Raft算法会迅速选择一个新的leader。默认情况下，kudu采用500毫秒心跳间隔，1500毫秒选举超时；因此，当一个leader挂掉以后，一个新的leader会在几秒钟选举出来。</li>
+</ul>
+<p>Kudu采用了Raft协议来实现表数据的复制，kedu对Raft算法进行了一些改进：</p>
+<ol>
+<li><p>在Leader选举失败时，采用指数算法(Exponential Backoff)来重试，指数级的回退机制，保障在集群繁忙时的选举效率</p>
+</li>
+<li><p>当一个新的leader在联系一个follower时，如果follower的log与自己不相同，kudu会立即跳回到最后的committedIndex，这能够大大减少在网络上传输的冗余的操作，而且实现起来简单，并且能够保证不一致的操作在一次往返后就被抛弃掉。</p>
+</li>
+</ol>
+<p>另外，kudu的复制不是复制磁盘上的存储的表的数据，而是复制操作日志。表的每个副本的物理存储是完全解耦的，它带来了如下的好处：</p>
+<ul>
+<li>当一个副本在进行后台的一些物理层的操作（flush或者compact，见第4部分)时，其他节点不会同时对同一个tablet也在进行操作。因为Raft协议的提交是过半数副本应答，这样后台物理层操作对于提交的影响将会降低，从而避免对集群的冲击以及额外的性能损耗。In the future, we anticipate implementing techniques such as the speculative read requests described in to further decrease tail latencies for reads in concurrent read/write workloads.</li>
+<li>在开发过程中，kudu团队遇到过一些罕见的物理存储层竞争race condition情况，因为副本间物理存储的松耦合（物理存储并不会被复制），这些race condition都没有造成数据不可恢复的错误。我们可以探测到任何一个备份的错误，并对其做修复。</li>
+</ul>
+<blockquote>
+<p>这一点来说kudu避开了操作的复杂复制，因为对主备份数据的操作具有事物的复杂性，这些再同步到从备份代价就很大了。hbase因为底层采用hdfs所以不存在此问题。所以从kudu的角度来看这确实是一个好的设计。</p>
+<p>另一层原因可能是kudu底层假设目前的物理存储硬件并没有那么脆弱，恢复并不是一个经常性事件。区别于hdfs认为失效是常规事件(上万台服务器硬盘故障的频率和吃饭没两样，廉价硬件堆出来存储)。<strong>kudu明显是高富帅方案</strong>，既然要告诉分析也<strong>不能用太差的硬件</strong>吧。另外还特别和intel合作优化享受最新硬件IO方面的性能提升。</p>
+</blockquote>
+<h3 id="3-3-1-配置变更"><a href="#3-3-1-配置变更" class="headerlink" title="3.3.1 配置变更"></a>3.3.1 配置变更</h3><p>主要讲了新增备份数，以及减少备份或者server配置的一些操作，还ok。没有太特别的</p>
+<h2 id="3-4-kudu-Master"><a href="#3-4-kudu-Master" class="headerlink" title="3.4 kudu Master"></a>3.4 kudu Master</h2><p>Kudu的中枢级的Master进程，它主要的职责包括：</p>
+<ol>
+<li>作为一个catalog manager目录管理器跟踪维护的信息有，tables的机器是哪个, tablets是否存在，以及创建table的schema，复制的级别，以及其他的一些元数据。当创建、alter、删除表，master都会向tablets协调这些操作并保证最终完成。</li>
+<li>作为集群的协调者，跟踪集群中server哪些存在，哪些是存活的；在某个server死掉后对数据进行重新分布。</li>
+<li>作为tablet directory，跟踪哪个tablet server存储哪个tablet的副本（每个tablet都存储在哪些server上）</li>
+</ol>
+<p>Kudu采用集中式、可复制的master设计，而非P2P模式设计简化实现，debuging以及操作</p>
+<blockquote>
+<p>主从式设计目前来看是实现简单，效率最高的一种方式。只要把master元信息做备份master快速恢复，几乎能解决大部分问题。</p>
+</blockquote>
+<h3 id="3-4-1-目录管理器"><a href="#3-4-1-目录管理器" class="headerlink" title="3.4.1 目录管理器"></a>3.4.1 目录管理器</h3><p>master自己会保存一个单tablet的表，这个表用户不能直接访问。master会在内存中读写目录信息到这个tablet中，采用内存write-through cache来维护catalog（catalog信息也是一个tablet，类似hbase里的meta表）。当前商业硬件已具备大量的内存空间，每个tablet小量的元数据存储，kudu团队认为在目前的硬件架构下并不会成为扩展瓶颈。如果未来可能成为瓶颈，把它缓存到页cache中将是一个简洁的架构升级。</p>
+<blockquote>
+<p>又一次证明通过硬件来简化软件设计的思路，这种简化并不能说是退步，感觉bigtable已经把存储系统设计到极致了，kudu的改进尽量通过硬件能力来弥补，同时带来效率和性能的提升</p>
+</blockquote>
+<p>目录表管理器存储了系统中每个表的部分状态信息，尤其是table schema 的当前版本，表的状态（creating, running, deleting等），哪些tablet属于这个table。创建表时，</p>
+<ul>
+<li>会先到master的catalog table中写一个数据，更新为CREATING state。</li>
+<li>并且异步选择tablet servers存储tablets的副本，</li>
+<li>在master端建好tablet元数据信息，</li>
+<li>再异步请求每个tablet server去创建副本。</li>
+<li>如果大多是replica创建失败或者超，tablet可以被安全删除，然后新的tablet及其副本将被重新创建，即master可以回滚重做。</li>
+<li>如果在这个过程中master自己挂了，表记录会表明需要回滚了，master可以从停止的地方重新开始。</li>
+</ul>
+<p>除了创建表，schema改变和删除操作时，master都会执行相似的过程，以确保向自己所维护的catalog table中写入新的状态之前，改变操作以及传递给了相关的tablet服务器。以上所有的情况，每个操作信息从master传到tablet servers都被设计为幂等的，也就是可以反复重做，所以每次宕机或者重启，他们会被安全地重新发送。(应该是server端简单判断下发的重复消息，然后做出忽略操作)</p>
+<p>catalog的信息的物理存储也是tablet，master可以方便的采用Raft协议将存储的信息复制到候补的master进程，从而实现高可靠性。目前，候补的master扮演一个Raft followers的角色，并不会与client交互。根据Raft算法即将被选为leader的候补master，会scans它的catalog table，并加载到内存缓存中，开始扮演一个活跃的master。</p>
+<blockquote>
+<p>由于catalog table也是Kudu的一个tablet，故master信息很好被重载到另外一个master接管这一切。 这里设计和hbase比较像，hdfs中的namenode需要引入一个外部存储来做ha也是增加了复杂性。只要记住最初的几个备份就行，不过hdfs有个特殊就是元数据信息可能很大，一两个block也存不下。不像hbase、kudu元信息大小可控好存。</p>
+</blockquote>
+<h3 id="3-4-2-集群协调"><a href="#3-4-2-集群协调" class="headerlink" title="3.4.2 集群协调"></a>3.4.2 集群协调</h3><p>在kudu集群中，每一个tablet servers对于kudu master来说都是静态的主机名配置列表。集群启动时，</p>
+<ul>
+<li>tablet servers向mater注册，</li>
+<li>然后发送tablet reports，内容是他们持有的所有tablets。<ul>
+<li>第一次发送的tablet reports包含所有的tablets信息</li>
+<li>以后发送的tablet reports，只会报告新创建、删除或修改的信息(e.g. processed a schema change or Raft configuration change)</li>
+</ul>
+</li>
+</ul>
+<p>kudu设计的最关键的是，master server是目录信息的唯一来源，但是对于集群的动态状态信息，master server只是观察者。tablet server来负责tablet副本的位置，当前的Raft配置信息，以及tablet当前的版本信息等等。由于tablet的副本通过Raft协议来达到状态变化的一致，每个状态变化会在被提交的地方映射到一个指定的Raft操作索引中。这就允许master可以保证所有tablet的变更是幂等的，and resilient to transmission delays:master可以简单比较一个tablet的状态变更Raft操作索引，并舍弃掉老旧的索引。</p>
+<p>这种设计选择让tablet server的server承担更多的责任。例如，kudu不是让master去检测tablet server是否崩溃，而是委托任意一个tablet的Raft协议选出的leader副本去负责崩溃机器上的副本：</p>
+<ol>
+<li>leader保持追踪分别与每一个follower最后一次成功地通信，</li>
+<li>如果leader有一段时间与follower通信失败，就可以宣布这个follower挂掉了，</li>
+<li>leader会提议修改Raft配置，将这个联系不上的follower从Raft配置中驱逐出去。</li>
+<li>当这个配置变更成功的提交了，剩下的tablet servers会发布一个tablet reports给master去告知master这个leader修改配置的决议。</li>
+</ol>
+<p>为了恢复期望的副本数，基于master对整个集群的观察，master会选择一个tablet server去持有新的副本去增加副本数。在选择了新的server之后，</p>
+<ul>
+<li>master会建议这个tablet的leader副本去修改配置。master是没有权利去修改tablet配置的，必须等leader副本提出并提交配置变更操作，此刻master根据tablet report得知配置变更成功。</li>
+<li>如果master建议失败了，可能信息丢失，他就会定期地顽固地重复操作直到成功。因为这些操作是被降级的配置的唯一索引所标记的，他们是等幂的和不冲突的，尽管master发布一些冲突的建议，as might happen soon after a master fail-over.</li>
+</ul>
+<p>master会响应tablets额外的副本。如果master接收到了tablet report中显示，这是一个已经被tablet配置移除的副本，master就会坚持发送DeleteTablet RPCs给这个已经被移除的节点，直到RPC通信成功。为了保证最终将多余的节点清理干净，甚至在master自己crash的情况下，master也会发送这个RPCs去响应这个tablet report which identifies that a tablet server is hosting a replica which is not in the newest committed Raft<br>configuration.</p>
+<blockquote>
+<p>master会关注大局，比如有些本该删除的备份还依然汇报心跳，他就会出面发出deleteRPC。check最终结果没问题，避免leader replica有时候出些岔子。 master充分授权(replica leader)，制定规则(Raft)，但是最后结果检查并且兜底。感觉是一个好的技术管理模式，分布式系统到最后和团队管理都有点像了。</p>
+</blockquote>
+<h3 id="3-4-3-tablet目录"><a href="#3-4-3-tablet目录" class="headerlink" title="3.4.3 tablet目录"></a>3.4.3 tablet目录</h3><p>为了有效的执行读写操作without intermediate network hops，client向master请求tablet位置，并在本地缓存中维护元数据信息，包括了每一个以前访问过的tablet最近的信息，有tablet的分区key范围、Raft配置。任何一个时间点，client缓存中的数据都可能是过时的；如果client企图去发一个写操作到已经不是那个tablet的leader的服务器，服务器就会拒绝这个请求。然后，client会联系master去了解最新的leader。这种情况，client与假的leader通信中，会收到一个网络错误，此时tablet很可能选了一个新的leader，也是同样的策略。？？</p>
+<blockquote>
+<p>这样的设计可以减少了client对master请求的压力。对于不经常改变的信息这种快速失败重试的机制是很ok的。</p>
+</blockquote>
+<p>将来，如果client联系一个非leader的副本，kudu团队计划让这个错误响应携带当前的Raft配置。因为follower副本的服务器上都有最新的Raft配置信息，这就可以防止leader选举后，client要与master额外进行通信了。</p>
+<p>由于master在内存中维护所有tablet分区范围信息，每秒有大量的请求，响应保持低延迟。目前kudu在270节点的cluseter，跑一个几千个tablets的业务，一次tablet location 查询99.99%在3.2ms内，95%在374微秒，75%在91微秒。kudu开发者认为当前集群的大小，这个不会成为瓶颈，后续也可以通过再把location信息做分区，给几个不同的机器来提供服务。</p>
+<blockquote>
+<p>走hbase的metatable路线，做起来也没什么问题</p>
+</blockquote>
+<h1 id="4-tablet存储设计"><a href="#4-tablet存储设计" class="headerlink" title="4 tablet存储设计"></a>4 tablet存储设计</h1><p>在tablet server上，每个tablet副本都做为一个完全独立的实体，从而与上层的分布式副本系统（3.3的描述）和分区（3.2的描述）进行解耦。在kudu的开发过程中，我们发现这样的设计有利于kudu发展独立于上层分布式系统的存储层，实际上我们很多功能的和单元的测试都完全运行在一个tablet的应用范围内。</p>
+<p>由于这种解耦设计，这样kudu就可以自由的开发基于table、基于tablet或者基于replica的存储层，当前还只是有一个存储层。Due to this decoupling, we are exploring the idea of pro-<br>viding the ability to select an underlying storage layout on a<br>per-table, per-tablet or even per-replica basis { a distributed<br>analogue of Fractured Mirrors, as proposed in [26]. However,<br>we currently oer only a single storage layout, described in<br>this section.</p>
+<h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><p>在Kudu的tablet存储设计中，主要考虑如下几个因素：</p>
+<ul>
+<li>快速的列扫描：能够达到可以媲美Parquet和ORCFile的类似的性能，从而可以支撑分析业务，</li>
+<li>低延时的随机更新：在随机访问时，希望达到Olog(n)的时间复杂度</li>
+<li>性能的一致性</li>
+</ul>
+<p>为了同时达到以上三个痛点，kudu没有采用现有的存储引擎，而是从头设计了一个全新的混合列式存储架构。</p>
+<blockquote>
+<p>kudu自己设计了一套列存架构，是kudu的核心亮点，列存在目前有好多优秀设计，自己设计一套符合kudu独特架构的，也确实是有必要。</p>
+</blockquote>
+<h2 id="4-2-RowSets"><a href="#4-2-RowSets" class="headerlink" title="4.2 RowSets"></a>4.2 RowSets</h2><p>tablets在kudu中被细分为更小的单元，叫RowSets。一些RowSets只存在内存中，称为MemRowSets，其他的在内存或磁盘中，称为DiskRowSets。任何一条存活的数据记录都只属于一个RowSet；因此，RowSets来自互相独立的行。但是，不同RowSets的主键区间可能交叉。</p>
+<p>在任意时刻，每个tablet都只有一个唯一的MemRowSets，用于存储最近插入的行，有一个后台线程定期会flush MemRowSets到磁盘。flush的时间安排会在4.11中详细描述。</p>
+<p>当一个MemRowSets被flush时，一个新的空的MemRowSets会被创建来替换它，而被flush的MemRowSets则会变成一个或者多个DiskRowSets。Flush过程是完全并行的，MemRowSets正在flush时，读操作还可以在MemRowsets上进行；而更新和删除行操作则会被记录下来，在flush完成后，更新到磁盘上。</p>
+<h2 id="4-3-MemRowSet的实现"><a href="#4-3-MemRowSet的实现" class="headerlink" title="4.3 MemRowSet的实现"></a>4.3 MemRowSet的实现</h2><p>MemRowSets的实现是一个支持并发的内存B-Tree，借鉴了MassTree的实现，并且做了一些修改：</p>
+<ul>
+<li>不支持在树上进行元素的删除，而是采用MVCC记录删除的信息。因为MemRowSets最终会flush到磁盘，因此记录的删除可以推迟，在系统的其他部分进行删除。</li>
+<li>不支持在树上对记录（元素）的任意的修改，而只是在值的修改不改变值占用的空间大小时才支持：this permits atomic compare-and-swap operations to append mutations to a per-record linked list.</li>
+<li>叶子节点的连接是通过一个next指针来实现，这样可以显著提高顺序scan的性能。</li>
+<li>kudu并没有实现完整的trie of trees，仅仅是一个单一的tree，因为我们不关心非常高的随机访问吞吐性能compared to the original application.</li>
+</ul>
+<p>为了提高随机访问的scan的性能，kudu采用了比较大的节点的空间大小，每个是4个CPU cache-lines的大小（256字节）。</p>
+<p>不像其他数据在kudu中的存储，MemRowSets存储行使用行式设计。这样设计提供了很好的性能，因为数据在内存中。尽管选择了行式存储，为了最大化吞吐量，我们使用SSE2预取指令集去预取一个叶子节点在我们的scanner之前，以及LLVM编译优化来提高树的访问性能。</p>
+<blockquote>
+<p>memRowSet按照行存储数据，采用了LLVM、JIT-complile、memcmp等一些特殊技术来家属查询，当然这种查询可以是根据主键范围(更快)或者根据独立的字段查询。</p>
+</blockquote>
+<h2 id="4-4-DiskRowSet的实现"><a href="#4-4-DiskRowSet的实现" class="headerlink" title="4.4 DiskRowSet的实现"></a>4.4 DiskRowSet的实现</h2><blockquote>
+<p>DiskRowSets的实现同样做了很多实现的优化来提高性能</p>
+</blockquote>
+<p>MemRowSets flush到disk之后，他们就变成了DiskRowSets。当flush一个MemRowSets的时候，IO达到32MB就滚动DiskRowSet，即按照32MB一个来flush一个到磁盘上。这个大小是保障每个DiskRowSet不会太大，而且能支持不断增长的compaction需求。因为MemRowSet是排序好的，被flush到磁盘的DiskRowSets将也会是排序好的，每一个滚动的部分将有一个互不相交的主键范围。</p>
+<blockquote>
+<p>按照primary的范围分段，互补重叠。这个和hbase类似，但是kudu是预先划定好partition的，所以基本上可以认为这个划分和memRowSet中能很好对应上。</p>
+</blockquote>
+<p>DiskRowSets在实现时被分成了两个部分，一个基础的数据部分(base data)以及一个变化存储（delta stores)。Base data是采用列式存储来存储数据，每一列被切分成一个连续的数据块写到磁盘，每列分成小的页来支持更细粒度的随机访问。它还包含一个内嵌的B-Tree索引，从而方便定位页，这是基于rowset有序的offset（这种存储在加上B-tree索引让row可以被快速查询到）。Column pages列存储采用一种encoding，比如dictionary encoding，bitshuffle或者front coding也可选，压缩采用LZ4，gzip，bzip2。这种每一列的编码和压缩可能被用户明确地指定（用户可以根据列内容需要去定制每一列），例如text列应该用gzip，存储小的integers型数字应该按bit-packed来，kudu用parquet来支持一些页面格式，实现方法参考了Impala和Parquet的设计和代码。</p>
+<p>除了会将用户指定的 列数据flush到磁盘，Kudu还在磁盘写入了一个主键索引列，存储了每一行的主键编码，同时还flush了一个布隆过滤器到磁盘，从而根据他的主键编码方便判断一行是否存在。</p>
+<p>因为列编码想要update非常困难，所以base data在flush到磁盘后就不会再改变。更新和删除操作会被追踪记录在delta stores中进行存储。delta stores即使在内存的DeltaMemStores也是在磁盘上的DeltaFiles。DeltaMemStore也是一个支持并发的B-Tree。DeltaFiles是一个二进制的列式数据块。delta stores包含了列数据的所有的变化（里面存储了row_offset和修改时间timestamp），维护了一个从（row_offset,timestamp)数组到RowChangeList记录的映射。</p>
+<ul>
+<li>row的offset仅仅是RowSet的顺序的索引，例如最低主键的行的offset是0。有点类似SET column id = ‘foo’ 或者delete。</li>
+<li>timestamp是最初的写操作MVCC的时间戳标记的</li>
+<li>RowChangeList行变化的二进制编码列表，例如指示SET column id = ‘foo’ 或者delete</li>
+</ul>
+<p>当要更新DiskRowSet上的数据时，要首先查询主键索引列。通过内嵌的B-tree索引，可以有效的包含目标行的page页。使用page级的元数据，我们可以确定这个page第一个单元的行偏移offset。通过在page中搜索（例如 内存二进制搜索），可以计算出目标行在整个DiskRowSet中的偏移量offset。确定了偏移量之后，就可以向DeltaMemStore的行集中插入新的delta记录。</p>
+<h2 id="4-5-Delta-Flushes"><a href="#4-5-Delta-Flushes" class="headerlink" title="4.5 Delta Flushes"></a>4.5 Delta Flushes</h2><p>因为DeltaMemStore是内存存储的，容量是有限的。DeltaMemStore数据flush到磁盘的过程与MemRowSets flush的过程由相同的后台进程。当flush一个DeltaMemStore的时候，老的DeltaMemStore将会被新的存储单元替换，那个已经存在的DeltaMemStore被写入磁盘变成DeltaFile。一个DeltaFile是一个简单的二进制列，里面保存了与DeltaMemStore在内存中一样的数据。</p>
+<h2 id="4-6-INSERT-path-插入过程"><a href="#4-6-INSERT-path-插入过程" class="headerlink" title="4.6 INSERT path 插入过程"></a>4.6 INSERT path 插入过程</h2><p>如之前所述，每一个tablet有一个MemRowSet保存最近插入的数据，但是，它不足以简单地直接写所有的插入到当前的MemRowSet中，因为kudu强制使用一个主键唯一约束。换句话说，不像很多nosql的存储方式，kudu区分insert和upsert。</p>
+<p>为了强制唯一约束，kudu必须在插入一个新的行前问询所有存在的DiskRowSets。因为每个table可能会有成百上千的DiskRowSets，这个问询过程做的高效是非常重要的，选择需要问询DiskRowSets的个数和在一个DiskRowSet中查询的效率。</p>
+<p>为了选择一套DiskRowSets去询问在insert操作的时候，每个DiskRowSet存储一个已存在的键的Bloom过滤器。 因为新的key不会插入到已经存在的DiskRowSet中，这个Bloom过滤器是静态的数据。Bloom过滤器块成为4KB的pages，每一个块对应一个小范围的键，用一个不变的B-tree结构索引那些pages。这些page和一些索引被缓存在服务器的LRU page页缓存中，确保大多数Bloom过滤器访问不需要物理磁盘的搜索。</p>
+<p>此外，每一个DiskRowSet，保存最小的和最大的主键，使用键的边界在一个区间树中索引DiskRowSet。</p>
+<blockquote>
+<p>对于insert可以直接保存，对于upsert会查询原有记录中是否存在。所以这也是overwrite和append的坑 。再就是由于唯一键的设计导致每次插入都要查询下这个键是否存在于历史数据中。。。这一点决定了写入速度不可能比hbase快呀。而且特别是对于同一个主键的反复写性能就更加局限了，因为无法扩展。醉了</p>
+</blockquote>
+<p>kudu提出了两个补救方案：1、缩减查找的DiskRowSet范围；2、加速单个DiskRowSet的查找效率</p>
+<p>Bloom filter再加上LRU page cache，做到1.；通过index+page cache来做到2  (hbase也同样做了这两个，但是插入时不用look up是绝对优势)</p>
+<h2 id="4-7-Read-path-读方法"><a href="#4-7-Read-path-读方法" class="headerlink" title="4.7 Read path 读方法"></a>4.7 Read path 读方法</h2><p>读操作经常是批量的，KUDU每次只读一个列。找到row对应的列值，并读取。</p>
+<p>DeltaCompaction，RowSetCompaction这些和hbase非常类似了，就不再细写了。总的来说当前的存储如何支撑sql查询</p>
+<h2 id="4-8-Lazy-Materialization"><a href="#4-8-Lazy-Materialization" class="headerlink" title="4.8 Lazy Materialization"></a>4.8 Lazy Materialization</h2><p>Kudu存储的实现对于列数据采用Lazy Materializtion从而提高读取的性能。</p>
+<h2 id="4-9-Delta-Compaction"><a href="#4-9-Delta-Compaction" class="headerlink" title="4.9 Delta Compaction"></a>4.9 Delta Compaction</h2><h2 id="4-10-RowSet-Compaction"><a href="#4-10-RowSet-Compaction" class="headerlink" title="4.10 RowSet Compaction"></a>4.10 RowSet Compaction</h2><h2 id="4-11-Scheduling-maintenance"><a href="#4-11-Scheduling-maintenance" class="headerlink" title="4.11 Scheduling maintenance"></a>4.11 Scheduling maintenance</h2><h1 id="5-Hadoop集成"><a href="#5-Hadoop集成" class="headerlink" title="5 Hadoop集成"></a>5 Hadoop集成</h1>]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hbase从0到1：入门与架构详解]]></title>
+      <url>http://shengdeng.github.io/2016/08/07/Hbase%E4%BB%8E0%E5%88%B01%EF%BC%9A%E5%85%A5%E9%97%A8%E4%B8%8E%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3/</url>
+      <content type="html"><![CDATA[<h1 id="Hbase架构"><a href="#Hbase架构" class="headerlink" title="Hbase架构"></a>Hbase架构</h1><ul>
+<li>hbase组件的作用</li>
+<li>hbase region 定位的过程</li>
+<li>hbase的容错性</li>
+</ul>
+<h2 id="hbase架构图"><a href="#hbase架构图" class="headerlink" title="hbase架构图"></a>hbase架构图</h2><p>hbase是一个数据库，最主要的作用是存储海量结构化的数据，能够实现数据的实时查询。理解hbase的架构图对学习hbase很有帮助。</p>
+<p><img src="http://7xtorv.com1.z0.glb.clouddn.com/hbase-structure.jpg" alt=""></p>
+<p>首先，hbase是主从架构，有一个hmaster和多个hregionserver，需要一个写作服务叫zookeeper；底层hbase的数据是存在文件当中的，这些文件是存储在hdfs上的，所以有很多的datanode；想要操作hbase中的数据，可以通过client客户端进行，client客户端作用是存数据和取数据，需要与hbase集群进行一些交互，先与zookeeper进行交互，再与hregionserver进行交互，这与hdfs的架构很相似，hdfs中client要些数据，先与namenode交互，再向datanode中写数据。一般，对于表的操作client客户端不与hmaster进行交互，只有管理的时候才与hmaster交互，两者都分别与zookeeper交互。</p>
+<h3 id="客户端client的作用"><a href="#客户端client的作用" class="headerlink" title="客户端client的作用"></a>客户端client的作用</h3><ul>
+<li>client是整个集群的访问入口，对表的删除添加，也可以对集群进行一系列的管理操作</li>
+<li>client底层是通过RPC机制与hmaster和zookeeper通信</li>
+<li>client与hmaster通信进行<strong>管理类操作</strong></li>
+<li>client与hregionserver通信进行<strong>读写操作</strong></li>
+<li>client还包含访问hbase的接口，并维护cache缓存机制加快对hbase的访问，同时也会与hregion交互，client相当于程序的入口</li>
+</ul>
+<h3 id="程序协调服务zookeeper的作用"><a href="#程序协调服务zookeeper的作用" class="headerlink" title="程序协调服务zookeeper的作用"></a>程序协调服务zookeeper的作用</h3><ul>
+<li>保证任何时候，集群中只有一个hmaster,能够解决hbase的单节点故障，也即HA，当一个hmaster挂掉以后，zookeeper会自动把另一个hmaster激活，增加集群的可靠性</li>
+<li>存储所有region的寻址入口，客户端client往region中写数据时，通过与zookeeper交互得知写的地址</li>
+<li>实时监控region server的上线和下线信息，并通知给master；zookeeper与region server进行交互，region server告诉zookeeper我还活着，我还在线，如果region server宕机了，可以理解为下线，那么zookeeper通知master告诉他哪个region server挂掉了，region server管理了很多region信息，hbase会立马把这些region信息分配给其他的region server，如果添加了一个region server，那么hmaster会进行一系列的负载均衡，分配一些region给新上线的region server，减小集群的压力；</li>
+<li>存储hbase的schema和table元数据</li>
+</ul>
+<p>通过查看查看zookeeper</p>
+<p>首先进入hbase安装目录，可以查看到有一个zkcli的命令</p>
+<pre><code># bin/hbase
+返回hbase的所有命令
+zkcli    run the zookeeper shell
+</code></pre><p>进入zookeeper shell里面去查看zookeeper中到底存了哪些数据信息</p>
+<pre><code># bin/base zkcli
+[IP 0]help #可以查看这个shell的命令帮助
+[IP 1]ls / #查看根目录有哪些文件
+# 有两个文件夹，[hbase,zookeeper]
+[IP 2]ls /hbase #查看hbase下有什么东西
+返回很多文件夹，[meta-region-server,backup-masters,table,draining,region-in-transition,running,table-lock,master,namespace,hbaseid,...]
+[IP 3]ls /hbase/table
+[hbase:meta,t1,hbase:namespace]，里面有三条数据，meta表，t1和namespace表
+</code></pre><p>此时，可以另外开一个终端，查看hbase中有哪些表</p>
+<pre><code># 先进入hbase的安装目录
+# bin/hbase shell #进入hbase的shell中
+&gt;list #查看当前namespace命名空间中的表
+返回，有一张t1表，所以zookeeper中存了t1
+&gt;help #可以查看命令找到list_namespace_tables命令的用法
+&gt;list_namespace_tables &apos;hbase&apos; #查看另一个命名空间中的表,要指定命名空间hbase
+返回，有两张表，meta和namespace
+所以一共三张表和zookeeper中的一一对应
+</code></pre><p>再去zookeeper shell中看其他文件夹，通过这些文件夹的命名可以大致猜到里面存了啥，[meta-region-server,backup-masters,table,draining,region-in-transition,running,table-lock,master,namespace,hbaseid,…，rs]</p>
+<pre><code>[IP 8]ls /hbase
+[IP 9]get /hbase/master #查看master中存了啥
+有些乱码，也有些能看到的信息
+比如master主机名
+[IP 10]get /hbase/rs #查看region server文件夹
+</code></pre><h3 id="主节点hmaster的作用"><a href="#主节点hmaster的作用" class="headerlink" title="主节点hmaster的作用"></a>主节点hmaster的作用</h3><ul>
+<li>管理用户<strong>对table的增删改查操作</strong>，注意是对表table的管理，而不是对表中数据的管理，删除表，改变表的结构，而不是操作里面的数据</li>
+<li>管理hregionserver的<strong>负载均衡</strong>，调整region布局</li>
+<li>在region split后，负责新region的分配，即表的数据过大，会对region进行分割操作为了负载均衡也会进行新的region分配</li>
+<li>在hregionserver停机后，负责失效hregionserver上的迁移</li>
+<li>hmaster失效仅会导致所有元数据无法修改，表的数据读写还可以正常进行，因为<strong>client进行读写操作过程，不与hmaster交互</strong>；只有进行<strong>表的管理操作</strong>才会与hmaster交互</li>
+</ul>
+<h3 id="hregionserver节点的作用"><a href="#hregionserver节点的作用" class="headerlink" title="hregionserver节点的作用"></a>hregionserver节点的作用</h3><ul>
+<li>维护hregion并往hdfs中写数据</li>
+<li>当表的大小超过设置值的时候，split region</li>
+<li>在hregionserver停机后，负责失效hregionserver上的region迁移</li>
+</ul>
+<h2 id="hbase与zookeeper的关系"><a href="#hbase与zookeeper的关系" class="headerlink" title="hbase与zookeeper的关系"></a>hbase与zookeeper的关系</h2><ul>
+<li>hbase的元数据存储在zookeeper中</li>
+<li>默认情况下，hbase管理zookeeper实例，比如，启动或者停止zookeeper</li>
+<li>zookeeper解决hbase的单节点故障问题，选举机制</li>
+<li>hmaster与hregionserver启动时会向zookeeper注册</li>
+</ul>
+<p>zookeeper会与hbase所有组件进行交互，要搞清楚交互的目的都是什么。</p>
+<h2 id="hbase-region-定位"><a href="#hbase-region-定位" class="headerlink" title="hbase region 定位"></a>hbase region 定位</h2><ul>
+<li>首先，读取zookeeper中的文件，<strong>找到root表的位置</strong></li>
+<li>获取root表的信息，root表中存储了meta的信息，root表包含meta表所在的region列表，该表只会有一个region</li>
+<li>根据root表来访问meta表，meta表包含所有用户空间region列表，以及regionserver服务器地址</li>
+<li>通过meta表来进行表的操作</li>
+<li>client第一次操作以后，会将root表和meta表缓存到本地，不需要再访问zookeeper</li>
+</ul>
+<p>注意，root表在老版本0.96以前，在zookeeper中存储了root表信息，在0.96以后，zookeeper没有存储root表信息，直接存储meta表的信息，第二步就省略了，没有root表了，直接从meta表的信息获得表的信息</p>
+<h2 id="hbase的容错性"><a href="#hbase的容错性" class="headerlink" title="hbase的容错性"></a>hbase的容错性</h2><ul>
+<li>master容错：zookeeper重新选择一个新的master<ul>
+<li>无master过程中，数据读取仍正常</li>
+<li>无master过程中，region的切分、负载均衡无法进行</li>
+</ul>
+</li>
+<li>regionserver容错：定时向zookeeper会报心跳，<em>**</em>如果一段时间内未出现心跳，master将该regionser上的region重新分配到其他regionserver上，失效服务器上“预写”日志由主服务器进行分割并派送给新的regionserver</li>
+<li>zookeeper容错：<ul>
+<li>zookeeper可以配置多个，推荐奇数个</li>
+<li>zookeeper高可靠的服务，不存在单节点故障</li>
+</ul>
+</li>
+</ul>
+<h2 id="hbase的数据存储"><a href="#hbase的数据存储" class="headerlink" title="hbase的数据存储"></a>hbase的数据存储</h2><p>回顾架构图，在hbase中，如果插入一条数据，最主要的存储就是hlog文件和hfile文件，storefile相当于把hfile做了一个轻量级的封装。在hbase中如果插入一条数据，会写两部分文件，第一部分就是hlog，存储日志文件，还会存一个region文件，首先向内存中也即menstore写数据，当他达到一定大小的时候就会写为storefile文件，storefile中最主要的就是hfile文件。</p>
+<p>hbase中的所有数据文件都存储在hadoop HDFS文件系统上，格式主要有两种：</p>
+<ul>
+<li>hfile：hbase中keyvalue数据的存储格式，hfile是hadoop的<strong>二进制格式文件</strong>，实际上storefile就是对hfile做了轻量级包装，即storefile底层就是hfile。</li>
+<li>hlog file：hbase中WAL（write ahead log）的存储格式，物理上市hadoop的sequence file带项目符号的内容（写数据的时候首先会向内存中写数据，不会直接写入磁盘，如果这个时候停电了，内存中的数据就会消失，hbase就会通过WAL来恢复内存中的数据写入到HDFS中；sequence file这种文件在机器学习的迭代计算中非常的有优势）</li>
+</ul>
+<h3 id="hregionserver-hbase的存储"><a href="#hregionserver-hbase的存储" class="headerlink" title="hregionserver:hbase的存储"></a>hregionserver:hbase的存储</h3><p><img src="http://7xtorv.com1.z0.glb.clouddn.com/hbase-write-hlog-process.jpg" alt=""><br>一个客户端往hbase中写数据的过程，从左往右看，有一个客户端client，有对数据的操作put、delete、in</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Tomcat从0开始]]></title>
+      <url>http://shengdeng.github.io/2016/08/04/Tomcat%E4%BB%8E0%E5%BC%80%E5%A7%8B/</url>
+      <content type="html"><![CDATA[<h1 id="1-Tomcat简介"><a href="#1-Tomcat简介" class="headerlink" title="1. Tomcat简介"></a>1. Tomcat简介</h1><p>（草稿版）</p>
+<h3 id="服务器概念"><a href="#服务器概念" class="headerlink" title="服务器概念"></a>服务器概念</h3><ul>
+<li>web服务器：将网页内容传送到浏览器，专门处理http请求，提供web信息浏览功能</li>
+<li>应用服务器：用来解析运行后台代码，如java，处理复杂的业务逻辑，处理完成后将结果生产html页面，然后交给web服务器发送到客户端浏览器</li>
+</ul>
+<h3 id="Tomcat与Servlet的关系"><a href="#Tomcat与Servlet的关系" class="headerlink" title="Tomcat与Servlet的关系"></a>Tomcat与Servlet的关系</h3><ul>
+<li>Servlet是一种运行在支持java语言服务器上的组件，是一个类，被用来扩展服务器的性能，为客户端的请求提供服务</li>
+<li>tomcat既是支持java语言的web服务器，也是官方推荐运行jsp与Servlet容器，所以tomcat也叫servlet容器，或者叫做java web应用服务器。tomcat处理客户端的请求，把请求送给servlet容器进行业务处理，处理完后将结果返回客户端</li>
+<li>tomcat也是apache推出的一个核心开源项目，属于轻量级的应用服务器，所占用的资源是非常小，在很多中小型系统中普遍被使用</li>
+<li>平时，开发和调试jsp时也是选择tomcat</li>
+</ul>
+<h3 id="tomcat处理请求的过程"><a href="#tomcat处理请求的过程" class="headerlink" title="tomcat处理请求的过程"></a>tomcat处理请求的过程</h3><ul>
+<li>首先，web服务器接受到客户端的http请求，然后将http请求交给servlet容器</li>
+<li>servlet容器处理完成之后，把响应对象servletresponse中的处理结果转发给web服务器，通知web服务器以http响应的方式，把结果反馈给客户端，同时把控制权返还给web服务器</li>
+</ul>
+<h3 id="获取tomcat安装程序包"><a href="#获取tomcat安装程序包" class="headerlink" title="获取tomcat安装程序包"></a>获取tomcat安装程序包</h3><ul>
+<li>项目首页 <a href="http://tomcat.apache.org/" target="_blank" rel="external">http://tomcat.apache.org/</a><ul>
+<li>版本介绍、下载链接、文档</li>
+<li>注意，不同的tomcat版本要求的java版本Supported Java Versions不一样</li>
+</ul>
+</li>
+<li>下载界面有常用的二进制安装包<ul>
+<li>exe windows下具有引导的安装包</li>
+<li>zip windows下压缩版本</li>
+<li>tar.gz linux下的压缩包</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-在windows上安装tomcat"><a href="#2-在windows上安装tomcat" class="headerlink" title="2. 在windows上安装tomcat"></a>2. 在windows上安装tomcat</h1><h2 id="使用安装向导exe安装"><a href="#使用安装向导exe安装" class="headerlink" title="使用安装向导exe安装"></a>使用安装向导exe安装</h2><p>使用新技术的时候，应该阅读官方文档，包括安装过程setup在文档中都有，不要凭以往经验来操作，因为技术在不断更新</p>
+<pre><code>- http://tomcat.apache.org/tomcat-8.5-doc/setup.html
+- 文档中说，windows下的安装十分简单，有三点需要说明：会作为服务安装Installation as a service；Java location，安装程序会默认提供一个JRE去运行tomcat服务，安装程序会根据注册表registry去决定java 7的路径（意思是我们在安装tomcat之前，必须先安装jre或者jdk，因为tomcat使用java编写运行需要jre，tomcat容器是用来解析servlet的，servlet也是java的技术规范之一）;当tomcat作为windows的服务运行时不会出现相关图标，但会有托盘图标Tray icon
+</code></pre><ol>
+<li>安装jdk</li>
+<li>安装安装向导提示选择组件，全部保持默认即可<ul>
+<li>core 核心组件必须按照</li>
+<li>service startup 表示是否设置tomcat服务，自启动，不用选，要启动的时候手动运行即可</li>
+<li>native APR可移植的运行环境，tomcat可以利用apr提供更好的伸缩性，默认不按照，要用的时候再安装</li>
+<li>start menu items 创建开始菜单程序组</li>
+<li>documentation 使用文档</li>
+<li>manager web应用管理组件</li>
+<li>host manager 主机管理组件</li>
+<li>example 一些例子</li>
+</ul>
+</li>
+<li>设置tomcat基础配置向导<ul>
+<li>server shutdown port 指定监听shutdown命令的端口，8005，必须的否则无法启动</li>
+<li>http连接器端口，8080，客户端通过8080端口访问tomcat服务器</li>
+<li>ajp连接器端口</li>
+<li>windows service name 是tomcat的服务名称</li>
+<li>设置tomcat管理员的账号和密码</li>
+</ul>
+</li>
+<li>如果没安装公共的jre，tomcat无法从注册表中获得jdk安装地址，所以将要手工填入。</li>
+</ol>
+<p>tomcat启动后，在系统右下角又提个绿色的三角形，表明启动成功。浏览器可以访问localhost：8080，看到tomcat的安装界面。</p>
+<h2 id="使用zip安装"><a href="#使用zip安装" class="headerlink" title="使用zip安装"></a>使用zip安装</h2><p>将z</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux的ps命令详解]]></title>
+      <url>http://shengdeng.github.io/2016/08/01/Linux%E7%9A%84ps%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/</url>
+      <content type="html"><![CDATA[<p>要对系统中进程进行监测控制，查看状态，内存，CPU的使用情况，使用命令ps</p>
+<ul>
+<li>ps ：显示瞬间进程的状态，并不动态连续；</li>
+<li>top：如果想对进程运行实时监控，应该用 top 命令；</li>
+<li>kill：用于杀死进程或者给进程发送信号；</li>
+</ul>
+<p>ps的每项输出的含义，可以查看ps的man手册</p>
+<pre><code>$ man ps
+</code></pre><a id="more"></a>
+<h1 id="ps-的参数说明"><a href="#ps-的参数说明" class="headerlink" title="ps 的参数说明"></a>ps 的参数说明</h1><ul>
+<li>l 长格式输出；</li>
+<li>u 按用户名和启动时间的顺序来显示进程；</li>
+<li>j 用任务格式来显示进程；</li>
+<li>f 用树形格式来显示进程；</li>
+<li>a 显示所有用户的所有进程（包括其它用户）；</li>
+<li>x 显示无控制终端的进程；</li>
+<li>r 显示运行中的进程；</li>
+<li>ww 避免详细参数被截断；</li>
+<li>-A 列出所有的进程</li>
+<li>-w 显示加宽可以显示较多的资讯</li>
+<li>-au 显示较详细的资讯</li>
+<li>-aux 显示所有包含其他使用者的进程</li>
+<li>-e 显示所有进程,环境变量</li>
+<li>-f 全格式</li>
+<li>-h 不显示标题</li>
+<li>-l 长格式</li>
+<li>-w 宽输出</li>
+<li>a   显示终端上地所有进程,包括其他用户地进程</li>
+<li>r   只显示正在运行地进程</li>
+<li>x   显示没有控制终端地进程</li>
+</ul>
+<p>我们常用的选项是组合是: aux 或 lax，还有参数 f 的应用。</p>
+<p>pids 只列出进程标识符,之间运用逗号分隔.该进程列表必须在命令行参数地最后一个选项后面紧接着给出,中间不能插入空格.比如：ps -f1,4,5 显示的是进程ID为1,4,5的进程</p>
+<p>介绍长命令行选项,这些选项都运用“–”开头：</p>
+<p>–sort X[+|-] key [,[+|-] key [,…]] 从SORT KEYS段中选一个多字母键.“+”字符是可选地,因为默认地方向就是按数字升序或者词典顺序，“-”字符是逆序排序（即降序）.<br>比如： ps -jax -sort=uid,-ppid,+pid.</p>
+<p>–help 显示帮助信息.</p>
+<p>–version 显示该命令地版本信息.</p>
+<p>在前面地选项说明中提到了排序键,接下来对排序键作进一步说明.需要注意地是排序中运用地值是ps运用地内部值,并非仅用于某些输出格式地伪值.排序键列表见下表.</p>
+<pre><code>============排序键列表==========================
+c cmd   可执行地简单名称 
+C cmdline   完整命令行 
+f flags   长模式标志 
+g pgrp   进程地组ID 
+G tpgid   控制tty进程组ID 
+j cutime   累计用户时间 
+J cstime   累计系统时间 
+k utime   用户时间 
+K stime   系统时间 
+m min_flt   次要页错误地数量 
+M maj_flt   重点页错误地数量 
+n cmin_flt 累计次要页错误 
+N cmaj_flt 累计重点页错误 
+o session   对话ID 
+p pid   进程ID 
+P ppid   父进程ID 
+r rss   驻留大小 
+R resident 驻留页 
+s size   内存大小(千字节) 
+S share   共享页地数量 
+t tty   tty次要设备号 
+T start_time 进程启动地时间 
+U uid   UID
+u user   用户名
+v vsize   总地虚拟内存数量(字节) 
+y priority 内核调度优先级
+</code></pre><h1 id="ps-aux-或-lax-命令输出的解释"><a href="#ps-aux-或-lax-命令输出的解释" class="headerlink" title="ps aux 或 lax 命令输出的解释"></a>ps aux 或 lax 命令输出的解释</h1><p>ps aux 或 lax 输出的解释</p>
+<p>au(x) 输出格式 : </p>
+<pre><code>USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+</code></pre><ul>
+<li>USER: 进程所有者</li>
+<li>PID: 进程ID</li>
+<li>%CPU: 占用的 CPU 使用率</li>
+<li>%MEM: 占用的内存使用率</li>
+<li>VSZ: 占用的虚拟内存大小</li>
+<li>RSS: 占用的内存大小</li>
+<li>TTY: 终端的次要装置号码 (minor device number of tty)</li>
+<li>STAT: 进程状态</li>
+<li>START: 启动进程的时间</li>
+<li>TIME: 进程消耗CPU的时间</li>
+<li>COMMAND:命令的名称和参数</li>
+</ul>
+<h3 id="进程STAT状态"><a href="#进程STAT状态" class="headerlink" title="进程STAT状态:"></a>进程STAT状态:</h3><ul>
+<li>D 无法中断的休眠状态（通常 IO 的进程）； </li>
+<li>R 正在运行，在可中断队列中； </li>
+<li>S 处于休眠状态，静止状态； </li>
+<li>T 停止或被追踪，暂停执行； </li>
+<li>W 进入内存交换（从内核2.6开始无效）； </li>
+<li>X 死掉的进程； </li>
+<li>Z 僵尸进程不存在但暂时无法消除；</li>
+<li>W: 没有足够的记忆体分页可分配</li>
+<li>WCHAN 正在等待的进程资源；</li>
+<li>&lt;: 高优先级进程</li>
+<li>N: 低优先序进程</li>
+<li>L: 有记忆体分页分配并锁在记忆体内 (即时系统或捱A I/O)，即,有些页被锁进内存</li>
+</ul>
+<p>s 进程的领导者（在它之下有子进程）；<br>l 多进程的（使用 CLONE_THREAD, 类似 NPTL pthreads）； </p>
+<ul>
+<li>位于后台的进程组；</li>
+</ul>
+<h1 id="kill-终止进程"><a href="#kill-终止进程" class="headerlink" title="kill 终止进程"></a>kill 终止进程</h1><p>kill 终止进程<br>有十几种控制进程的方法，下面是一些常用的方法:</p>
+<ul>
+<li><code>kill -STOP [pid]</code> <ul>
+<li>发送SIGSTOP (17,19,23)停止一个进程，而并不消灭这个进程。</li>
+</ul>
+</li>
+<li><code>kill -CONT [pid]</code> <ul>
+<li>发送SIGCONT (19,18,25)重新开始一个停止的进程。</li>
+</ul>
+</li>
+<li><code>kill -KILL [pid]</code> <ul>
+<li>发送SIGKILL (9)强迫进程立即停止，并且不实施清理操作。</li>
+</ul>
+</li>
+<li><code>kill -9 -1</code> <ul>
+<li>终止你拥有的全部进程。</li>
+</ul>
+</li>
+<li>SIGKILL 和 SIGSTOP 信号不能被捕捉、封锁或者忽略，但是，其它的信号可以。所以这是你的终极武器。</li>
+</ul>
+<h2 id="使用实例"><a href="#使用实例" class="headerlink" title="使用实例"></a>使用实例</h2><pre><code>$ ps
+PID TTY TIME COMMAND
+5800 ttyp0 00:00:00 bash
+5835 ttyp0 00:00:00 ps
+</code></pre><p>可以看到,显示地项目共分为四项,依次为PID(进程ID)、TTY(终端名称)、TIME(进程执行时 间)、COMMAND(该进程地命令行输入).</p>
+<p>可以运用u选项来查看进程所有者及其他少许详细信息,如下所示：</p>
+<pre><code>$ ps u
+USER PID %CPU %MEM USZ RSS TTY STAT START TIME COMMAND
+test 5800 0.0 0.4 1892 1040 ttyp0 S Nov27 0:00 -bash
+test 5836 0.0 0.3 2528 856 ttyp0 R Nov27 0:00 ps u
+</code></pre><p>在bash进程前面有条横线,意味着该进程便是用户地登录shell,所以对于一个登录用户来说带短横线地进程只有一个.还可以看 到%CPU、%MEM两个选项,前者指该进程占用地CPU时间</p>
+<p>和总时间地百分比;后者指该进程占用地内存和总内存地百分比.</p>
+<p>在这种情况下看到了所有控制终端地进程;当然对于其他那些没有控制终端地进程 还是没有观察到,所以这时就需要运用x选项.运用x选项可以观察到所有地进程情况.</p>
+<ol>
+<li>ps a 显示现行终端机下的所有程序，包括其他用户的程序。</li>
+<li>ps -A 显示所有程序。</li>
+<li>ps c 列出程序时，显示每个程序真正的指令名称，而不包含路径，参数或常驻服务的标示。</li>
+<li>ps -e 此参数的效果和指定”A”参数相同。</li>
+<li>ps e 列出程序时，显示每个程序所使用的环境变量。</li>
+<li>ps f 用ASCII字符显示树状结构，表达程序间的相互关系。</li>
+<li>ps -H 显示树状结构，表示程序间的相互关系。</li>
+<li>ps -N 显示所有的程序，除了执行ps指令终端机下的程序之外。</li>
+<li>ps s 采用程序信号的格式显示程序状况。</li>
+<li>ps S 列出程序时，包括已中断的子程序资料。</li>
+<li>ps -t&lt;终端机编号&gt; 　指定终端机编号，并列出属于该终端机的程序的状况。</li>
+<li>ps u 　以用户为主的格式来显示程序状况。</li>
+<li>ps x 　显示所有程序，不以终端机来区分。<br>　最常用的方法是ps -aux,然后再用管道符号导向到grep去查找特定的进程,然后再对特定的进程进行操作。</li>
+</ol>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Execl使用技巧总结]]></title>
       <url>http://shengdeng.github.io/2016/07/30/Execl%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>本文总结了比较实用的excel技巧，工作中用上他们表格瞬间高大上！持续更新中…</p>
@@ -70,13 +616,13 @@
 </ul>
 <h2 id="1-8-使用VLOOKUP函数：自动查找内容并填表"><a href="#1-8-使用VLOOKUP函数：自动查找内容并填表" class="headerlink" title="1.8 使用VLOOKUP函数：自动查找内容并填表"></a>1.8 使用VLOOKUP函数：自动查找内容并填表</h2><p>一个庞大的表中，常常又包含多个sheet或多个表格，如果其中<strong>一个sheet的内容与另一sheet的内容相同</strong>，low的办法是ctrl+c、ctrl+v，这样做可能会导致一个麻烦，就是一处修改处处修改。VLOOKUP函数可以解决这个问题，使相同内容的单元格是映射关系，这样每次只要修改一处即可，其他的会自动改变。</p>
 <p>VLOOKUP函数的功能像查电话，实现了根据姓名在特定的范围查到电话号码，即 <code>电话号码=f（姓名，电话簿的查找范围）</code>。所以需要一个查找标识，一个查找范围。</p>
-<p>在<strong>该单元格</strong>中填写以下语法：</p>
+<p>在<strong>单元格</strong>中填写以下语法：</p>
 <pre><code>= VLOOKUP(lookup_value,table_array,col_index_num,range_lookup)
 </code></pre><ul>
 <li><strong>table_array参数</strong>：要查找的区域，该区域的单元格包含了要查的标识和相应内容。</li>
 <li><strong>lookup_value参数</strong>：填查找的标识，根据这个标识，在第二个参数表示的区域中<strong>查找标识所在的行</strong>。<ul>
 <li>标识可以写死，是具体数值或者文本</li>
-<li>可以<strong>不写死</strong>，写引用，如$A，即<strong>该单元格所在行的A列上的那个单元格内容</strong>就是标识</li>
+<li>也可以<strong>不写死</strong>，写引用，如$A，即<strong>该单元格所在行的A列上的那个单元格内容</strong>就是标识</li>
 <li>此参数用于找到：要返回的<strong>单元格行号</strong></li>
 </ul>
 </li>
